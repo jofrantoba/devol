@@ -1,0 +1,20 @@
+@CHARSET "ISO-8859-1";
+
+.headerTittleUI{
+	background: -moz-linear-gradient(center bottom , #1E558B, #1E558B) repeat scroll 0% 0% transparent;
+	background: -webkit-gradient(linear,left bottom,left top,color-stop(0, #1E558B),color-stop(1, #1E558B));
+	border-bottom: solid 1px #000;
+}
+
+.headerTittleUI div{
+	color: #FFF;
+	height: 42px;	
+	display: table-cell;
+	vertical-align: middle;
+}
+
+.cellList li {
+	background-color: #FBFF88;
+	font-weight: bold;
+	color: #000;
+}

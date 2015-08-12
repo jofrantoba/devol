@@ -1,0 +1,44 @@
+@CHARSET "UTF-8";
+
+.txtBuscarUIPrestamo{
+	background: -moz-linear-gradient(center bottom , #6396CB, #B4D6E0) repeat scroll 0% 0% transparent;
+	background: -webkit-gradient(linear,left bottom,left top,color-stop(0, #6396CB),color-stop(1, #B4D6E0));
+	border-bottom: solid 1px #000;
+}
+
+.txtBuscarUIPrestamo div{
+	background-color: #FFF;
+
+}
+
+.txtBuscarUIPrestamo input[type=search]{
+	width: 94%;	
+	color: #000;
+}
+
+.gridUIPrestamo{
+	margin: 10px;
+	background-color: #fff;
+	border-left: 1px solid #A4A4A4;
+	border-right: 1px solid #A4A4A4;
+	border-top: 1px solid #A4A4A4;
+	color: #000;
+}
+
+
+.gridUIPrestamo table{
+	border-bottom: 1px solid #A4A4A4;
+}
+
+.gridUIPrestamo td{
+	padding-left: 5px;
+	font-size: 14px;
+	color: #000;
+	height: 40px;
+	line-height: 40px;
+}
+
+.pushButton{
+	background: transparent;	
+}
+

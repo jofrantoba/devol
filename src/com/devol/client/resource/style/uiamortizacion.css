@@ -1,0 +1,51 @@
+@CHARSET "UTF-8";
+
+.pushButton{
+	background: transparent;	
+}
+
+.pnlEstadoPrestamoUIAmortizacion{
+	border: 0px;
+}
+
+.pnlEstadoPrestamoUIAmortizacion div{
+	display: block;
+	font-size: 20px;
+	font-weigh: bold;
+	text-align: center;
+	line-height: 40px;
+	color: #FFF;
+}
+
+.lblADevolverUIAmortizacion{
+	background: -moz-linear-gradient(center bottom , #B22020, #B40404) repeat scroll 0% 0% transparent;
+	background: -webkit-gradient(linear,left bottom,left top,color-stop(0, #B22020),color-stop(1, #B40404));
+}
+
+.lblADevueltoUIAmortizacion{
+	background: -moz-linear-gradient(center bottom , #34871A, #54C033) repeat scroll 0% 0% transparent;
+	background: -webkit-gradient(linear,left bottom,left top,color-stop(0, #34871A),color-stop(1, #54C033));
+}
+
+.gridUIAmortizacion{
+	margin: 10px;
+	background-color: #fff;
+	border-left: 1px solid #A4A4A4;
+	border-right: 1px solid #A4A4A4;
+	border-top: 1px solid #A4A4A4;
+	color: #000;
+}
+
+
+.gridUIAmortizacion table{
+	border-bottom: 1px solid #A4A4A4;
+}
+
+.gridUIAmortizacion td{
+	padding-left: 5px;
+	font-size: 14px;
+	color: #000;
+	height: 40px;
+	line-height: 40px;
+}
+

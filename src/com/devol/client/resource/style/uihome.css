@@ -1,0 +1,23 @@
+@CHARSET "ISO-8859-1";
+
+.headerPrincipal{
+	background: -moz-linear-gradient(center bottom , #595A5C, #000) repeat scroll 0% 0% transparent;
+	background: -webkit-gradient(linear,left bottom,left top,color-stop(0, #595A5C),color-stop(1, #000));
+	border-bottom: solid 1px #000;
+}
+
+.headerPrincipal div{
+	color: #FFF;
+}
+
+.animationHelper{
+	background-color: #CDD8EE;
+}
+
+.main{
+	background-color: #CDD8EE;
+}
+
+.pushButton{
+	background: transparent;	
+}

@@ -1,0 +1,30 @@
+@CHARSET "ISO-8859-1";
+
+.gwt-TextBox {
+    border: 0px !important;;
+    width: 100% !important;;
+    font-size: 1.5em !important;;
+}
+ 
+.gwt-TextBox:focus {
+    box-shadow: 1px 1px 0px #888888 !important;;
+}
+ 
+.gwt-PasswordTextBox{
+    border: 0px !important;;
+    width: 100% !important;;
+    font-size: 1.5em !important;;
+}
+ 
+.gwt-PasswordTextBox:focus {
+    box-shadow: 1px 1px 0px #888888 !important;
+}
+
+/*body {
+    background-image: url("wallpaper.jpg") !important;
+    background-repeat: repeat;
+}*/
+
+/*div{
+	background:transparent !important;
+}*/

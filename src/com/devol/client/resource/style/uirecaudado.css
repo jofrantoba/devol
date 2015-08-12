@@ -1,0 +1,66 @@
+@CHARSET "UTF-8";
+
+.pushButton{
+	background: transparent;	
+}
+
+.txtBuscarUIRecaudado{
+	background: -moz-linear-gradient(center bottom , #6396CB, #B4D6E0) repeat scroll 0% 0% transparent;
+	background: -webkit-gradient(linear,left bottom,left top,color-stop(0, #6396CB),color-stop(1, #B4D6E0));
+	border-bottom: solid 1px #000;
+}
+
+.txtBuscarUIRecaudado div{
+	background-color: #FFF;
+
+}
+
+.txtBuscarUIRecaudado input[type=search]{
+	width: 94%;	
+	color: #000;
+}
+
+.gridUIRecaudado{
+	margin: 10px;
+	background-color: #fff;
+	border-left: 1px solid #A4A4A4;
+	border-right: 1px solid #A4A4A4;
+	border-top: 1px solid #A4A4A4;
+	color: #000;
+}
+
+
+.gridUIRecaudado table{
+	border-bottom: 1px solid #A4A4A4;
+}
+
+.gridUIRecaudado td{
+	padding-left: 5px;
+	font-size: 14px;
+	color: #000;
+	height: 40px;
+	line-height: 40px;
+}
+
+.pnlTotalRecaudadoUIRecaudado{
+	border: 0px;
+}
+
+.pnlTotalRecaudadoUIRecaudado div{
+	display: block;
+	font-size: 20px;
+	font-weigh: bold;
+	text-align: center;
+	line-height: 40px;
+	color: #FFF;
+}
+
+.lblTotalUIRecaudado{
+	background: -moz-linear-gradient(center bottom , #1E558B, #1E558B) repeat scroll 0% 0% transparent;
+	background: -webkit-gradient(linear,left bottom,left top,color-stop(0, #1E558B),color-stop(1, #1E558B));
+}
+
+.lblMontoTotalUIRecaudado{
+	background: -moz-linear-gradient(center bottom , #34871A, #54C033) repeat scroll 0% 0% transparent;
+	background: -webkit-gradient(linear,left bottom,left top,color-stop(0, #34871A),color-stop(1, #54C033));
+}

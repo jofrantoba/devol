@@ -1,0 +1,9 @@
+@CHARSET "UTF-8";
+
+.widgetList li{
+	background-color: #FFF ;
+}
+
+.textBox input{
+	color: #000 !important;
+}

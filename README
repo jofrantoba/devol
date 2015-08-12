@@ -1,0 +1,31 @@
+Bienvenidos  Devolpay
+
+Devolpay es una aplicación web mobile desarrollada para aquellas personas
+que prestan dinero de manera informal y desean llevar el control manual de
+sus prestamos y pagos de los mismos por sus clientes.
+
+Entre sus funcionalidades encontramos:
+	* Registro de clientes.
+	* Registro de Prestamos.
+	* Registro de amortizaciones.
+	* Ver Recaudación por fecha.
+	* Ver Historial de prestamos pagados.
+
+La presente aplicación es totalmente funcional y la puedes usar en
+https://devolpay.appspot.com
+
+Tecnología que se uso para el desarrollo de Devolpay.
+
+	* Lenguaje de Programacion: Java (jdk 7).
+	* Almacén de datos: Datastore de Google.
+	* PAAS: Google App Engine (appengine-java-sdk-1.9.24).
+	* Google web toolkit (gwt-2.7.0)
+	Se uso:
+		- RPC
+		- RequestFactory
+		- BeanProxy
+	* MGWT2.0
+	* API de Persistencia: JDO (V2 según google - version actual)
+	* Framework propio (MVC - MVP)
+
+Este ejemplo fue desarrollado por @jofrantoba
