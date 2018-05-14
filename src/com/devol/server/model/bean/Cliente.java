@@ -9,6 +9,7 @@ import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
+import com.devol.shared.StringHex;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 
@@ -47,17 +48,43 @@ public class Cliente implements Serializable {
 	private String codCliente;
 	@Persistent
 	private Integer numPrestamo=0;
+	@Persistent
+	private String valueGeneratorId;
+	@NotPersistent
+	private String idCreateCliente;
+	@NotPersistent
+	private String idGestorCliente;
+	@NotPersistent
+	private String idGestorCobranza;
+	@NotPersistent
+	private String idUsuarioOwner;
+	@NotPersistent
+	private String idUsuarioCobrador;
+	@Persistent
+	private Integer clienteAsignado=0;
+	@NotPersistent
+	private Boolean isSelected=false;	
+	
 	
 	public String getIdCliente() {
 		return KeyFactory.keyToString(idCliente);
 	}
+	
+	public String getIdCreateCliente() {
+		return idCreateCliente;
+	}
 
-	public void setIdCliente(String idUsuario) {
+	public void setIdCreateCliente(String idUsuario) {
 		Key keyUsuario = KeyFactory.stringToKey(idUsuario);
+		valueGeneratorId=StringHex.convertStringToHex(java.util.UUID.randomUUID().toString());
 		this.idCliente = KeyFactory.createKey(keyUsuario,
-		Cliente.class.getSimpleName(), java.util.UUID.randomUUID().toString());
+		Cliente.class.getSimpleName(), valueGeneratorId);
 		this.idUsuario = idUsuario;
-	}					
+	}
+	
+	public void setIdCliente(String idCliente) {
+		this.idCliente=KeyFactory.stringToKey(idCliente);
+	}
 
 	public String getCodCliente() {
 		return codCliente;
@@ -178,8 +205,63 @@ public class Cliente implements Serializable {
 	public void setNumPrestamo(Integer numPrestamo) {
 		this.numPrestamo = numPrestamo;
 	}
-	 
-	 
-	 
+
+	public String getValueGeneratorId() {
+		return valueGeneratorId;
+	}
+
+	public void setValueGeneratorId(String valueGeneratorId) {
+		this.valueGeneratorId = valueGeneratorId;
+	}
+
+	public String getIdGestorCliente() {
+		return idGestorCliente;
+	}
+
+	public void setIdGestorCliente(String idGestorCliente) {
+		this.idGestorCliente = idGestorCliente;
+	}
+
+	public String getIdGestorCobranza() {
+		return idGestorCobranza;
+	}
+
+	public void setIdGestorCobranza(String idGestorCobranza) {
+		this.idGestorCobranza = idGestorCobranza;
+	}
+
+	public String getIdUsuarioOwner() {
+		return idUsuarioOwner;
+	}
+
+	public void setIdUsuarioOwner(String idUsuarioOwner) {
+		this.idUsuarioOwner = idUsuarioOwner;
+	}
+
+	public String getIdUsuarioCobrador() {
+		return idUsuarioCobrador;
+	}
+
+	public void setIdUsuarioCobrador(String idUsuarioCobrador) {
+		this.idUsuarioCobrador = idUsuarioCobrador;
+	}
+
+	public Integer getClienteAsignado() {
+		return clienteAsignado;
+	}
+
+	public void setClienteAsignado(Integer clienteAsignado) {
+		this.clienteAsignado = clienteAsignado;
+	}
+
+	public Boolean getIsSelected() {
+		return isSelected;
+	}
+
+	public void setIsSelected(Boolean isSelected) {
+		this.isSelected = isSelected;
+	}
+	
+	
 
 }

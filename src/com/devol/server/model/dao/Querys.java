@@ -59,15 +59,15 @@ public class Querys {
 	
 	public boolean mantenimiento(BeanParametro parametro) throws UnknownException{
 		try{
-			if(parametro.getTipoOperacion().equalsIgnoreCase("I")){
-				pm.makePersistent(parametro.getBean());
+			if(parametro.getTipoOperacion().equalsIgnoreCase("I")){				
+				pm.makePersistent(parametro.getBean());						
 				return true;
-			}else if(parametro.getTipoOperacion().equalsIgnoreCase("A")){
-				pm.makePersistent(parametro.getBean());
+			}else if(parametro.getTipoOperacion().equalsIgnoreCase("A")){				
+				pm.makePersistent(parametro.getBean());				
 				return true;
-			}else if(parametro.getTipoOperacion().equalsIgnoreCase("E")){
+			}else if(parametro.getTipoOperacion().equalsIgnoreCase("E")){								
 				Object bean = pm.getObjectById(parametro.getBean().getClass(),parametro.getId());
-				pm.deletePersistent(bean);
+				pm.deletePersistent(bean);				
 				return true;
 			}else{
 				throw new UnknownException("NO se ha definido Operacion");
@@ -97,7 +97,7 @@ public class Querys {
 		}catch(Exception ex){
 			LOG.warning(ex.getMessage());
 			LOG.info(ex.getLocalizedMessage());
-			throw new UnknownException(ex.getMessage());
+			return null;
 		}
 	}
 	
@@ -108,7 +108,7 @@ public class Querys {
 		}catch(Exception ex){
 			LOG.warning(ex.getMessage());
 			LOG.info(ex.getLocalizedMessage());
-			throw new UnknownException(ex.getMessage());
+			return null;
 		}
 	}
 	

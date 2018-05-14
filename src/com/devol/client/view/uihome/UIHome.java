@@ -8,6 +8,7 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.devol.client.model.PanelFlow;
 import com.devol.client.resource.MyResource;
 import com.devol.client.view.uiiniciarsesion.UIIniciarSesionImpl;
+import com.devol.client.view.uirecuperarclave.UiRecuperarClaveImpl;
 import com.devol.client.view.uiregistrarusuario.UIRegistrarUsuarioImpl;
 
 public class UIHome extends Composite implements InterUIHome{
@@ -17,6 +18,7 @@ public class UIHome extends Composite implements InterUIHome{
 	private DeckPanel container;
 	private UIIniciarSesionImpl uiIniciarSesionImpl;
 	private UIRegistrarUsuarioImpl uiRegistrarUsuario;
+	private UiRecuperarClaveImpl uiRecuperarClave;
 	//private UIHomeSesion uiHomeSesion;
 	//private UIMenuImpl uiMenuImpl;
 	private Presenter presenter;
@@ -48,6 +50,9 @@ public class UIHome extends Composite implements InterUIHome{
 		
 		uiRegistrarUsuario = new UIRegistrarUsuarioImpl(this);
 		container.add(uiRegistrarUsuario);
+		
+		uiRecuperarClave=new UiRecuperarClaveImpl(this);
+		container.add(uiRecuperarClave);
 		
 		/*uiHomeSesion = new UIHomeSesion();
 		container.add(uiHomeSesion);*/
@@ -93,6 +98,10 @@ public class UIHome extends Composite implements InterUIHome{
 
 	public UIRegistrarUsuarioImpl getUiRegistrarUsuario() {
 		return uiRegistrarUsuario;
+	}
+
+	public UiRecuperarClaveImpl getUiRecuperarClave() {
+		return uiRecuperarClave;
 	}
 	
 	

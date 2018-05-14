@@ -2,7 +2,6 @@ package com.devol.client.view.uiprestamo;
 
 import com.devol.client.beanproxy.PrestamoProxy;
 import com.devol.client.grid.GridPrestamo;
-import com.devol.client.model.HeaderGrid;
 import com.devol.client.model.ToolBar;
 import com.devol.client.resource.MyResource;
 import com.devol.client.util.Notification;
@@ -12,10 +11,6 @@ import com.google.gwt.dom.client.Style;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.KeyUpEvent;
-import com.google.gwt.event.dom.client.KeyUpHandler;
-import com.google.gwt.event.dom.client.TouchEndEvent;
-import com.google.gwt.event.dom.client.TouchEndHandler;
 import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
@@ -24,25 +19,16 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Image;
-import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.LayoutPanel;
 import com.google.gwt.user.client.ui.PushButton;
-import com.googlecode.mgwt.ui.client.widget.dialog.Dialogs;
 import com.googlecode.mgwt.ui.client.widget.input.search.MSearchBox;
-import com.googlecode.mgwt.ui.client.widget.panel.scroll.ScrollPanel;
 
 public class UIPrestamo extends Composite implements InterUIPrestamo,
 		ValueChangeHandler, ClickHandler {
 	private DevolConstants constants = GWT.create(DevolConstants.class);
 	private FlowPanel main;
 	private MSearchBox txtBuscar;
-	protected ToolBar toolBar;
-	public ScrollPanel scrollPanel;
+	protected ToolBar toolBar;	
 	protected GridPrestamo grid;
-	private HeaderGrid headerGrid;
-	private Label headerGridFecha;
-	private Label headerGridCliente;
-	private Label headerGridMonto;
 	protected FlowPanel container;
 	private PushButton btnAmortizacion;
 
@@ -69,24 +55,7 @@ public class UIPrestamo extends Composite implements InterUIPrestamo,
 		txtBuscar.setPlaceHolder(constants.buscarPrestamo());
 		main.add(txtBuscar);
 
-		headerGrid = new HeaderGrid();
-		main.add(headerGrid);
-
-		headerGridFecha = new Label(constants.fecha());
-		headerGrid.add(headerGridFecha);
-
-		headerGridCliente = new Label(constants.clientes());
-		headerGrid.add(headerGridCliente);
-
-		headerGridMonto = new Label(constants.monto());
-		headerGrid.add(headerGridMonto);
-
 		container = new FlowPanel();
-
-		scrollPanel = new ScrollPanel();
-		scrollPanel.setScrollingEnabledY(true);
-		scrollPanel.setScrollingEnabledX(false);
-		scrollPanel.setAutoHandleResize(true);
 		
 		/*
 		 * scrollPanel.setScrollingEnabledX(false);
@@ -98,7 +67,7 @@ public class UIPrestamo extends Composite implements InterUIPrestamo,
 
 		grid = new GridPrestamo();
 		container.add(grid);
-		scrollPanel.setWidget(container);
+		main.add(container);
 		Window.addResizeHandler(new ResizeHandler() {
 
 			@Override
@@ -107,8 +76,7 @@ public class UIPrestamo extends Composite implements InterUIPrestamo,
 				reCalcularWindows();
 			}
 		});
-		// cargarTabla();
-		main.add(scrollPanel);
+		// cargarTabla();		
 		initWidget(main);
 	}
 
@@ -135,9 +103,6 @@ public class UIPrestamo extends Composite implements InterUIPrestamo,
 		btnAmortizacion.getElement().getStyle().setRight(4, Unit.PX);
 
 		// main.setWidth("100%");
-		headerGridMonto.setWidth("24%");
-		headerGridFecha.setWidth("30%");
-		headerGridCliente.setWidth("46%");
 		/*
 		 * setHeightContainer(127); setWidthGrid(); container.setWidth("100%");
 		 * scrollPanel.setWidth("100%"); scrollPanel.setHeight("100%");
@@ -147,17 +112,15 @@ public class UIPrestamo extends Composite implements InterUIPrestamo,
 				.txtBuscarUIPrestamo());
 		grid.addStyleName(MyResource.INSTANCE.getStlUIPrestamo()
 				.gridUIPrestamo());
-
-		headerGridFecha.getElement().getStyle().setFloat(Style.Float.LEFT);
-		headerGridCliente.getElement().getStyle().setFloat(Style.Float.LEFT);
-		headerGridMonto.getElement().getStyle().setFloat(Style.Float.LEFT);
+		
 		btnAmortizacion.addStyleName(MyResource.INSTANCE.getStlUIPrestamo().pushButton());
 	}
 
 	protected void setHeightContainer(int heightHeader) {
 		int height = Window.getClientHeight();
-		scrollPanel.setHeight((height - heightHeader) + "px");
-		this.scrollPanel.refresh();
+		grid.setHeight((height - heightHeader) + "px");
+		container.setHeight((height - heightHeader) + "px");
+		grid.redraw();
 	}
 
 	@Override
@@ -204,7 +167,7 @@ public class UIPrestamo extends Composite implements InterUIPrestamo,
 	private void setWidthGrid() {
 		int width = Window.getClientWidth();
 		width = width - 20;
-		// grid.setWidth(width + "px");
+		grid.setWidth(width + "px");
 	}
 
 	
@@ -249,6 +212,12 @@ public class UIPrestamo extends Composite implements InterUIPrestamo,
 			}
 			goToUIAmortizacion();
 		}
+	}
+
+	@Override
+	public boolean sendPrestamoHistorial(String idPrestamo) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }

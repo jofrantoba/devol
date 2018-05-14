@@ -11,8 +11,6 @@ import java.util.logging.Logger;
 import javax.jdo.PersistenceManager;
 import javax.jdo.Transaction;
 
-import com.devol.client.view.uihome.UIHome;
-import com.devol.server.locator.LocatorPrestamo;
 import com.devol.server.model.bean.Amortizacion;
 import com.devol.server.model.bean.Cliente;
 import com.devol.server.model.bean.Prestamo;
@@ -41,9 +39,9 @@ public class GestionPrestamo {
 				LogicCliente logicCliente = new LogicCliente(pm);
 				Cliente beanCliente = (Cliente) logicCliente.getBean(bean
 						.getIdCliente());
-				if(beanCliente.getBeanUsuario().getEstadoCuenta().equals("P")){
+				/*if(beanCliente.getBeanUsuario().getEstadoCuenta().equals("P")){
 					throw new UnknownException("Active su cuenta, revise su bandeja de correo");
-				}
+				}*/
 				Integer numPrestamo=beanCliente.getNumPrestamo()+1;
 				beanCliente.setNumPrestamo(numPrestamo);
 				bean.setBeanCliente(beanCliente);
@@ -95,15 +93,20 @@ public class GestionPrestamo {
 				LogicPrestamo logic = new LogicPrestamo(pm);
 				Prestamo beanAux=(Prestamo)logic.getBean(bean.getIdPrestamo());				
 				if(beanAux.getBeanCliente().getIdCliente().equalsIgnoreCase(bean.getIdCliente())){
-				parametro.setBean(bean);
-				parametro.setTipoOperacion(bean.getOperacion());
-				resultado= logic.mantenimiento(parametro);
+				beanAux.setFecha(bean.getFecha());				
+				beanAux.setMonto(bean.getMonto());
+				beanAux.setTasa(bean.getTasa());
+				beanAux.setaDevolver(bean.getaDevolver());				
+				//parametro.setBean(beanAux);
+				//parametro.setTipoOperacion("A");
+				//resultado= logic.mantenimiento(parametro);
+				resultado=true;
 				}else{
 					Prestamo beanPrestamo=new Prestamo();
 					LogicCliente logicCliente = new LogicCliente(pm);
 					Cliente beanCliente = (Cliente) logicCliente.getBean(bean
 							.getIdCliente());
-					beanPrestamo.setIdPrestamo(beanCliente.getIdCliente());
+					beanPrestamo.setIdCreatePrestamo(beanCliente.getIdCliente());
 					Integer numPrestamo=beanAux.getBeanCliente().getNumPrestamo()-1;
 					beanAux.getBeanCliente().setNumPrestamo(numPrestamo);											
 					Iterator<Amortizacion> iterador=beanAux.getListAmortizacion().iterator();
@@ -134,7 +137,7 @@ public class GestionPrestamo {
 					beanPrestamo.setTasa(bean.getTasa());
 					beanPrestamo.setaDevolver(bean.getaDevolver());
 					beanPrestamo.setDevuelto(bean.getDevuelto());
-					beanPrestamo.setEstado("P");
+					beanPrestamo.setEstado(bean.getEstado());
 					beanPrestamo.setDni(bean.getDni());
 					beanPrestamo.setNombre(bean.getNombre());
 					beanPrestamo.setApellido(bean.getApellido());
@@ -258,7 +261,7 @@ public class GestionPrestamo {
 		Transaction tx = null;
 		try {
 			pm = PMF.getPMF().getPersistenceManager();
-			PMF.getPMF().getFetchGroup(Prestamo.class, "PrestamoGroup").addMember("beanCliente");
+			PMF.getPMF().getFetchGroup(Prestamo.class, "PrestamoGroup").addMembers("beanCliente");
 			pm.getFetchPlan().addGroup("PrestamoGroup");
 			pm.getFetchPlan().setMaxFetchDepth(1);
 			tx = pm.currentTransaction();
@@ -353,6 +356,46 @@ public class GestionPrestamo {
 
 	}
 	
+	public static Boolean sendPrestamoHistorial(String idPrestamo) throws UnknownException{
+		BeanParametro parametro = new BeanParametro();
+		PersistenceManager pm = null;
+		Transaction tx = null;
+		try {
+			pm = PMF.getPMF().getPersistenceManager();
+			tx = pm.currentTransaction();
+			tx.begin();
+			LogicPrestamo logicPrestamo = new LogicPrestamo(pm);
+			Prestamo beanPrestamo = (Prestamo) logicPrestamo.getBean(idPrestamo);		
+			if(beanPrestamo.getDevuelto().compareTo(beanPrestamo.getaDevolver())==0){
+			beanPrestamo.setEstado("A");
+			beanPrestamo.setOperacion("A");
+			parametro.setBean(beanPrestamo);
+			parametro.setTipoOperacion(beanPrestamo.getOperacion());			
+			LogicPrestamo logic = new LogicPrestamo(pm);
+			Boolean resultado = logic.mantenimiento(parametro);
+			if (resultado) {
+				tx.commit();
+				pm.close();
+			}
+			return true;
+		}else if(beanPrestamo.getDevuelto().compareTo(beanPrestamo.getaDevolver())==1){
+			return false;
+		}
+		return false;
+		} catch (Exception ex) {
+			LOG.warning(ex.getMessage());
+			LOG.info(ex.getLocalizedMessage());
+			throw new UnknownException(ex.getMessage());
+		} finally {
+			if (!pm.isClosed()) {
+				if (tx.isActive()) {
+					tx.rollback();
+				}
+				pm.close();
+			}
+		}
+	}
+	
 	public static Boolean insertarAmortizacion(Amortizacion bean)
 			throws UnknownException {
 		if (bean.getOperacion().equalsIgnoreCase("I") && bean.getIdPrestamo() != null
@@ -367,10 +410,8 @@ public class GestionPrestamo {
 				LogicPrestamo logicPrestamo = new LogicPrestamo(pm);
 				Prestamo beanPrestamo = (Prestamo) logicPrestamo.getBean(bean.getIdPrestamo());
 				BigDecimal devuelto=BigDecimal.valueOf(beanPrestamo.getDevuelto()).add(BigDecimal.valueOf(bean.getMonto()));
-				BigDecimal aDevolver=BigDecimal.valueOf(beanPrestamo.getaDevolver());
-				if(devuelto.compareTo(aDevolver)==0){
-					beanPrestamo.setEstado("A");
-				}else if(devuelto.compareTo(aDevolver)==1){
+				BigDecimal aDevolver=BigDecimal.valueOf(beanPrestamo.getaDevolver());				
+				if(devuelto.compareTo(aDevolver)==1){
 					return false;
 				}
 				beanPrestamo.setDevuelto(devuelto.doubleValue());

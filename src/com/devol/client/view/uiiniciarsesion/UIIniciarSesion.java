@@ -1,6 +1,7 @@
 package com.devol.client.view.uiiniciarsesion;
 
-import com.devol.client.model.ContentForm;
+import java.awt.Cursor;
+
 import com.devol.client.model.Form;
 import com.devol.client.model.UIHomeHeaderExt;
 import com.devol.client.resource.MyResource;
@@ -9,6 +10,8 @@ import com.devol.i18n.DevolConstants;
 import com.devol.shared.FieldVerifier;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style;
+import com.google.gwt.dom.client.Style.BorderStyle;
+import com.google.gwt.dom.client.Style.TextDecoration;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -22,7 +25,6 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.user.client.ui.TextBox;
-import com.googlecode.mgwt.ui.client.widget.list.widgetlist.WidgetList;
 import com.googlecode.mgwt.ui.client.widget.panel.scroll.ScrollPanel;
 
 public class UIIniciarSesion extends Composite implements InterUIIniciarSesion,
@@ -37,6 +39,7 @@ TouchEndHandler, ResizeHandler,ClickHandler {
 	protected PasswordTextBox txtClave;
 	protected Button btnEntrar;
 	private Button btnCrearCuenta;
+	private Button lnkRecuperarClave;
 	//private FlowPanel container;
 
 	public UIIniciarSesion(){
@@ -88,6 +91,8 @@ TouchEndHandler, ResizeHandler,ClickHandler {
 		
 		btnCrearCuenta = new Button(constants.crearCuenta());
 		content.add(btnCrearCuenta);
+		lnkRecuperarClave=new Button("Olvidaste contraseña");
+		content.add(lnkRecuperarClave);
 		scrollPanel.setWidget(content);
 		main.add(scrollPanel);
 	}
@@ -97,6 +102,7 @@ TouchEndHandler, ResizeHandler,ClickHandler {
 		btnCrearCuenta.addTouchEndHandler(this);
 		btnEntrar.addClickHandler(this);
 		btnCrearCuenta.addClickHandler(this);
+		lnkRecuperarClave.addClickHandler(this);
 	}
 
 	private void style() {
@@ -116,11 +122,25 @@ TouchEndHandler, ResizeHandler,ClickHandler {
 		content.getElement().getStyle().setTextAlign(Style.TextAlign.CENTER);
 		btnEntrar.setWidth("97%");		
 		btnCrearCuenta.setWidth("97%");
+		lnkRecuperarClave.setWidth("97%");
 		main.getElement().getStyle().setDisplay(Style.Display.BLOCK);		
 		btnCrearCuenta.getElement().getStyle().setMarginTop(10, Unit.PX);
-		btnCrearCuenta.getElement().getStyle().setMarginBottom(50, Unit.PX);	
+		btnCrearCuenta.getElement().getStyle().setMarginBottom(10, Unit.PX);	
 		btnCrearCuenta.getElement().getStyle().setFontSize(2, Style.Unit.EM);
-		btnEntrar.getElement().getStyle().setFontSize(2, Style.Unit.EM);
+		btnEntrar.getElement().getStyle().setFontSize(2, Style.Unit.EM);				
+		lnkRecuperarClave.getElement().getStyle().setFontSize(2, Style.Unit.EM);
+		lnkRecuperarClave.getElement().removeAttribute("class");
+		lnkRecuperarClave.getElement().getStyle().setBackgroundColor("transparent");
+		lnkRecuperarClave.getElement().getStyle().setBorderStyle(BorderStyle.NONE);
+		lnkRecuperarClave.getElement().getStyle().setTextDecoration(TextDecoration.UNDERLINE);
+		lnkRecuperarClave.getElement().getStyle().setColor("gray");
+		lnkRecuperarClave.getElement().getStyle().setCursor(Style.Cursor.POINTER);
+		btnCrearCuenta.getElement().removeAttribute("class");
+		btnCrearCuenta.getElement().getStyle().setBackgroundColor("transparent");
+		btnCrearCuenta.getElement().getStyle().setBorderStyle(BorderStyle.NONE);
+		btnCrearCuenta.getElement().getStyle().setTextDecoration(TextDecoration.UNDERLINE);
+		btnCrearCuenta.getElement().getStyle().setColor("gray");
+		btnCrearCuenta.getElement().getStyle().setCursor(Style.Cursor.POINTER);		
 		//widgetList.getElement().getStyle().setMarginRight(30, Style.Unit.PX);
 	}
 	
@@ -200,6 +220,14 @@ TouchEndHandler, ResizeHandler,ClickHandler {
 			login();
 		}else if (event.getSource().equals(btnCrearCuenta)) {
 			irCrearCuenta();
+		}else if (event.getSource().equals(lnkRecuperarClave)) {
+			irRecuperarClave();
 		}
+	}
+
+	@Override
+	public void irRecuperarClave() {
+		// TODO Auto-generated method stub
+		
 	}
 }

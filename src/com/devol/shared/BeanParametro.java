@@ -8,7 +8,7 @@ public class BeanParametro implements IsSerializable{
 	
 	private Object id;
 	private Object bean;
-	private String tipoOperacion;
+	private String tipoOperacion;	
 	
 	public Object getId() {
 		return id;
@@ -27,6 +27,6 @@ public class BeanParametro implements IsSerializable{
 	}
 	public void setTipoOperacion(String tipoOperacion) {
 		this.tipoOperacion = tipoOperacion;
-	}
+	}		
 
 }

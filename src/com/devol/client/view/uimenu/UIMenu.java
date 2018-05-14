@@ -18,9 +18,11 @@ import com.google.gwt.view.client.SingleSelectionModel;
 import com.googlecode.mgwt.ui.client.widget.panel.scroll.ScrollPanel;
 import com.devol.client.cell.MenuCell;
 import com.devol.client.resource.MyResource;
+import com.devol.client.view.uihomesesion.UIHomeSesion;
 import com.devol.client.model.UIHomeHeader;
 import com.devol.client.model.UIMenuHeader;
 import com.devol.i18n.DevolConstants;
+import com.devol.server.model.bean.UsuarioRPC;
 
 public class UIMenu extends Composite implements InterUIMenu,ResizeHandler {
 	private DevolConstants constants = GWT.create(DevolConstants.class);
@@ -31,6 +33,7 @@ public class UIMenu extends Composite implements InterUIMenu,ResizeHandler {
 	protected CellList<String> cellList;
 	public ScrollPanel scrollPanel;
 	protected final SingleSelectionModel<String> selectionModel = new SingleSelectionModel<String>();
+	private List<String> lista = new ArrayList<String>();
 
 	public UIMenu() {
 		inti();
@@ -62,14 +65,14 @@ public class UIMenu extends Composite implements InterUIMenu,ResizeHandler {
 		cellList = new CellList<String>(new MenuCell());		
 	    cellList.setKeyboardPagingPolicy(KeyboardPagingPolicy.INCREASE_RANGE);
 	    cellList.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.BOUND_TO_SELECTION);
+	    render();
 		//cellList.setRound(true);
 
 		//cellList.addCellSelectedHandler(cellSelectedHandler);		
 		//scrollPanel.setWidget(cellList);
 		container.add(cellList);
 		scrollPanel.setWidget(container);
-		main.add(scrollPanel);
-		render();		
+		main.add(scrollPanel);		
 		/*Window.addResizeHandler(new ResizeHandler(){
 
 			@Override
@@ -84,8 +87,10 @@ public class UIMenu extends Composite implements InterUIMenu,ResizeHandler {
 			
 			@Override
 			public void onSelectionChange(SelectionChangeEvent event) {
-				// TODO Auto-generated method stub					
-				viewMenuItem(selectionModel.getSelectedObject());					
+				// TODO Auto-generated method stub	
+				if(selectionModel!=null && selectionModel.getSelectedObject()!=null){
+					viewMenuItem(selectionModel.getSelectedObject());
+				}								
 			}
 		});
 	    
@@ -104,16 +109,17 @@ public class UIMenu extends Composite implements InterUIMenu,ResizeHandler {
 		this.scrollPanel.refresh();
 	}
 
-	private void render() {
-		List<String> lista = new ArrayList<String>();
-		lista.add(constants.clientes());
-		lista.add(constants.prestamos());
-		lista.add(constants.historial());
-		lista.add(constants.reportes());
-		//lista.add("Mi Cuenta");
-		lista.add(constants.salir());
-		cellList.setRowData(lista);
+	private void render() {		
+				lista.add(constants.clientes());
+				lista.add(constants.cobrador());
+				lista.add(constants.cobranza());
+				lista.add(constants.prestamos());
+				lista.add(constants.historial());
+				lista.add(constants.reportes());		
+				lista.add(constants.salir());						
+				cellList.setRowData(lista);		
 	}
+		
 
 
 
@@ -139,4 +145,10 @@ public class UIMenu extends Composite implements InterUIMenu,ResizeHandler {
 		// TODO Auto-generated method stub
 		setHeightContainer(105);
 	}
+
+	public List<String> getLista() {
+		return lista;
+	}
+	
+	
 }

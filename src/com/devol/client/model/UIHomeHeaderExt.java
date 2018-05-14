@@ -24,7 +24,7 @@ public class UIHomeHeaderExt extends HeaderMenu implements ClickHandler {
 
 	private void init() {
 		// TODO Auto-generated method stub
-		lblTitulo=new Label("DEVOL"); 
+		lblTitulo=new Label(constants.devolpay()); 
 		this.setCenterWidget(lblTitulo);
 		btnPais = new PushButton(new Image(MyResource.INSTANCE.getImgMundo32()));		
 		btnPais.setTitle(constants.seleccioneIdioma());

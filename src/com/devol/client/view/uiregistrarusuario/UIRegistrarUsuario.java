@@ -8,6 +8,8 @@ import com.devol.i18n.DevolConstants;
 import com.devol.shared.FieldVerifier;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style;
+import com.google.gwt.dom.client.Style.BorderStyle;
+import com.google.gwt.dom.client.Style.TextDecoration;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -149,6 +151,12 @@ public class UIRegistrarUsuario extends Composite implements
 		btnIniciarSesion.getElement().getStyle().setMarginBottom(50, Unit.PX);	
 		btnIniciarSesion.getElement().getStyle().setFontSize(2, Style.Unit.EM);
 		btnRegistrar.getElement().getStyle().setFontSize(2, Style.Unit.EM);
+		btnIniciarSesion.getElement().removeAttribute("class");
+		btnIniciarSesion.getElement().getStyle().setBackgroundColor("transparent");
+		btnIniciarSesion.getElement().getStyle().setBorderStyle(BorderStyle.NONE);
+		btnIniciarSesion.getElement().getStyle().setTextDecoration(TextDecoration.UNDERLINE);
+		btnIniciarSesion.getElement().getStyle().setColor("gray");
+		btnIniciarSesion.getElement().getStyle().setCursor(Style.Cursor.POINTER);		
 	}
 
 	

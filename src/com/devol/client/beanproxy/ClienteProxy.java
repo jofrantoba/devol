@@ -10,8 +10,12 @@ import com.google.web.bindery.requestfactory.shared.ProxyFor;
 @ProxyFor(value = Cliente.class, locator = LocatorCliente.class)
 public interface ClienteProxy extends EntityProxy {
 	public String getIdCliente();
+	
+	public String getIdCreateCliente();
 
-	public void setIdCliente(String idUsuario);	
+	public void setIdCliente(String idCliente);
+	
+	public void setIdCreateCliente(String idUsuario);
 
 	public String getDni();
 
@@ -60,5 +64,25 @@ public interface ClienteProxy extends EntityProxy {
 	public Integer getNumPrestamo();
 
 	public void setNumPrestamo(Integer numPrestamo);
+	
+	public String getIdGestorCliente();
+
+	public void setIdGestorCliente(String idGestorCliente);
+
+	public String getIdGestorCobranza();
+
+	public void setIdGestorCobranza(String idGestorCobranza);
+
+	public String getIdUsuarioOwner();
+
+	public void setIdUsuarioOwner(String idUsuarioOwner);
+
+	public String getIdUsuarioCobrador();
+
+	public void setIdUsuarioCobrador(String idUsuarioCobrador);
+	
+	public Boolean getIsSelected();
+
+	public void setIsSelected(Boolean isSelected);
 
 }

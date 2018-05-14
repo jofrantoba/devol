@@ -7,6 +7,8 @@ import com.devol.client.beanproxy.AmortizacionProxy;
 import com.devol.client.requestfactory.ContextGestionPrestamo;
 import com.devol.client.requestfactory.FactoryGestion;
 import com.devol.client.util.Notification;
+import com.devol.client.util.PopupProgress;
+import com.devol.client.view.uihomecobranza.UIHomeCobranza;
 import com.devol.client.view.uihomeprestamo.UIHomePrestamo;
 import com.devol.client.view.uihomesesion.UIHomeSesion;
 import com.devol.i18n.DevolConstants;
@@ -16,15 +18,24 @@ import com.google.web.bindery.event.shared.EventBus;
 import com.google.web.bindery.event.shared.SimpleEventBus;
 import com.google.web.bindery.requestfactory.shared.Receiver;
 import com.google.web.bindery.requestfactory.shared.Request;
+import com.google.web.bindery.requestfactory.shared.ServerFailure;
 
 public class UIMantAmortizacionImpl extends UIMantAmortizacion {
+	PopupProgress popup = new PopupProgress();
 	private DevolConstants constants = GWT.create(DevolConstants.class);
 	private final FactoryGestion FACTORY = GWT.create(FactoryGestion.class);
 	private final EventBus EVENTBUS = new SimpleEventBus();
 	private UIHomePrestamo uiHomePrestamo;
+	private UIHomeCobranza uiHomeCobranza;	
 
 	public UIMantAmortizacionImpl(UIHomePrestamo uiHomePrestamo) {
 		this.uiHomePrestamo = uiHomePrestamo;
+		//super.setHeightContainer(82);
+		activarModoPrestamo();		
+	}
+	
+	public UIMantAmortizacionImpl(UIHomeCobranza uiHomeCobranza) {
+		this.uiHomeCobranza = uiHomeCobranza;
 		//super.setHeightContainer(82);
 		activarModoPrestamo();		
 	}
@@ -33,8 +44,8 @@ public class UIMantAmortizacionImpl extends UIMantAmortizacion {
 	@Override
 	public void goToUIAmortizacion() {
 		cleanform();				
-		uiHomePrestamo.getUiAmortizacionImpl().cargarTabla();
-		uiHomePrestamo.getContainer().showWidget(3);		
+		uiHomePrestamo.getContainer().showWidget(3);
+		uiHomePrestamo.getUiAmortizacionImpl().cargarTabla();			
 	}
 	
 	@Override
@@ -79,13 +90,14 @@ public class UIMantAmortizacionImpl extends UIMantAmortizacion {
 	
 	
 	private void insertar() {
+		popup.showPopup();
 		Date fecha = new Date();
 		ContextGestionPrestamo context = FACTORY.contextGestionPrestamo();
 		FACTORY.initialize(EVENTBUS);
 		AmortizacionProxy bean = context.create(AmortizacionProxy.class);
 		bean.setOperacion("I");
 		bean.setVersion(fecha.getTime());
-		bean.setIdAmortizacion(beanPrestamo.getIdPrestamo());
+		bean.setIdCreateAmortizacion(beanPrestamo.getIdPrestamo());
 		bean.setFecha(txtFecha.getDate());
 		bean.setMonto(Double.parseDouble(txtMonto.getText()));						
 		bean.setIdUsuario(UIHomeSesion.usuario.getIdUsuario());			
@@ -103,12 +115,22 @@ public class UIMantAmortizacionImpl extends UIMantAmortizacion {
 					Notification not=new Notification(Notification.INFORMATION,constants.registradoCorrectamente());
 					not.showPopup();
 				}
+				popup.hidePopup();
 			}
+			
+			@Override
+            public void onFailure(ServerFailure error) {
+                popup.hidePopup();
+                //Window.alert(error.getMessage());
+                Notification not=new Notification(Notification.WARNING,error.getMessage());
+                not.showPopup();
+            }
 
 		});
 	}
 	
 	private void eliminar() {
+		popup.showPopup();
 		Date fecha = new Date();
 		ContextGestionPrestamo context = FACTORY.contextGestionPrestamo();
 		FACTORY.initialize(EVENTBUS);
@@ -135,7 +157,16 @@ public class UIMantAmortizacionImpl extends UIMantAmortizacion {
 					not.showPopup();
 					goToUIAmortizacion();
 				}
+				popup.hidePopup();
 			}
+			
+			@Override
+            public void onFailure(ServerFailure error) {
+                popup.hidePopup();
+                //Window.alert(error.getMessage());
+                Notification not=new Notification(Notification.WARNING,error.getMessage());
+                not.showPopup();
+            }
 
 		});
 	}

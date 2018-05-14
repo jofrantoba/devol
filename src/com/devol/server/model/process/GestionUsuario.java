@@ -21,6 +21,7 @@ import com.devol.server.model.dao.PMF;
 import com.devol.server.model.logic.LogicUsuario;
 import com.devol.shared.AESencrypt;
 import com.devol.shared.BeanParametro;
+import com.devol.shared.SharedUtil;
 import com.devol.shared.StringHex;
 import com.devol.shared.UnknownException;
 import com.google.appengine.api.datastore.Key;
@@ -33,21 +34,44 @@ public class GestionUsuario {
 	private static final Logger LOG = Logger.getLogger(GestionUsuario.class
 			.getName());
 	
-	private static boolean existeCuenta(String correo,PersistenceManager pm) throws UnknownException{
-		LogicUsuario logic = new LogicUsuario(pm);				
-		Key id = KeyFactory.createKey(Usuario.class.getSimpleName(), correo);
-		Usuario beanVerify;
+	public static Usuario existeCuenta(String correo) throws UnknownException{
+						
+		//Key id = KeyFactory.createKey(Usuario.class.getSimpleName(), correo);
+		//Usuario beanVerify;
+		PersistenceManager pm = null;
 		try {
-			beanVerify = (Usuario) logic.getBean(id);
-		} catch (UnknownException e) {
+			//beanVerify = (Usuario) logic.getBean(id);
+			pm = PMF.getPMF().getPersistenceManager();
+			LogicUsuario logic = new LogicUsuario(pm);
+			return (Usuario) pm.detachCopy(logic.existeUsuario(correo));			
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			return false;
+			return null;
+		}finally{
+			if (!pm.isClosed()) {				
+				pm.close();
+			}
 		}
-		if(beanVerify!=null){
+		/*if(beanVerify!=null){
 			return true;
 		}else{
 			return false;
-		}
+		}*/
+	}
+	
+	public static Boolean recuperarClave(String correo){
+		try {
+			Usuario bean=existeCuenta(correo);
+			return enviarMsgValidarCuenta(bean.getCorreo(),AESencrypt.decrypt(bean.getClave()),bean.getNombres(),bean.getApellidos());
+		} catch (UnknownException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}		
 	}
 
 	public static Boolean insertarUsuario(Usuario bean) throws UnknownException {
@@ -57,20 +81,22 @@ public class GestionUsuario {
 			//bean.setListCliente(new HashSet<Cliente>());			
 			PersistenceManager pm = null;
 			Transaction tx = null;
-			try {
-				String clave=bean.getClave();
-				String encoded=AESencrypt.encrypt(clave);
-				bean.setClave(encoded);
-				bean.setEstadoCuenta("P");
-				parametro.setBean(bean);
-				parametro.setTipoOperacion(bean.getOperacion());
+			try {			
 				pm = PMF.getPMF().getPersistenceManager();
 				tx = pm.currentTransaction();
 				tx.begin();
-				if(existeCuenta(bean.getCorreo(),pm)){
+				if(existeCuenta(bean.getCorreo())!=null){
 					throw new UnknownException("Existe Cuenta");
 				}
-				LogicUsuario logic = new LogicUsuario(pm);												
+				String clave=bean.getClave();
+				String encoded=AESencrypt.encrypt(clave);
+				bean.setClave(encoded);
+				bean.setEstadoCuenta("P");				
+				bean.setCorreo(bean.getCorreo().toLowerCase().trim());
+				bean.setIdCreateUsuario(bean.getCorreo());
+				LogicUsuario logic = new LogicUsuario(pm);
+				parametro.setBean(bean);
+				parametro.setTipoOperacion(bean.getOperacion());
 				Boolean resultado1 = logic.mantenimiento(parametro);
 				Boolean resultado2 = enviarMsgValidarCuenta(bean.getCorreo(),clave,bean.getNombres(),bean.getApellidos());
 				if (resultado1 && resultado2) {
@@ -105,10 +131,27 @@ public class GestionUsuario {
 		try {		
 		pm = PMF.getPMF().getPersistenceManager();
 		LogicUsuario logic = new LogicUsuario(pm);
+		correo=correo.trim();
 		Key id = KeyFactory.createKey(Usuario.class.getSimpleName(), correo);
-		Usuario bean = (Usuario) logic.getBean(id);		
+		Usuario bean = pm.detachCopy((Usuario) logic.getBean(id));
+		if(bean==null){
+			String correoFirstLetterMayus=SharedUtil.firstLetterMayus(correo);
+			id = KeyFactory.createKey(Usuario.class.getSimpleName(), correoFirstLetterMayus);
+			bean = pm.detachCopy((Usuario)logic.getBean(id));
+		}
+		if(bean==null){
+			String correoMinus=correo.toLowerCase();
+			id = KeyFactory.createKey(Usuario.class.getSimpleName(), correoMinus);
+			bean = pm.detachCopy((Usuario)logic.getBean(id));
+		}
+		if(bean==null){
+			String correoMayus=correo.toUpperCase();
+			id = KeyFactory.createKey(Usuario.class.getSimpleName(), correoMayus);
+			bean = pm.detachCopy((Usuario)logic.getBean(id));
+		}		
 		String encoded=AESencrypt.encrypt(clave);
 		if (bean != null && bean.getClave().equalsIgnoreCase(encoded)) {
+			bean.setClave(null);
 			return bean;
 		} else {
 			throw new UnknownException("Usuario o clave incorrectos");
@@ -174,24 +217,24 @@ public class GestionUsuario {
 		}
 	}
 	
-	public static boolean activarCuenta(String codigoActivacion) throws UnknownException{
+	public static boolean activarCuenta(String codigoActivacion){
 		PersistenceManager pm = null;		
 		Transaction tx=null;				
 			try {
+				pm = PMF.getPMF().getPersistenceManager();			
+				tx = pm.currentTransaction();
+				tx.begin();
 			Date fecha=new Date();			
 			String emailEncoded=StringHex.convertHexToString(codigoActivacion);												
-			String email=AESencrypt.decrypt(emailEncoded);		
-			pm = PMF.getPMF().getPersistenceManager();							
+			String email=AESencrypt.decrypt(emailEncoded);					
 			LogicUsuario logicUsuario=new LogicUsuario(pm);			
 			Usuario beanUsuario=(Usuario)logicUsuario.getBeanCorreo(email);
  			beanUsuario.setOperacion("A");																				
  			beanUsuario.setEstadoCuenta("A");
  			beanUsuario.setVersion(fecha.getTime());
-			BeanParametro parametro = new BeanParametro();
-			parametro.setBean(beanUsuario);
-			parametro.setTipoOperacion(beanUsuario.getOperacion());			
-			tx = pm.currentTransaction();
-			tx.begin();			
+ 			BeanParametro parametro = new BeanParametro();
+ 			parametro.setBean(beanUsuario);
+			parametro.setTipoOperacion(beanUsuario.getOperacion());
 			Boolean resultado = logicUsuario.mantenimiento(parametro);			
 			if (resultado) {
 				tx.commit();
@@ -201,17 +244,19 @@ public class GestionUsuario {
 				tx.rollback();
 				pm.close();
 				return false;
-			}			
+			}					
 			} catch (IOException ex) {
 				// TODO Auto-generated catch block
 				LOG.warning(ex.getMessage());
 				LOG.info(ex.getLocalizedMessage());
-				throw new UnknownException(ex.getMessage());
+				return false;
+				//throw new UnknownException(ex.getMessage());
 			} catch (Exception ex) {
 				// TODO Auto-generated catch block
 				LOG.warning(ex.getMessage());
 				LOG.info(ex.getLocalizedMessage());
-				throw new UnknownException(ex.getMessage());
+				//throw new UnknownException(ex.getMessage());
+				return false;
 			}finally {
 				if (!pm.isClosed()) {
 					if(tx!=null){

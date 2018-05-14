@@ -1,15 +1,11 @@
 package com.devol.client;
 
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.devol.client.model.PanelFlow;
 import com.devol.client.view.uihome.UIHome;
 import com.google.gwt.core.client.EntryPoint;
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
-import com.google.gwt.event.shared.UmbrellaException;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.RootPanel;
@@ -21,6 +17,7 @@ public class Devol implements EntryPoint {
 
 	@Override
 	public void onModuleLoad() {
+		Window.setMargin("0px");        
 		MGWT.applySettings(MGWTSettings.getAppSetting());	
 		/*GWT.setUncaughtExceptionHandler(new   
 			      GWT.UncaughtExceptionHandler() {  
@@ -31,8 +28,7 @@ public class Devol implements EntryPoint {
 			    	  Window.alert(e.getMessage());
 			    }  
 		});*/
-		//MGWTStyle.setTheme(new MGWTColorTheme());
-		Window.setMargin("0px");
+		//MGWTStyle.setTheme(new MGWTColorTheme());		
 		
 		
 		 //UIIniciarSesion ui = new UIIniciarSesion();

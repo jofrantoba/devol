@@ -5,4 +5,5 @@ public interface InterUIPrestamo {
 	void cargarTabla();
 	void goToUIAmortizacion();
 	void activarModoPrestamo();
+	boolean sendPrestamoHistorial(String idPrestamo);
 }

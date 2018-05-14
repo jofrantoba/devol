@@ -35,7 +35,7 @@ public class UIMantCliente extends Composite implements InterUIMantCliente,
 	private PushButton btnBack;
 	public ScrollPanel scrollPanel;
 	private FlowPanel contenido;
-	private Button btnGuardar;
+	protected Button btnGuardar;
 	protected TextBox txtDni; 
 	protected TextBox txtNombre;
 	protected TextBox txtApellido;
@@ -82,6 +82,12 @@ public class UIMantCliente extends Composite implements InterUIMantCliente,
 
 	public void activarCampos() {
 		if(modo.equalsIgnoreCase(constants.modoEliminar())){
+			txtDni.setReadOnly(true);
+			txtNombre.setReadOnly(true);
+			txtApellido.setReadOnly(true);
+			txtTelefono.setReadOnly(true);
+			txtDireccion.setReadOnly(true);
+		} else if(modo.equalsIgnoreCase(constants.modoDesactivar())){
 			txtDni.setReadOnly(true);
 			txtNombre.setReadOnly(true);
 			txtApellido.setReadOnly(true);

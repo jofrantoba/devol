@@ -6,12 +6,15 @@ import com.devol.client.view.uicliente.UIClienteImpl;
 import com.devol.client.view.uimantamortizacion.UIMantAmortizacionImpl;
 import com.devol.client.view.uimantprestamo.UIMantPrestamoImpl;
 import com.devol.client.view.uiprestamo.UIPrestamoImpl;
+import com.devol.i18n.DevolConstants;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DeckPanel;
 import com.google.gwt.user.client.ui.FlowPanel;
 
 public class UIHomePrestamo extends Composite {
+	private DevolConstants constants = GWT.create(DevolConstants.class);
 	private FlowPanel main;
 	private UIHomeHeader header;
 	private DeckPanel container;
@@ -35,6 +38,7 @@ public class UIHomePrestamo extends Composite {
 		initWidget(main);
 
 		header = new UIHomeHeader();
+		header.getLblTitulo().setText(constants.prestamos());
 		main.add(header);
 
 		container = new DeckPanel();
@@ -56,8 +60,7 @@ public class UIHomePrestamo extends Composite {
 		uiMantAmortizacion=new UIMantAmortizacionImpl(this);
 		container.add(uiMantAmortizacion);
 		
-		container.showWidget(0);
-		uiPrestamo.scrollPanel.refresh();
+		container.showWidget(0);		
 	}
 
 	private void style() {

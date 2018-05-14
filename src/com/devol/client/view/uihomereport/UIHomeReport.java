@@ -4,6 +4,8 @@ import java.util.Date;
 
 import com.devol.client.model.UIHomeHeader;
 import com.devol.client.view.uirecaudado.UIRecaudadoImpl;
+import com.devol.i18n.DevolConstants;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
@@ -11,6 +13,7 @@ import com.google.gwt.user.client.ui.DeckPanel;
 import com.google.gwt.user.client.ui.FlowPanel;
 
 public class UIHomeReport extends Composite {
+	private DevolConstants constants = GWT.create(DevolConstants.class);
 	private FlowPanel main;
 	private UIHomeHeader header;
 	private DeckPanel container;
@@ -27,6 +30,7 @@ public class UIHomeReport extends Composite {
 		initWidget(main);
 
 		header = new UIHomeHeader();
+		header.getLblTitulo().setText(constants.reportes());
 		main.add(header);
 
 		container = new DeckPanel();
@@ -40,8 +44,7 @@ public class UIHomeReport extends Composite {
 		String fecha=format.format(fechaIni);		
 		fechaIni=format.parse(fecha);
 		uiRecaudado.cargarTabla(fechaIni);
-		container.showWidget(0);	
-		uiRecaudado.scrollPanel.refresh();
+		container.showWidget(0);			
 	}
 
 	private void style() {

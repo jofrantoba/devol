@@ -31,15 +31,17 @@ public class SrvGestionUsuario extends HttpServlet {
 		String encoded = request.getParameter("encoded");
 		try {
 			if (GestionUsuario.activarCuenta(encoded)) {
+				response.getWriter().print("La cuenta se activo satisfactoriamente");
 				response.sendRedirect("https://devolpay.appspot.com");
 				// request.getRequestDispatcher("http://www.webkiongo.appspot.com/#home").forward(request,
 				// response);
 			} else {
-
+				response.getWriter().print("No pudimos activar su cuenta, vuelva intentarlo");
 			}
 		} catch (Exception ex) {
 			log.warning(ex.getMessage());
 			ex.printStackTrace();
+			response.getWriter().print("Tuvimos un problema inesperado, vuelva a intentarlo en unos minutos");
 		}
 	}
 

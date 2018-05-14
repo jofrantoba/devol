@@ -1,22 +1,14 @@
 package com.devol.client.view.uicliente;
 
-
-
+import com.devol.client.beanproxy.GestorCobranzaProxy;
 import com.devol.client.grid.GridCliente;
-import com.devol.client.model.HeaderGrid;
 import com.devol.client.model.HeaderMenu;
 import com.devol.client.model.ToolBar;
 import com.devol.client.resource.MyResource;
 import com.devol.i18n.DevolConstants;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.dom.client.Style;
-import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.KeyUpEvent;
-import com.google.gwt.event.dom.client.KeyUpHandler;
-import com.google.gwt.event.dom.client.TouchEndEvent;
-import com.google.gwt.event.dom.client.TouchEndHandler;
 import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
@@ -26,10 +18,8 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.LayoutPanel;
 import com.google.gwt.user.client.ui.PushButton;
 import com.googlecode.mgwt.ui.client.widget.input.search.MSearchBox;
-import com.googlecode.mgwt.ui.client.widget.panel.scroll.ScrollPanel;
 
 public class UICliente extends Composite implements InterUICliente,
 		ValueChangeHandler, ClickHandler{
@@ -38,15 +28,15 @@ public class UICliente extends Composite implements InterUICliente,
 	private MSearchBox txtBuscar;
 	protected HeaderMenu header;
 	private Label lblCenter;
-	protected ToolBar toolBar;
-	public ScrollPanel scrollPanel;
-	protected GridCliente grid;
-	private HeaderGrid headerGrid;
-	private Label headerGridDni;
-	private Label headerGridCliente;
+	protected ToolBar toolBar;	
+	public GridCliente grid;
 	protected FlowPanel container;
 	private PushButton btnBack;
 	private PushButton btnSelect;
+	protected GestorCobranzaProxy beanGestorCobranza;
+	protected Boolean isHomeCliente=false;
+	protected Boolean isHomeCobranza=false;
+	protected Boolean isHomePrestamo=false;
 	//private WidgetList widgetListTable;
 
 	public UICliente() {
@@ -77,34 +67,10 @@ public class UICliente extends Composite implements InterUICliente,
 		txtBuscar.setPlaceHolder(constants.buscarCliente());
 		main.add(txtBuscar);
 
-		headerGrid = new HeaderGrid();
-		main.add(headerGrid);
-
-		headerGridDni = new Label(constants.dni());
-		headerGrid.add(headerGridDni);
-
-		headerGridCliente = new Label(constants.clientes());
-		headerGrid.add(headerGridCliente);
-
 		container = new FlowPanel();		
-		//main.add(container);
-
-		scrollPanel = new ScrollPanel();
-		scrollPanel.setScrollingEnabledY(true);
-		scrollPanel.setScrollingEnabledX(false);
-		scrollPanel.setAutoHandleResize(true);
-
-		/*scrollPanel.setScrollingEnabledX(false);
-		scrollPanel.setScrollingEnabledY(true);
-		scrollPanel.setAutoHandleResize(true);*/
-		//scrollPanel.setUsePos(MGWT.getOsDetection().isAndroid());		
-
-		grid = new GridCliente();		
-		container.add(grid);		
-		//widgetListTable.add(container);
-		scrollPanel.setWidget(container);
-		//cargarTabla();
-		main.add(scrollPanel);				
+		grid = new GridCliente();			
+		container.add(grid);				
+		main.add(container);				
 		Window.addResizeHandler(new ResizeHandler(){
 
 			@Override
@@ -127,6 +93,7 @@ public class UICliente extends Composite implements InterUICliente,
 		toolBar.getBtnEditar().addClickHandler(this);
 		toolBar.getBtnEliminar().addClickHandler(this);
 		toolBar.getBtnActualizar().addClickHandler(this);
+		toolBar.getBtnAtras().addClickHandler(this);
 		btnSelect.addClickHandler(this);
 		btnBack.addClickHandler(this);
 	}
@@ -135,27 +102,19 @@ public class UICliente extends Composite implements InterUICliente,
 		MyResource.INSTANCE.getStlUICliente().ensureInjected();
 		btnSelect.addStyleName(MyResource.INSTANCE.getStlUICliente().pushButton());
 		btnBack.addStyleName(MyResource.INSTANCE.getStlUICliente().pushButton());
-		//main.setWidth("100%");
-		headerGridDni.setWidth("40%");
-		headerGridCliente.setWidth("60%");
-		//setHeightContainer(55);
-		//setWidthGrid();
-		//scrollPanel.setWidth("100%");
-		//scrollPanel.setHeight("auto");
-
 		txtBuscar.addStyleName(MyResource.INSTANCE.getStlUICliente()
 				.txtBuscarUICliente());
-		grid.addStyleName(MyResource.INSTANCE.getStlUICliente().gridUICliente());
-
-		headerGridDni.getElement().getStyle().setFloat(Style.Float.LEFT);
-		headerGridCliente.getElement().getStyle().setFloat(Style.Float.LEFT);
+		grid.addStyleName(MyResource.INSTANCE.getStlUICliente().gridUICliente());		
 
 	}
+	
+	
 
 	protected void setHeightContainer(int heightHeader) {
-		int height = Window.getClientHeight();
-		scrollPanel.setHeight((height - heightHeader) + "px");
-		this.scrollPanel.refresh();
+		int height = Window.getClientHeight();		
+		grid.setHeight((height - heightHeader) + "px");
+		container.setHeight((height - heightHeader) + "px");
+		grid.redraw();
 	}
 	
 
@@ -177,19 +136,10 @@ public class UICliente extends Composite implements InterUICliente,
 		grid.getDataProvider().refresh();
 	}
 
-	//@Override
-	//public void onResize(ResizeEvent event) {
-		// TODO Auto-generated method stub
-		//setWidthGrid();
-		//setHeightContainer(55);
-		//this.scrollPanel.refresh();
-		//reCalcularWindows();
-	//}
-
 	private void setWidthGrid() {
 		int width = Window.getClientWidth();
 		width = width - 20;
-		// grid.setWidth(width + "px");
+		grid.setWidth(width + "px");
 	}
 	
 	@Override
@@ -220,18 +170,81 @@ public class UICliente extends Composite implements InterUICliente,
 	public void onClick(ClickEvent event) {
 		// TODO Auto-generated method stub
 		if (event.getSource().equals(toolBar.getBtnNuevo())) {
-			//Window.alert("ok");
+			//Window.alert("ok");			
+			if(isHomeCliente){
 			goToUICMantCliente(constants.modoNuevo());
+			}else if(isHomeCobranza){
+				goToUiSelectClient(constants.modoNuevo());
+			}			
 		}else if (event.getSource().equals(toolBar.getBtnEditar())) {
+			if(isHomeCliente){
 			goToUICMantCliente(constants.modoEditar());
+			}else if(isHomeCobranza){
+				goToUICMantCliente(constants.modoDesactivar());
+			}
 		}else if (event.getSource().equals(toolBar.getBtnEliminar())) {
+			if(isHomeCliente){
 			goToUICMantCliente(constants.modoEliminar());
+			}
 		}else if(event.getSource().equals(toolBar.getBtnActualizar())){
+			if(isHomeCliente){
 			cargarTabla();
+			}else if(isHomeCobranza){
+				cargarClientesAsignados();
+			}
 		}else if (event.getSource().equals(btnBack)) {
 			goToBack();
-		}else if (event.getSource().equals(btnSelect)) {
-			selecciona();
+		}else if (event.getSource().equals(btnSelect)) {			
+			if(this.isHomePrestamo){
+				selecciona();
+			}else if(this.isHomeCobranza){
+				asignarClienteAcobrador();
+			}
+		}else if(event.getSource().equals(toolBar.getBtnAtras())){
+			if(isHomeCobranza){
+				goToUiCobrador();
+			}			
 		}
 	}
+
+	public void setBeanGestorCobranza(GestorCobranzaProxy beanGestorCobranza) {
+		this.beanGestorCobranza = beanGestorCobranza;				
+	}
+
+	@Override
+	public void cargarClientesAsignados() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void goToUiCobrador() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void goToUiSelectClient(String modo) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public GestorCobranzaProxy getBeanGestorCobranza() {
+		return beanGestorCobranza;
+	}
+
+	@Override
+	public void asignarClienteAcobrador() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void cargarClienteSinCobrador() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	
+	
 }

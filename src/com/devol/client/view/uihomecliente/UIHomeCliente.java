@@ -3,12 +3,15 @@ package com.devol.client.view.uihomecliente;
 import com.devol.client.model.UIHomeHeader;
 import com.devol.client.view.uicliente.UIClienteImpl;
 import com.devol.client.view.uimantcliente.UIMantClienteImpl;
+import com.devol.i18n.DevolConstants;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DeckPanel;
 import com.google.gwt.user.client.ui.FlowPanel;
 
 public class UIHomeCliente extends Composite {
+	private DevolConstants constants = GWT.create(DevolConstants.class);
 	private FlowPanel main;
 	private UIHomeHeader header;
 	private DeckPanel container;
@@ -27,6 +30,7 @@ public class UIHomeCliente extends Composite {
 		initWidget(main);
 
 		header = new UIHomeHeader();
+		header.getLblTitulo().setText(constants.clientes());
 		main.add(header);
 
 		container = new DeckPanel();
@@ -38,8 +42,7 @@ public class UIHomeCliente extends Composite {
 
 		uiMantCliente = new UIMantClienteImpl(this);
 		container.add(uiMantCliente);			
-		container.showWidget(0);
-		uiCliente.scrollPanel.refresh();
+		container.showWidget(0);		
 	}
 	
 
@@ -62,4 +65,12 @@ public class UIHomeCliente extends Composite {
 	public UIClienteImpl getUIClienteImpl() {
 		return uiCliente;
 	}
+
+
+	public UIHomeHeader getHeader() {
+		return header;
+	}	
+	
+	
+	
 }

@@ -18,4 +18,12 @@
 		value='true' />
 	<set-configuration-property name='compiler.emulatedStack.recordFileNames'
 		value='true' />	
+		<add-linker name="xsiframe" /> 
+	<set-configuration-property name="CssResource.enableGss"
+		value="true" />
+	<set-configuration-property name="CssResource.conversionMode"
+		value="strict" />
+	<set-configuration-property name="CssResource.gssDefaultInUiBinder"
+		value="true" />
+	 <extend-property name="locale" values="es_PE"/>
 </module>

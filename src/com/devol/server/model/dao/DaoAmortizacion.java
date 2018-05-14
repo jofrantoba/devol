@@ -26,9 +26,9 @@ public class DaoAmortizacion {
 		return query.mantenimiento(parametro);
 	}
 
-	public Object getBean(Key id) throws UnknownException {
+	public Amortizacion getBean(Key id) throws UnknownException {
 		Querys query = new Querys(this.pm);
-		return query.getBean(Amortizacion.class, id);
+		return (Amortizacion)query.getBean(Amortizacion.class, id);
 	}
 
 	@SuppressWarnings("unchecked")

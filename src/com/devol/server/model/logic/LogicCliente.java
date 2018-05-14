@@ -1,6 +1,7 @@
 package com.devol.server.model.logic;
 
 import java.util.Collection;
+import java.util.List;
 
 import javax.jdo.PersistenceManager;
 
@@ -37,6 +38,18 @@ public class LogicCliente {
 	public Collection<Cliente> getListarBeanByUsuario(String idUsuario) throws UnknownException {
 		DaoCliente dao = new DaoCliente(this.pm);
 		Collection<Cliente> lista = dao.getListarBeanByUsuario(idUsuario);
+		return lista;
+	}
+	
+	public Collection<Cliente> getListarBeanByUsuarioSinCobrador(String idUsuarioOwner) throws UnknownException {
+		DaoCliente dao = new DaoCliente(this.pm);
+		Collection<Cliente> lista = dao.getListarBeanByUsuarioSinCobrador(idUsuarioOwner);
+		return lista;
+	}
+	
+	public Collection<Cliente> getListarBeanIn(List<String> listaIdCliente) throws UnknownException {
+		DaoCliente dao = new DaoCliente(this.pm);
+		Collection<Cliente> lista = dao.getListarBeanIn(listaIdCliente);
 		return lista;
 	}
 }

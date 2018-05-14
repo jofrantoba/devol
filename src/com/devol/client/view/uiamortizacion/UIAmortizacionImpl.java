@@ -7,6 +7,8 @@ import com.devol.client.beanproxy.AmortizacionProxy;
 import com.devol.client.requestfactory.ContextGestionPrestamo;
 import com.devol.client.requestfactory.FactoryGestion;
 import com.devol.client.util.Notification;
+import com.devol.client.util.PopupProgress;
+import com.devol.client.view.uihomecobranza.UIHomeCobranza;
 import com.devol.client.view.uihomeprestamo.UIHomePrestamo;
 import com.devol.i18n.DevolConstants;
 import com.google.gwt.core.shared.GWT;
@@ -15,16 +17,25 @@ import com.google.web.bindery.event.shared.EventBus;
 import com.google.web.bindery.event.shared.SimpleEventBus;
 import com.google.web.bindery.requestfactory.shared.Receiver;
 import com.google.web.bindery.requestfactory.shared.Request;
+import com.google.web.bindery.requestfactory.shared.ServerFailure;
 
 public class UIAmortizacionImpl extends UIAmortizacion {
+	PopupProgress popup = new PopupProgress();
 	private DevolConstants constants = GWT.create(DevolConstants.class);
 	private final FactoryGestion FACTORY = GWT.create(FactoryGestion.class);
 	private final EventBus EVENTBUS = new SimpleEventBus();
 	private List<AmortizacionProxy> lista;
 	private UIHomePrestamo uiHomePrestamo;
+	private UIHomeCobranza uiHomeCobranza;	
 
 	public UIAmortizacionImpl(UIHomePrestamo uiHomePrestamo) {
 		this.uiHomePrestamo = uiHomePrestamo;
+		setHeightContainer(170);	
+		activarModoPrestamo();	
+	}
+	
+	public UIAmortizacionImpl(UIHomeCobranza uiHomeCobranza) {
+		this.uiHomeCobranza = uiHomeCobranza;
 		setHeightContainer(170);	
 		activarModoPrestamo();	
 	}
@@ -59,12 +70,16 @@ public class UIAmortizacionImpl extends UIAmortizacion {
 	@Override
 	public void goToUIPrestamo() {
 		// TODO Auto-generated method stub
-		uiHomePrestamo.getUIPrestamoImpl().cargarTabla();
-		uiHomePrestamo.getContainer().showWidget(0);		
+		if(!uiHomePrestamo.getModo().equals("HISTORIAL")){
+			uiHomePrestamo.getUIPrestamoImpl().sendPrestamoHistorial(beanPrestamo.getIdPrestamo());
+		}		
+		uiHomePrestamo.getContainer().showWidget(0);
+		uiHomePrestamo.getUIPrestamoImpl().cargarTabla();			
 	}
 	
 	@Override
 	public void cargarTabla() {
+		popup.showPopup();
 		lista = new ArrayList<AmortizacionProxy>();
 		FACTORY.initialize(EVENTBUS);
 		ContextGestionPrestamo context = FACTORY.contextGestionPrestamo();
@@ -78,13 +93,19 @@ public class UIAmortizacionImpl extends UIAmortizacion {
 				  while(i.hasNext()){
 					  PrestamoProxy c=i.next(); 
 				  com.google.gwt.user.client.Window.alert(c.getBeanCliente().getNombre()+c.getBeanCliente().getApellido()); }*/
-				lista = response;
+				lista.addAll(response);			
+				grid.setData(lista);
 				grid.getSelectionModel().clear();
-				grid.setData(lista);				
-				double alto=lista.size()*45;
-				container.setHeight(alto+"px");
-				scrollPanel.refresh();
+				popup.hidePopup();
 			}
+			
+			@Override
+            public void onFailure(ServerFailure error) {
+                popup.hidePopup();
+                //Window.alert(error.getMessage());
+                Notification not=new Notification(Notification.WARNING,error.getMessage());
+                not.showPopup();
+            }
 		});
 	}
 	

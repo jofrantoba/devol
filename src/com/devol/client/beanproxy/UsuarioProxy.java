@@ -12,7 +12,11 @@ public interface UsuarioProxy extends EntityProxy {
 
 	public String getIdUsuario();
 
-	public void setIdUsuario(String correo);
+	public void setIdCreateUsuario(String correo);
+	
+	public String getIdCreateUsuario();
+	
+	public void setIdUsuario(String idUsuario);
 
 	public String getNombres();
 
@@ -49,4 +53,33 @@ public interface UsuarioProxy extends EntityProxy {
 	public String getEstadoCuenta();
 
 	public void setEstadoCuenta(String estadoCuenta);
+	
+	public String getDni();
+
+	public void setDni(String dni);
+
+	public Set<String> getRoles();
+
+	public void setRoles(Set<String> roles);
+
+	public String getTelefono();
+
+	public void setTelefono(String telefono);
+
+	public Boolean getIsRolOwner();
+
+	public void setIsRolOwner(Boolean isRolOwner);
+
+	public Boolean getIsRolAdmin();
+
+	public void setIsRolAdmin(Boolean isRolAdmin);
+
+	public Boolean getIsRolGestorCobranza();
+
+	public void setIsRolGestorCobranza(Boolean isRolGestorCobranza);
+
+	public String getDireccion();
+
+	public void setDireccion(String direccion);
+	
 }

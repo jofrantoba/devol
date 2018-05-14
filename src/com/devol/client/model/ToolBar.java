@@ -1,14 +1,13 @@
 package com.devol.client.model;
 
 import com.devol.client.resource.MyResource;
-import com.google.gwt.dom.client.Style;
-import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.PushButton;
 
 public class ToolBar extends HeaderMenu {
 	private HorizontalPanel toolbar;
+	private PushButton btnAtras;
 	private PushButton btnNuevo;
 	private PushButton btnEditar;
 	private PushButton btnEliminar;
@@ -21,6 +20,11 @@ public class ToolBar extends HeaderMenu {
 
 	private void init() {
 		toolbar=new HorizontalPanel();
+		btnAtras = new PushButton(new Image(MyResource.INSTANCE.getImgBack32()));
+		btnAtras.setTitle("Atras");
+		btnAtras.setVisible(false);
+		toolbar.add(btnAtras);
+		
 		btnNuevo = new PushButton(new Image(MyResource.INSTANCE.getImgNew32()));
 		btnNuevo.setTitle("Nuevo");
 		toolbar.add(btnNuevo);
@@ -56,13 +60,14 @@ public class ToolBar extends HeaderMenu {
 		btnEditar.addStyleName(MyResource.INSTANCE.getStlUIHome().pushButton());
 		btnEliminar.addStyleName(MyResource.INSTANCE.getStlUIHome().pushButton());
 		btnActualizar.addStyleName(MyResource.INSTANCE.getStlUIHome().pushButton());
+		btnAtras.addStyleName(MyResource.INSTANCE.getStlUIHome().pushButton());
 	}
 
 	public PushButton getBtnNuevo() {
 		return btnNuevo;
 	}
 
-	public PushButton getBtnEditar() {
+	public PushButton getBtnEditar() {	
 		return btnEditar;
 	}
 
@@ -77,6 +82,11 @@ public class ToolBar extends HeaderMenu {
 	public HorizontalPanel getToolbar() {
 		return toolbar;
 	}
+
+	public PushButton getBtnAtras() {
+		return btnAtras;
+	}
+	
 	
 	
 

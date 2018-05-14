@@ -8,5 +8,7 @@ public interface InterUIIniciarSesion {
 	
 	void irCrearCuenta();
 	
+	void irRecuperarClave();
+	
 	boolean isValidData();
 }

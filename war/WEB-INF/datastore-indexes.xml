@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<datastore-indexes autoGenerate="true">
+    <datastore-index kind="Prestamo" ancestor="false" source="auto">
+        <property name="estado" direction="asc"/>
+        <property name="idUsuario" direction="asc"/>
+        <property name="version" direction="desc"/>
+    </datastore-index>
+    <datastore-index kind="Amortizacion" ancestor="false" source="auto">
+        <property name="idPrestamo" direction="asc"/>
+        <property name="version" direction="desc"/>
+    </datastore-index>
+    
+    <datastore-index kind="Cliente" ancestor="false" source="auto">
+        <property name="idUsuario" direction="asc"/>
+        <property name="version" direction="desc"/>
+    </datastore-index>
+    
+    <datastore-index kind="GestorCobranza" ancestor="false" source="auto">
+        <property name="estado" direction="asc"/>
+        <property name="idUsuarioOwner" direction="asc"/>
+        <property name="version" direction="desc"/>
+    </datastore-index>
+    
+    <datastore-index kind="GestorCliente" ancestor="false" source="auto">
+        <property name="estado" direction="asc"/>
+        <property name="idUsuarioCobrador" direction="asc"/>
+        <property name="version" direction="desc"/>
+    </datastore-index>
+    
+    <datastore-index kind="Cliente" ancestor="false" source="auto">
+        <property name="idUsuario" direction="asc"/>
+        <property name="clienteAsignado" direction="asc"/>
+        <property name="nombre" direction="asc"/>
+        <property name="apellido" direction="desc"/>
+    </datastore-index>
+    
+    <datastore-index kind="Cliente" ancestor="false" source="auto">
+        <property name="idUsuario" direction="asc"/>
+        <property name="clienteAsignado" direction="asc"/>
+        <property name="nombre" direction="asc"/>
+        <property name="apellido" direction="desc"/>
+    </datastore-index>
+    
+</datastore-indexes>

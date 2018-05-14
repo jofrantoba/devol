@@ -30,4 +30,6 @@ public interface ContextGestionPrestamo extends RequestContext {
 	Request<Boolean> insertarAmortizacion(AmortizacionProxy bean);
 	
 	Request<Boolean> eliminarAmortizacion(AmortizacionProxy bean);
+	
+	Request<Boolean> sendPrestamoHistorial(String idPrestamo);
 }

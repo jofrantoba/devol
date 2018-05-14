@@ -45,4 +45,9 @@ public class LogicUsuario {
 		Collection<Usuario> lista = dao.getListarBean();
 		return lista;
 	}
+	
+	public Object existeUsuario(String correo){
+		DaoUsuario dao = new DaoUsuario(this.pm);
+		return dao.existeUsuario(correo);
+	}
 }

@@ -26,9 +26,9 @@ public class DaoCliente {
 		return query.mantenimiento(parametro);
 	}
 
-	public Object getBean(Key id) throws UnknownException {
+	public Cliente getBean(Key id) throws UnknownException {
 		Querys query = new Querys(this.pm);
-		return query.getBean(Cliente.class, id);
+		return (Cliente)query.getBean(Cliente.class, id);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -48,6 +48,42 @@ public class DaoCliente {
 		try{
 		List<Cliente> lista=new ArrayList<Cliente>();
 		lista.addAll((List<Cliente>)query.execute(idUsuario));
+		return lista;
+		}catch(Exception ex){			
+			throw new UnknownException(ex.getMessage());
+		}finally{
+			query.closeAll();
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	public Collection<Cliente> getListarBeanByUsuarioSinCobrador(String idUsuarioOwner) throws UnknownException {
+		//Query query = pm.newQuery("select from com.devol.server.model.bean.Cliente WHERE this.idUsuario == :paramIdUsuario && this.clienteAsignado < :paramAsignado");			
+		Query query = pm.newQuery(Cliente.class);		
+		query.setFilter("idUsuario == paramIdUsuario && clienteAsignado == paramAsignado");
+		query.setOrdering("clienteAsignado,nombre,apellido desc");
+		query.declareParameters("String paramIdUsuario, Integer paramAsignado");
+		try{
+		List<Cliente> lista=new ArrayList<Cliente>();
+		Integer paramAsignado=new Integer(0);
+		lista.addAll((List<Cliente>)query.execute(idUsuarioOwner,paramAsignado));
+		return lista;
+		}catch(Exception ex){			
+			throw new UnknownException(ex.getMessage());
+		}finally{
+			query.closeAll();
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	public Collection<Cliente> getListarBeanIn(List<String> listaIdCliente) throws UnknownException {
+		Query query = pm.newQuery(Cliente.class);
+		query.setFilter("paramIdListCliente.contains(idCliente)");
+		query.declareImports("import java.util.List;");
+		query.declareParameters("List paramIdListCliente");
+		try{
+		List<Cliente> lista=new ArrayList<Cliente>();		
+		lista.addAll((List<Cliente>)query.execute(listaIdCliente));
 		return lista;
 		}catch(Exception ex){			
 			throw new UnknownException(ex.getMessage());

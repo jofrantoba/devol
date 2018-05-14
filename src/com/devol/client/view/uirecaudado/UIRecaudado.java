@@ -3,7 +3,6 @@ package com.devol.client.view.uirecaudado;
 import java.util.Date;
 
 import com.devol.client.grid.GridRecaudado;
-import com.devol.client.model.HeaderGrid;
 import com.devol.client.model.TextBoxCalendar;
 import com.devol.client.model.ToolBar;
 import com.devol.client.resource.MyResource;
@@ -27,19 +26,13 @@ import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PushButton;
 import com.googlecode.mgwt.ui.client.widget.input.search.MSearchBox;
-import com.googlecode.mgwt.ui.client.widget.panel.scroll.ScrollPanel;
 
 public class UIRecaudado extends Composite implements InterUIRecaudado,ValueChangeHandler, TouchEndHandler,ClickHandler {
 	private DevolConstants constants = GWT.create(DevolConstants.class);
 	private FlowPanel main;
 	private MSearchBox txtBuscar;
 	protected ToolBar toolBar;
-	public ScrollPanel scrollPanel;
-	protected GridRecaudado grid;
-	private HeaderGrid headerGrid;
-	private Label headerGridFecha;
-	private Label headerGridCliente;
-	private Label headerGridMonto;
+	protected GridRecaudado grid;	
 	protected FlowPanel container;
 	private PushButton btnFiltro;
 	private HorizontalPanel pnlTotalRecaudado;
@@ -73,26 +66,10 @@ public class UIRecaudado extends Composite implements InterUIRecaudado,ValueChan
 
 		txtBuscar = new MSearchBox();
 		txtBuscar.setPlaceHolder(constants.buscarAmortizacion());		
-		main.add(txtBuscar);
-
-		headerGrid = new HeaderGrid();
-		main.add(headerGrid);
-
-		headerGridFecha = new Label(constants.fecha());
-		headerGrid.add(headerGridFecha);
-
-		headerGridCliente = new Label(constants.clientes());
-		headerGrid.add(headerGridCliente);
-
-		headerGridMonto = new Label(constants.monto());
-		headerGrid.add(headerGridMonto);
+		main.add(txtBuscar);	
 
 		container = new FlowPanel();
-
-		scrollPanel = new ScrollPanel();
-		scrollPanel.setScrollingEnabledY(true);
-		scrollPanel.setScrollingEnabledX(false);
-		scrollPanel.setAutoHandleResize(true);
+	
 		/*
 		 * scrollPanel.setScrollingEnabledX(false);
 		 * scrollPanel.setScrollingEnabledY(true);
@@ -103,7 +80,7 @@ public class UIRecaudado extends Composite implements InterUIRecaudado,ValueChan
 
 		grid = new GridRecaudado();
 		container.add(grid);
-		scrollPanel.setWidget(container);
+		main.add(container);
 		Window.addResizeHandler(new ResizeHandler() {
 
 			@Override
@@ -112,8 +89,7 @@ public class UIRecaudado extends Composite implements InterUIRecaudado,ValueChan
 				reCalcularWindows();
 			}
 		});
-		// cargarTabla();
-		main.add(scrollPanel);
+		// cargarTabla();		
 		pnlTotalRecaudado = new HorizontalPanel();
 		main.add(pnlTotalRecaudado);
 		lblTotal = new Label(constants.recaudado());
@@ -144,10 +120,7 @@ public class UIRecaudado extends Composite implements InterUIRecaudado,ValueChan
 		btnFiltro.getElement().getStyle().setFloat(Style.Float.RIGHT);
 		btnFiltro.getElement().getStyle().setRight(4, Unit.PX);
 
-		// main.setWidth("100%");
-		headerGridMonto.setWidth("24%");
-		headerGridFecha.setWidth("30%");
-		headerGridCliente.setWidth("46%");
+		// main.setWidth("100%");	
 		/*
 		 * setHeightContainer(127); setWidthGrid(); container.setWidth("100%");
 		 * scrollPanel.setWidth("100%"); scrollPanel.setHeight("100%");
@@ -157,10 +130,7 @@ public class UIRecaudado extends Composite implements InterUIRecaudado,ValueChan
 				.txtBuscarUIRecaudado());
 		grid.addStyleName(MyResource.INSTANCE.getStlUIRecaudado()
 				.gridUIRecaudado());
-
-		headerGridFecha.getElement().getStyle().setFloat(Style.Float.LEFT);
-		headerGridCliente.getElement().getStyle().setFloat(Style.Float.LEFT);
-		headerGridMonto.getElement().getStyle().setFloat(Style.Float.LEFT);
+	
 		pnlTotalRecaudado.setWidth("100%");
 		pnlTotalRecaudado.setHeight("40px");
 		pnlTotalRecaudado.addStyleName(MyResource.INSTANCE
@@ -173,8 +143,9 @@ public class UIRecaudado extends Composite implements InterUIRecaudado,ValueChan
 
 	protected void setHeightContainer(int heightHeader) {
 		int height = Window.getClientHeight();
-		scrollPanel.setHeight((height - heightHeader) + "px");
-		this.scrollPanel.refresh();
+		grid.setHeight((height - heightHeader) + "px");
+		container.setHeight((height - heightHeader) + "px");
+		grid.redraw();
 	}
 
 	@Override
@@ -216,7 +187,7 @@ public class UIRecaudado extends Composite implements InterUIRecaudado,ValueChan
 	private void setWidthGrid() {
 		int width = Window.getClientWidth();
 		width = width - 20;
-		// grid.setWidth(width + "px");
+		grid.setWidth(width + "px");
 	}
 
 	@Override

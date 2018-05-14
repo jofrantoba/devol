@@ -4,6 +4,9 @@ import com.google.gwt.i18n.client.Constants;
 
 public interface DevolConstants extends Constants {
 
+	  @DefaultStringValue("Devolpay")
+	  String devolpay();
+	
 	  @DefaultStringValue("Correo")
 	  String correo();
 
@@ -31,8 +34,17 @@ public interface DevolConstants extends Constants {
 	  @DefaultStringValue("Prestamos")
 	  String prestamos();
 	  
-	  @DefaultStringValue("Historial")
+	  @DefaultStringValue("Historial de prestamos")
 	  String historial();
+	  
+	  @DefaultStringValue("Cobradores")
+	  String cobrador();
+	  
+	  @DefaultStringValue("Prestamista")
+	  String prestamista();
+	  
+	  @DefaultStringValue("Cobranza de prestamos")
+	  String cobranza();
 	  
 	  @DefaultStringValue("Reportes")
 	  String reportes();
@@ -49,11 +61,20 @@ public interface DevolConstants extends Constants {
 	  @DefaultStringValue("Buscar cliente")
 	  String buscarCliente();
 	  
+	  @DefaultStringValue("Buscar cobrador")
+	  String buscarCobrador();
+	  
+	  @DefaultStringValue("Buscar prestamista")
+	  String buscarPrestamista();
+	  
 	  @DefaultStringValue("MODO - NUEVO")
 	  String modoNuevo();
 	  
 	  @DefaultStringValue("MODO - EDITAR")
 	  String modoEditar();
+	  
+	  @DefaultStringValue("MODO - DESACTIVAR")
+	  String modoDesactivar();
 	  
 	  @DefaultStringValue("MODO - ELIMINAR")
 	  String modoEliminar();
@@ -124,6 +145,9 @@ public interface DevolConstants extends Constants {
 	  @DefaultStringValue("Seleccione cliente!")
 	  String seleccioneCliente();
 	  
+	  @DefaultStringValue("Seleccione cobrador!")
+	  String seleccioneCobrador();
+	  
 	  @DefaultStringValue("DNI no es valida")
 	  String dniInvalida();
 	  
@@ -132,6 +156,9 @@ public interface DevolConstants extends Constants {
 	  
 	  @DefaultStringValue("Registrado correctamente!")
 	  String registradoCorrectamente();
+	  
+	  @DefaultStringValue("Cobrador fue desactivado!")
+	  String cobradorDesactivado();
 	  
 	  @DefaultStringValue("Actualizado correctamente!")
 	  String actualizadoCorrectamente();
@@ -162,4 +189,16 @@ public interface DevolConstants extends Constants {
 	  
 	  @DefaultStringValue("Español")
 	  String espanol();
+	  
+	  @DefaultStringValue("Prestamo enviado al historial")
+	  String prestamoEnviadoHistoria();
+	  
+	  @DefaultStringValue("Ejecutando Tarea...")
+	  String ejecutandoTarea();
+	  
+	  @DefaultStringValue("Menu Principal")
+	  String menuPrincipal();
+	  
+	  @DefaultStringValue("Escriba correo electrónico válido")
+	  String correoElectronicoValido();
 }

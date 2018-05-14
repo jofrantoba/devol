@@ -6,6 +6,7 @@ import com.devol.client.beanproxy.PrestamoProxy;
 import com.devol.client.requestfactory.ContextGestionPrestamo;
 import com.devol.client.requestfactory.FactoryGestion;
 import com.devol.client.util.Notification;
+import com.devol.client.util.PopupProgress;
 import com.devol.client.view.uihomeprestamo.UIHomePrestamo;
 import com.devol.client.view.uihomesesion.UIHomeSesion;
 import com.devol.i18n.DevolConstants;
@@ -18,6 +19,7 @@ import com.google.web.bindery.requestfactory.shared.Request;
 import com.google.web.bindery.requestfactory.shared.ServerFailure;
 
 public class UIMantPrestamoImpl extends UIMantPrestamo {
+	PopupProgress popup = new PopupProgress();
 	private DevolConstants constants = GWT.create(DevolConstants.class);
 	private final FactoryGestion FACTORY = GWT.create(FactoryGestion.class);
 	private final EventBus EVENTBUS = new SimpleEventBus();
@@ -34,8 +36,8 @@ public class UIMantPrestamoImpl extends UIMantPrestamo {
 	@Override
 	public void goToUIPrestamo() {
 		cleanform();
-		uiHomePrestamo.getUIPrestamoImpl().cargarTabla();
-		uiHomePrestamo.getContainer().showWidget(0);		
+		uiHomePrestamo.getContainer().showWidget(0);
+		uiHomePrestamo.getUIPrestamoImpl().cargarTabla();			
 	}
 	
 	@Override
@@ -44,17 +46,19 @@ public class UIMantPrestamoImpl extends UIMantPrestamo {
 		//uiHomePrestamo.getHeader().setCenter("CLIENTES");
 		uiHomePrestamo.getHeader().getLblTitulo().setText(constants.clientes());
 		uiHomePrestamo.getHeader().setVisibleBtnMenu(false);
-		uiHomePrestamo.getUiCliente().cargarTabla();		
-		uiHomePrestamo.getContainer().showWidget(2);		
+		uiHomePrestamo.getContainer().showWidget(2);
+		uiHomePrestamo.getUiCliente().cargarTabla();						
 	}
 
 	@Override
 	public void registrar() {
-		if (modo.equalsIgnoreCase(constants.modoNuevo())) {
+		calcularMontos();
+		if (modo.equalsIgnoreCase(constants.modoNuevo())) {			
 			if(isValidData()){
 			insertar();			
 			}
 		} else if (modo.equalsIgnoreCase(constants.modoEditar())) {
+			
 			if(isValidData()){
 			editar();
 			}
@@ -71,13 +75,14 @@ public class UIMantPrestamoImpl extends UIMantPrestamo {
 	}
 
 	private void insertar() {
+		popup.showPopup();
 		Date fecha = new Date();
 		ContextGestionPrestamo context = FACTORY.contextGestionPrestamo();
 		FACTORY.initialize(EVENTBUS);
 		PrestamoProxy bean = context.create(PrestamoProxy.class);
 		bean.setOperacion("I");
 		bean.setVersion(fecha.getTime());
-		bean.setIdPrestamo(beanCliente.getIdCliente());
+		bean.setIdCreatePrestamo(beanCliente.getIdCliente());
 		bean.setFecha(txtFecha.getDate());
 		bean.setMonto(Double.parseDouble(txtMonto.getText()));
 		bean.setTasa(Double.parseDouble(txtTasa.getText()));
@@ -93,13 +98,14 @@ public class UIMantPrestamoImpl extends UIMantPrestamo {
 		// Request<Boolean> request = context.eliminarCliente(bean);
 		request.fire(new Receiver<Boolean>() {
 			
-			/*@Override
+			@Override
 			public void onFailure(ServerFailure error) {
+				popup.hidePopup();
 				//Dialogs.alert(constants.alerta(), error.getMessage(), null);
 				//Window.alert(error.getMessage());
 				Notification not=new Notification(Notification.WARNING,error.getMessage());
 				not.showPopup();
-			 }*/
+			 }
 			
 			@Override
 			public void onSuccess(Boolean response) {
@@ -111,12 +117,14 @@ public class UIMantPrestamoImpl extends UIMantPrestamo {
 					Notification not=new Notification(Notification.INFORMATION,constants.registradoCorrectamente());
 					not.showPopup();
 				}
+				popup.hidePopup();
 			}
 
 		});
 	}
 
-	private void editar() {
+	private void editar() {		
+		popup.showPopup();
 		Date fecha = new Date();
 		ContextGestionPrestamo context = FACTORY.contextGestionPrestamo();
 		FACTORY.initialize(EVENTBUS);
@@ -151,12 +159,23 @@ public class UIMantPrestamoImpl extends UIMantPrestamo {
 					not.showPopup();
 					goToUIPrestamo();
 				}
+				popup.hidePopup();
 			}
+			
+			@Override
+			public void onFailure(ServerFailure error) {
+				popup.hidePopup();
+				//Dialogs.alert(constants.alerta(), error.getMessage(), null);
+				//Window.alert(error.getMessage());
+				Notification not=new Notification(Notification.WARNING,error.getMessage());
+				not.showPopup();
+			 }
 
 		});
 	}
 
 	private void eliminar() {
+		popup.showPopup();
 		Date fecha = new Date();
 		ContextGestionPrestamo context = FACTORY.contextGestionPrestamo();
 		FACTORY.initialize(EVENTBUS);
@@ -191,7 +210,17 @@ public class UIMantPrestamoImpl extends UIMantPrestamo {
 					not.showPopup();
 					goToUIPrestamo();
 				}
+				popup.hidePopup();
 			}
+			
+			@Override
+			public void onFailure(ServerFailure error) {
+				popup.hidePopup();
+				//Dialogs.alert(constants.alerta(), error.getMessage(), null);
+				//Window.alert(error.getMessage());
+				Notification not=new Notification(Notification.WARNING,error.getMessage());
+				not.showPopup();
+			 }
 
 		});
 	}
@@ -219,6 +248,10 @@ public class UIMantPrestamoImpl extends UIMantPrestamo {
 		}else{
 			btnGuardar.setVisible(true);
 		}
+	}
+	
+	public void setTituloOperacion(String titulo){
+		this.btnGuardar.setText(titulo);
 	}
 
 }

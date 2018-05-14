@@ -1,12 +1,6 @@
 package com.devol.server.locator;
 
-import javax.jdo.PersistenceManager;
-
 import com.devol.server.model.bean.Cliente;
-import com.devol.server.model.dao.PMF;
-import com.devol.server.model.dao.Querys;
-import com.google.appengine.api.datastore.Key;
-import com.google.appengine.api.datastore.KeyFactory;
 import com.google.web.bindery.requestfactory.shared.Locator;
 
 public class LocatorCliente extends Locator<Cliente, String> {
@@ -31,7 +25,13 @@ public class LocatorCliente extends Locator<Cliente, String> {
 			//ex.printStackTrace();
 			return null;
 		}*/
-		return null;
+		if(id!=null && !id.isEmpty()){
+			Cliente bean=new Cliente();
+			bean.setIdCliente(id);
+			return bean;
+		}else{
+			return null;
+		}		
 	}
 
 	@Override
@@ -55,7 +55,13 @@ public class LocatorCliente extends Locator<Cliente, String> {
 	@Override
 	public Object getVersion(Cliente domainObject) {
 		// TODO Auto-generated method stub
-		return domainObject.getVersion();
+		return domainObject.getVersion()==null?0:domainObject.getVersion();
 	}
+	
+	@Override
+	public boolean isLive(Cliente domainObject) {
+	    // Can't us Class.asSubclass() in web-mode code
+	    return true;
+	  }
 
 }

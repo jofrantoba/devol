@@ -1,5 +1,7 @@
 package com.devol.client.view.uimantprestamo;
 
+import com.devol.client.beanproxy.UsuarioProxy;
+
 public interface InterUIMantPrestamo {
 	void goToUIPrestamo();
 
@@ -9,6 +11,6 @@ public interface InterUIMantPrestamo {
 	
 	boolean isValidData();
 	
-	void activarModoPrestamo();
+	void activarModoPrestamo();	
 		
 }

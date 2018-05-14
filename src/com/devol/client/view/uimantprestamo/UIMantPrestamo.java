@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 
 import com.devol.client.beanproxy.ClienteProxy;
 import com.devol.client.beanproxy.PrestamoProxy;
+import com.devol.client.beanproxy.UsuarioProxy;
 import com.devol.client.model.ContentForm;
 import com.devol.client.model.HeaderPanelM;
 import com.devol.client.model.TextBoxCalendar;
@@ -337,7 +338,7 @@ public class UIMantPrestamo extends Composite implements InterUIMantPrestamo,
 		
 	}
 	
-	private void calcularMontos(){
+	protected void calcularMontos(){
 		String monto=txtMonto.getText();
 		String tasa=txtTasa.getText();
 		String devuelto=txtDevuelto.getText();

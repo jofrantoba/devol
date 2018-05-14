@@ -36,6 +36,12 @@ public class MenuCell extends AbstractCell<String> {
 		 */else if (value.equalsIgnoreCase(constants.salir())) {
 			imageHtml = AbstractImagePrototype.create(
 					MyResource.INSTANCE.getImgOff32()).getHTML();
+		}else if (value.equalsIgnoreCase(constants.cobrador())) {
+			imageHtml = AbstractImagePrototype.create(
+					MyResource.INSTANCE.getImgCobrador32()).getHTML();
+		}else if (value.equalsIgnoreCase(constants.cobranza())) {
+			imageHtml = AbstractImagePrototype.create(
+					MyResource.INSTANCE.getImgCobranza32()).getHTML();
 		}
 		sb.appendHtmlConstant("<div style='display:block; border-bottom: solid 1px #000;background-color: #FBFF88; vertical-align: middle; font-weight: bold; color: #000;'>");
 		sb.appendHtmlConstant("<div style='width: 45px; display:inline-block; height: 45px; margin=5px;'>");

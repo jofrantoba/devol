@@ -11,8 +11,6 @@ import com.devol.client.resource.MyResource;
 import com.devol.client.view.uimantprestamo.UIMantPrestamo;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style;
-import com.google.gwt.event.dom.client.KeyUpEvent;
-import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.event.dom.client.TouchEndEvent;
 import com.google.gwt.event.dom.client.TouchEndHandler;
 import com.google.gwt.event.logical.shared.ResizeEvent;
@@ -153,7 +151,7 @@ public class UIClienteSelect extends PopupPanel implements ValueChangeHandler,To
 				// TODO Auto-generated method stub
 				lista = response;
 				grid.setData(lista);
-				grid.getSelectionModel().clear();
+				//grid.getSelectionModel().clear();
 				scrollPanel.refresh();
 			}
 		});
@@ -196,7 +194,7 @@ public class UIClienteSelect extends PopupPanel implements ValueChangeHandler,To
 	public void onTouchEnd(TouchEndEvent event) {
 		// TODO Auto-generated method stub
 		if(event.getSource().equals(btnAceptar)){
-			ClienteProxy bean = grid.getSelectionModel().getSelectedObject();
+			ClienteProxy bean =null;/*= grid.getSelectionModel().getSelectedObject();*/
 			if (bean == null)
 				return;
 			//padre.getTxtCliente().setText(bean.getNombre()+" "+bean.getApellido());

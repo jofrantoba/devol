@@ -123,5 +123,17 @@ public interface MyResource extends ClientBundle {
 
 	@Source("image/information32.png")
 	ImageResource getImgInformation32();
+	
+	@Source("image/cobrador32.png")
+	ImageResource getImgCobrador32();
+	
+	@Source("image/cobranza32.png")
+	ImageResource getImgCobranza32();
+	
+	@Source("image/desactivar32.png")
+	ImageResource getImgDesactivar32();
+	
+	@Source("image/groupclientes32.png")
+	ImageResource getImgGroupClientes32();
 
 }

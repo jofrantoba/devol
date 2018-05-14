@@ -7,6 +7,8 @@ import java.util.List;
 import com.devol.client.beanproxy.AmortizacionProxy;
 import com.devol.client.requestfactory.ContextGestionPrestamo;
 import com.devol.client.requestfactory.FactoryGestion;
+import com.devol.client.util.Notification;
+import com.devol.client.util.PopupProgress;
 import com.devol.client.view.uihomereport.UIHomeReport;
 import com.devol.client.view.uihomesesion.UIHomeSesion;
 import com.google.gwt.core.shared.GWT;
@@ -14,8 +16,10 @@ import com.google.web.bindery.event.shared.EventBus;
 import com.google.web.bindery.event.shared.SimpleEventBus;
 import com.google.web.bindery.requestfactory.shared.Receiver;
 import com.google.web.bindery.requestfactory.shared.Request;
+import com.google.web.bindery.requestfactory.shared.ServerFailure;
 
 public class UIRecaudadoImpl extends UIRecaudado {
+	PopupProgress popup = new PopupProgress();
 	private final FactoryGestion FACTORY = GWT.create(FactoryGestion.class);
 	private final EventBus EVENTBUS = new SimpleEventBus();
 	private List<AmortizacionProxy> lista;
@@ -33,6 +37,7 @@ public class UIRecaudadoImpl extends UIRecaudado {
 
 	@Override
 	public void cargarTabla(Date fecha) {
+		popup.showPopup();
 		if(UIHomeSesion.usuario!=null){
 		lista = new ArrayList<AmortizacionProxy>();
 		FACTORY.initialize(EVENTBUS);
@@ -47,18 +52,24 @@ public class UIRecaudadoImpl extends UIRecaudado {
 				  while(i.hasNext()){
 					  PrestamoProxy c=i.next(); 
 				  com.google.gwt.user.client.Window.alert(c.getBeanCliente().getNombre()+c.getBeanCliente().getApellido()); }*/
-				lista = response;
+				lista.addAll(response);				
+				grid.setData(lista);
 				grid.getSelectionModel().clear();
-				grid.setData(lista);				
-				double alto=lista.size()*45;
-				container.setHeight(alto+"px");
-				scrollPanel.refresh();
 				if(lista.size()>0){
 				lblMontoTotal.setText(lista.get(0).getTotalAmortizado().toString());
 				}else{
 					lblMontoTotal.setText("0.00");
 				}
+				popup.hidePopup();
 			}
+			
+			@Override
+            public void onFailure(ServerFailure error) {
+                popup.hidePopup();
+                //Window.alert(error.getMessage());
+                Notification not=new Notification(Notification.WARNING,error.getMessage());
+                not.showPopup();
+            }
 		});
 		}
 	}			

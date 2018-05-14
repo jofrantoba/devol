@@ -9,4 +9,6 @@ import com.google.web.bindery.requestfactory.shared.Service;
 @Service(value = GestionUsuario.class)
 public interface ContextGestionUsuario extends RequestContext {
 	Request<Boolean> insertarUsuario(UsuarioProxy bean);
+	Request<UsuarioProxy> existeCuenta(String correo);
+	Request<Boolean> recuperarClave(String correo);
 }

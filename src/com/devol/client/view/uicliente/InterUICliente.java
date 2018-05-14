@@ -5,10 +5,21 @@ public interface InterUICliente {
 
 	void cargarTabla();
 	
+	void cargarClientesAsignados();
+	
+	void cargarClienteSinCobrador();
+	
 	void goToUICMantCliente(String modo);
+	
+	void goToUiSelectClient(String modo);
 	
 	void goToBack();
 	
-	void selecciona();
+	void goToUiCobrador();
+	
+	void selecciona();	
+	
+	void asignarClienteAcobrador();
+		
 	
 }

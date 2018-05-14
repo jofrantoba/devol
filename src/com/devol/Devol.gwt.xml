@@ -10,7 +10,7 @@
   	<inherits name="com.google.web.bindery.requestfactory.RequestFactory"/>
   	<!-- <inherits name="com.google.gwt.rpc.RPC"/>  -->
   	<inherits name="com.google.gwt.i18n.I18N"/>
-  	<inherits name='org.hibernate.validator.HibernateValidator' />
+  	<inherits name='org.hibernate.validator.HibernateValidator' />  	
   	
   	  <!-- Other module inherits                                      -->
   <!-- <inherits name="com.google.gwt.activity.Activity"/>
@@ -32,4 +32,11 @@
 	<source path="i18n" />
 	<!-- <set-property name="mgwt.os" value="desktop" />  -->  
 	<extend-property name="locale" values="en"/>
+	<add-linker name="xsiframe" /> 
+	<set-configuration-property name="CssResource.enableGss"
+		value="true" />
+	<set-configuration-property name="CssResource.conversionMode"
+		value="strict" />
+	<set-configuration-property name="CssResource.gssDefaultInUiBinder"
+		value="true" />	 
 </module>

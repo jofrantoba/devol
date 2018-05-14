@@ -8,8 +8,10 @@ import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
+import com.devol.shared.StringHex;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
+import com.google.appengine.datanucleus.annotations.Unowned;
 
 @PersistenceCapable(detachable="true")
 public class Amortizacion implements Serializable {
@@ -39,17 +41,42 @@ public class Amortizacion implements Serializable {
 	private String codAmortizacion;
 	@NotPersistent
 	private Double totalAmortizado;
+	@Persistent
+	@Unowned
+	private GestorCliente beanGestorCliente;
+	@Persistent
+	private String idGestorCliente;
+	@Persistent
+	private String rolCobrador;
+	@Persistent
+	private String idUsuarioCobrador;
+	@Persistent
+	private String nombresCobrador;
+	@Persistent
+	private String apellidosCobrador;
+	@Persistent
+	private String valueGeneratorId;
+	@NotPersistent
+	private String idCreateAmortizacion;
 
 	public String getIdAmortizacion() {
 		return KeyFactory.keyToString(idAmortizacion);
 	}
+	
+	public String getIdCreateAmortizacion() {
+		return idCreateAmortizacion;
+	}
 
-	public void setIdAmortizacion(String idPrestamo) {
+	public void setIdCreateAmortizacion(String idPrestamo) {
 		this.idPrestamo=idPrestamo;
 		Key keyPrestamo = KeyFactory.stringToKey(idPrestamo);
+		valueGeneratorId=StringHex.convertStringToHex(java.util.UUID.randomUUID().toString());
 		this.idAmortizacion = KeyFactory.createKey(keyPrestamo,
-				Amortizacion.class.getSimpleName(), java.util.UUID.randomUUID()
-						.toString());
+				Amortizacion.class.getSimpleName(), valueGeneratorId);
+	}
+	
+	public void setIdAmortizacion(String idAmortizacion) {
+		this.idAmortizacion=KeyFactory.stringToKey(idAmortizacion);
 	}
 
 	public Double getMonto() {
@@ -149,6 +176,54 @@ public class Amortizacion implements Serializable {
 
 	public void setTotalAmortizado(Double totalAmortizado) {
 		this.totalAmortizado = totalAmortizado;
+	}
+
+	public GestorCliente getBeanGestorCliente() {
+		return beanGestorCliente;
+	}
+
+	public void setBeanGestorCliente(GestorCliente beanGestorCliente) {
+		this.beanGestorCliente = beanGestorCliente;
+	}
+
+	public String getIdGestorCliente() {
+		return idGestorCliente;
+	}
+
+	public void setIdGestorCliente(String idGestorCliente) {
+		this.idGestorCliente = idGestorCliente;
+	}
+
+	public String getRolCobrador() {
+		return rolCobrador;
+	}
+
+	public void setRolCobrador(String rolCobrador) {
+		this.rolCobrador = rolCobrador;
+	}
+
+	public String getIdUsuarioCobrador() {
+		return idUsuarioCobrador;
+	}
+
+	public void setIdUsuarioCobrador(String idUsuarioCobrador) {
+		this.idUsuarioCobrador = idUsuarioCobrador;
+	}
+
+	public String getNombresCobrador() {
+		return nombresCobrador;
+	}
+
+	public void setNombresCobrador(String nombresCobrador) {
+		this.nombresCobrador = nombresCobrador;
+	}
+
+	public String getApellidosCobrador() {
+		return apellidosCobrador;
+	}
+
+	public void setApellidosCobrador(String apellidosCobrador) {
+		this.apellidosCobrador = apellidosCobrador;
 	}
 	
 	

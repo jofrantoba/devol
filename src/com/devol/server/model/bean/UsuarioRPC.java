@@ -13,9 +13,11 @@ public class UsuarioRPC implements Serializable{
 	private String nombres;	
 	private String apellidos;	
 	private String correo;	
-	private String clave;	
 	private Long version;				
 	private String idSesion;
+	private Boolean isRolOwner;
+	private Boolean isRolAdmin;
+	private Boolean isRolGestorCobranza;
 	
 	public String getIdUsuario() {
 		return idUsuario;
@@ -41,12 +43,6 @@ public class UsuarioRPC implements Serializable{
 	public void setCorreo(String correo) {
 		this.correo = correo;
 	}
-	public String getClave() {
-		return clave;
-	}
-	public void setClave(String clave) {
-		this.clave = clave;
-	}
 	public Long getVersion() {
 		return version;
 	}
@@ -58,6 +54,24 @@ public class UsuarioRPC implements Serializable{
 	}
 	public void setIdSesion(String idSesion) {
 		this.idSesion = idSesion;
+	}
+	public Boolean getIsRolOwner() {
+		return isRolOwner;
+	}
+	public void setIsRolOwner(Boolean isRolOwner) {
+		this.isRolOwner = isRolOwner;
+	}
+	public Boolean getIsRolAdmin() {
+		return isRolAdmin;
+	}
+	public void setIsRolAdmin(Boolean isRolAdmin) {
+		this.isRolAdmin = isRolAdmin;
+	}
+	public Boolean getIsRolGestorCobranza() {
+		return isRolGestorCobranza;
+	}
+	public void setIsRolGestorCobranza(Boolean isRolGestorCobranza) {
+		this.isRolGestorCobranza = isRolGestorCobranza;
 	}
 	
 	

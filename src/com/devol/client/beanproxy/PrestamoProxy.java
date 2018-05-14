@@ -11,8 +11,12 @@ import com.google.web.bindery.requestfactory.shared.ProxyFor;
 @ProxyFor(value = Prestamo.class, locator = LocatorPrestamo.class)
 public interface PrestamoProxy extends EntityProxy {
 	public String getIdPrestamo();
+	
+	public String getIdCreatePrestamo();
 
-	public void setIdPrestamo(String idCliente);
+	public void setIdCreatePrestamo(String idCliente);
+	
+	public void setIdPrestamo(String idPrestamo);
 
 	public String getCodPrestamo();
 

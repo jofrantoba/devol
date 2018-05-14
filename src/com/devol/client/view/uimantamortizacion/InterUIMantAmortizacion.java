@@ -9,5 +9,5 @@ public interface InterUIMantAmortizacion {
 	
 	boolean isValidData();
 	
-	void activarModoPrestamo();
+	void activarModoPrestamo();	
 }

@@ -253,4 +253,5 @@ public class UIMantAmortizacion extends Composite implements InterUIMantAmortiza
 			registrar();
 		}
 	}
+
 }

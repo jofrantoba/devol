@@ -4,13 +4,15 @@ import java.util.Date;
 
 import com.devol.client.beanproxy.ClienteProxy;
 import com.devol.client.requestfactory.ContextGestionCliente;
+import com.devol.client.requestfactory.ContextGestionCobranza;
 import com.devol.client.requestfactory.FactoryGestion;
 import com.devol.client.util.Notification;
+import com.devol.client.util.PopupProgress;
 import com.devol.client.view.uihomecliente.UIHomeCliente;
+import com.devol.client.view.uihomecobrador.UIHomeCobrador;
 import com.devol.client.view.uihomesesion.UIHomeSesion;
 import com.devol.i18n.DevolConstants;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.user.client.Window;
 import com.google.web.bindery.event.shared.EventBus;
 import com.google.web.bindery.event.shared.SimpleEventBus;
 import com.google.web.bindery.requestfactory.shared.Receiver;
@@ -18,13 +20,21 @@ import com.google.web.bindery.requestfactory.shared.Request;
 import com.google.web.bindery.requestfactory.shared.ServerFailure;
 
 public class UIMantClienteImpl extends UIMantCliente {
+	PopupProgress popup = new PopupProgress();
 	private DevolConstants constants = GWT.create(DevolConstants.class);
 	private final FactoryGestion FACTORY = GWT.create(FactoryGestion.class);
 	private final EventBus EVENTBUS = new SimpleEventBus();
 	private UIHomeCliente uiHomeCliente;
+	private UIHomeCobrador uiHomeCobrador;
 
 	public UIMantClienteImpl(UIHomeCliente uiHomeCliente) {
 		this.uiHomeCliente = uiHomeCliente;
+		//super.setHeightContainer(82);
+		
+	}
+	
+	public UIMantClienteImpl(UIHomeCobrador uiHomeCobrador) {
+		this.uiHomeCobrador = uiHomeCobrador;
 		//super.setHeightContainer(82);
 		
 	}
@@ -32,8 +42,14 @@ public class UIMantClienteImpl extends UIMantCliente {
 	@Override
 	public void goToUICliente() {
 		cleanform();
-		uiHomeCliente.getUIClienteImpl().cargarTabla();
-		uiHomeCliente.getContainer().showWidget(0);		
+		if(uiHomeCliente!=null){
+			uiHomeCliente.getContainer().showWidget(0);	
+			uiHomeCliente.getUIClienteImpl().cargarTabla();
+		}else if(uiHomeCobrador!=null){
+			uiHomeCobrador.getContainer().showWidget(2);	
+			uiHomeCobrador.getUiClienteImpl().cargarClientesAsignados();
+		}
+					
 	}
 
 	@Override
@@ -50,11 +66,14 @@ public class UIMantClienteImpl extends UIMantCliente {
 			if(isValidData()){
 				eliminar();
 			}			
+		} else if (modo.equalsIgnoreCase(constants.modoDesactivar())) {			
+				desactivar();			
 		}
 
 	}
 
 	private void insertar() {
+		popup.showPopup();
 		Date fecha = new Date();
 		ContextGestionCliente context = FACTORY.contextGestionCliente();
 		FACTORY.initialize(EVENTBUS);
@@ -63,7 +82,7 @@ public class UIMantClienteImpl extends UIMantCliente {
 		bean.setVersion(fecha.getTime());
 		// bean.setIdCliente("chescot2302@gmail.com");
 		//bean.setIdCliente("ag5kZXZvbG1pbmd1aWxsb3IiCxIHVXN1YXJpbyIVY2hlc2NvdDIzMDJAZ21haWwuY29tDA");
-		bean.setIdCliente(UIHomeSesion.usuario.getIdUsuario());
+		bean.setIdCreateCliente(UIHomeSesion.usuario.getIdUsuario());
 		bean.setDni(txtDni.getText());
 		bean.setNombre(txtNombre.getText());
 		bean.setApellido(txtApellido.getText());
@@ -82,12 +101,22 @@ public class UIMantClienteImpl extends UIMantCliente {
 					Notification not=new Notification(Notification.INFORMATION,constants.registradoCorrectamente());
 					not.showPopup();
 				}
+				popup.hidePopup();
 			}
+			
+			@Override
+            public void onFailure(ServerFailure error) {
+                popup.hidePopup();
+                //Window.alert(error.getMessage());
+                Notification not=new Notification(Notification.WARNING,error.getMessage());
+                not.showPopup();
+            }
 
 		});
 	}
 
 	private void editar() {
+		popup.showPopup();
 		Date fecha = new Date();
 		ContextGestionCliente context = FACTORY.contextGestionCliente();
 		FACTORY.initialize(EVENTBUS);
@@ -115,13 +144,54 @@ public class UIMantClienteImpl extends UIMantCliente {
 					Notification not=new Notification(Notification.INFORMATION,constants.actualizadoCorrectamente());
 					not.showPopup();
 					goToUICliente();
-				}
+				}				
+				popup.hidePopup();
 			}
+			
+			@Override
+            public void onFailure(ServerFailure error) {
+                popup.hidePopup();
+                //Window.alert(error.getMessage());
+                Notification not=new Notification(Notification.WARNING,error.getMessage());
+                not.showPopup();
+            }
+
+		});
+	}
+	
+	private void desactivar() {
+		popup.showPopup();		
+		ContextGestionCobranza context = FACTORY.contextGestionCobranza();
+		FACTORY.initialize(EVENTBUS);
+		Request<Boolean> request = context.desactivarGestorCliente(beanCliente.getIdGestorCliente());
+		request.fire(new Receiver<Boolean>() {
+			@Override
+			public void onSuccess(Boolean response) {
+				// TODO Auto-generated method stub
+				if (response) {
+					cleanform();
+					//Dialogs.alert(constants.clientes(), constants.actualizadoCorrectamente(), null);
+					//Window.alert(constants.actualizadoCorrectamente());
+					Notification not=new Notification(Notification.INFORMATION,constants.actualizadoCorrectamente());
+					not.showPopup();
+					goToUICliente();
+				}				
+				popup.hidePopup();
+			}
+			
+			@Override
+            public void onFailure(ServerFailure error) {
+                popup.hidePopup();
+                //Window.alert(error.getMessage());
+                Notification not=new Notification(Notification.WARNING,error.getMessage());
+                not.showPopup();
+            }
 
 		});
 	}
 
 	private void eliminar() {
+		popup.showPopup();
 		Date fecha = new Date();
 		ContextGestionCliente context = FACTORY.contextGestionCliente();
 		FACTORY.initialize(EVENTBUS);
@@ -150,7 +220,16 @@ public class UIMantClienteImpl extends UIMantCliente {
 					not.showPopup();
 					goToUICliente();
 				}
+				popup.hidePopup();
 			}
+			
+			@Override
+            public void onFailure(ServerFailure error) {
+                popup.hidePopup();
+                //Window.alert(error.getMessage());
+                Notification not=new Notification(Notification.WARNING,error.getMessage());
+                not.showPopup();
+            }
 			
 			/*public void onFailure(ServerFailure error) {
 				//Dialogs.alert(constants.alerta(), error.getMessage(), null);
@@ -172,6 +251,10 @@ public class UIMantClienteImpl extends UIMantCliente {
 	
 	public void refreshScroll(){
 		this.scrollPanel.refresh();
+	}
+	
+	public void setTituloOperacion(String titulo){
+		this.btnGuardar.setText(titulo);
 	}
 
 }

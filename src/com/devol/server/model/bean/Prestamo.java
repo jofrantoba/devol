@@ -11,6 +11,7 @@ import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
+import com.devol.shared.StringHex;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 
@@ -56,16 +57,30 @@ public class Prestamo implements Serializable {
 	private String apellido;
 	@NotPersistent
 	private String codPrestamo;
+	@Persistent
+	private String valueGeneratorId;
+	@NotPersistent
+	private String idCreatePrestamo;
+	
 
 	public String getIdPrestamo() {
 		return KeyFactory.keyToString(idPrestamo);
 	}
-
-	public void setIdPrestamo(String idCliente) {
+	
+	public String getIdCreatePrestamo() {
+		return idCreatePrestamo;
+	}
+	
+	public void setIdCreatePrestamo(String idCliente) {
 		this.idCliente = idCliente;
 		Key keyCliente = KeyFactory.stringToKey(idCliente);
+		valueGeneratorId=StringHex.convertStringToHex(java.util.UUID.randomUUID().toString());
 		this.idPrestamo = KeyFactory.createKey(keyCliente, Prestamo.class
-				.getSimpleName(), java.util.UUID.randomUUID().toString());
+				.getSimpleName(), valueGeneratorId);
+	}
+	
+	public void setIdPrestamo(String idPrestamo) {
+		this.idPrestamo=KeyFactory.stringToKey(idPrestamo);
 	}
 	
 	 

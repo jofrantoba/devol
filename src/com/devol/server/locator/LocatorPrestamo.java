@@ -1,12 +1,6 @@
 package com.devol.server.locator;
 
-import javax.jdo.PersistenceManager;
-
 import com.devol.server.model.bean.Prestamo;
-import com.devol.server.model.dao.PMF;
-import com.devol.server.model.dao.Querys;
-import com.google.appengine.api.datastore.Key;
-import com.google.appengine.api.datastore.KeyFactory;
 import com.google.web.bindery.requestfactory.shared.Locator;
 
 public class LocatorPrestamo extends Locator<Prestamo, String> {
@@ -55,7 +49,13 @@ public class LocatorPrestamo extends Locator<Prestamo, String> {
 	@Override
 	public Object getVersion(Prestamo domainObject) {
 		// TODO Auto-generated method stub
-		return domainObject.getVersion();
+		return domainObject.getVersion()==null?0:domainObject.getVersion();
 	}
+	
+	@Override
+	public boolean isLive(Prestamo domainObject) {
+	    // Can't us Class.asSubclass() in web-mode code
+	    return true;
+	  }
 
 }

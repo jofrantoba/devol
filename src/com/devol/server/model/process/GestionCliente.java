@@ -1,14 +1,10 @@
 package com.devol.server.model.process;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Logger;
 
 import javax.jdo.PersistenceManager;
 import javax.jdo.Transaction;
-
-import org.datanucleus.FetchGroup;
-import org.datanucleus.FetchPlan;
 
 import com.devol.server.model.bean.Cliente;
 import com.devol.server.model.bean.Usuario;
@@ -83,16 +79,17 @@ public class GestionCliente {
 				tx = pm.currentTransaction();
 				tx.begin();
 				LogicCliente logic = new LogicCliente(pm);
-				Boolean resultado = logic.mantenimiento(parametro);
-				if (resultado) {
-					tx.commit();
-					pm.close();
-					return true;
-				} else {
-					tx.rollback();
-					pm.close();
-					return false;
+				Cliente beanBd=(Cliente)logic.getBean(bean.getIdCliente());
+				beanBd.setApellido(bean.getApellido());
+				beanBd.setDireccion(bean.getDireccion());
+				beanBd.setDni(bean.getDni());
+				beanBd.setNombre(bean.getNombre());
+				beanBd.setTelefono(bean.getTelefono());
+				if(beanBd.getClienteAsignado()==null){
+					beanBd.setClienteAsignado(0);
 				}
+				tx.commit();					
+				return true;				
 			} catch (Exception ex) {
 				LOG.warning(ex.getMessage());
 				LOG.info(ex.getLocalizedMessage());
@@ -181,7 +178,7 @@ public class GestionCliente {
 		PersistenceManager pm = null;
 		//Transaction tx = null;
 		try {
-			pm = PMF.getPMF().getPersistenceManager();						
+			pm = PMF.getPMF().getPersistenceManager();			
 			//PMF.getPMF().getFetchGroup(Cliente.class, "ClienteGroup").addMember("beanUsuario");
 			//pm.getFetchPlan().addGroup("ClienteGroup");
 			//pm.getFetchPlan().setMaxFetchDepth(1);

@@ -10,8 +10,12 @@ import com.google.web.bindery.requestfactory.shared.ProxyFor;
 @ProxyFor(value = Amortizacion.class, locator = LocatorAmortizacion.class)
 public interface AmortizacionProxy extends EntityProxy {
 	public String getIdAmortizacion();
+	
+	public String getIdCreateAmortizacion();
 
-	public void setIdAmortizacion(String idPrestamo);
+	public void setIdCreateAmortizacion(String idPrestamo);
+	
+	public void setIdAmortizacion(String idAmortizacion);
 
 	public Double getMonto();
 

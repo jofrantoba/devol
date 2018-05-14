@@ -1,20 +1,14 @@
 package com.devol.client.view.uimenu;
 
-import com.google.gwt.core.shared.GWT;
-import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.RootPanel;
-import com.googlecode.mgwt.ui.client.widget.animation.Animations;
-import com.googlecode.mgwt.ui.client.widget.dialog.Dialogs;
 import com.devol.client.service.ServiceGestionUsuario;
 import com.devol.client.service.ServiceGestionUsuarioAsync;
 import com.devol.client.util.Notification;
 import com.devol.client.view.uihome.UIHome;
-import com.devol.client.view.uihomecliente.UIHomeCliente;
-import com.devol.client.view.uihomeprestamo.UIHomePrestamo;
-import com.devol.client.view.uihomereport.UIHomeReport;
 import com.devol.client.view.uihomesesion.UIHomeSesion;
 import com.devol.i18n.DevolConstants;
+import com.google.gwt.core.shared.GWT;
+import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.RootPanel;
 
 public class UIMenuImpl extends UIMenu {
 	private DevolConstants constants = GWT.create(DevolConstants.class);
@@ -23,7 +17,7 @@ public class UIMenuImpl extends UIMenu {
 	private UIHomeSesion uiHomeSesion;
 
 	public UIMenuImpl(UIHomeSesion uiHomeSesion) {
-		this.uiHomeSesion=uiHomeSesion;
+		this.uiHomeSesion=uiHomeSesion;					
 	}
 
 	@Override
@@ -37,19 +31,27 @@ public class UIMenuImpl extends UIMenu {
 			//uiHomeCliente.getUIClienteImpl().refreshScroll();
 			/*UIHomeSesion.animationHelper.goTo(uiHomeCliente, Animations.SLIDE);*/			
 			//uiHomeCliente.getUIClienteImpl().cargarTabla();		
-			UIHomeSesion.getUihomesesion().getUiHomeCliente();			
-		} else if (item.equalsIgnoreCase(constants.prestamos())) {
+			UIHomeSesion.uiHomeSesion.getUiHomeCliente();			
+		}else if (item.equalsIgnoreCase(constants.cobrador())) {
 			/*UIHomePrestamo uiHomePrestamo=new UIHomePrestamo("PRESTAMO");*/
 			/*UIHomeSesion.animationHelper.goTo(uiHomePrestamo, Animations.SLIDE);*/
-			UIHomeSesion.getUihomesesion().getUiHomePrestamo();
+			UIHomeSesion.uiHomeSesion.getUiHomeCobrador();			
+		}else if (item.equalsIgnoreCase(constants.prestamos())) {
+			/*UIHomePrestamo uiHomePrestamo=new UIHomePrestamo("PRESTAMO");*/
+			/*UIHomeSesion.animationHelper.goTo(uiHomePrestamo, Animations.SLIDE);*/
+			UIHomeSesion.uiHomeSesion.getUiHomePrestamo();
+		}else if (item.equalsIgnoreCase(constants.cobranza())) {
+			/*UIHomePrestamo uiHomePrestamo=new UIHomePrestamo("PRESTAMO");*/
+			/*UIHomeSesion.animationHelper.goTo(uiHomePrestamo, Animations.SLIDE);*/
+			UIHomeSesion.uiHomeSesion.getUiHomeCobranza();
 		}else if (item.equalsIgnoreCase(constants.historial())) {
 			/*UIHomePrestamo uiHomePrestamo=new UIHomePrestamo("HISTORIAL");*/
 			/*UIHomeSesion.animationHelper.goTo(uiHomePrestamo, Animations.SLIDE);*/
-			UIHomeSesion.getUihomesesion().getUiHomeHistorial();
+			UIHomeSesion.uiHomeSesion.getUiHomeHistorial();
 		}else if (item.equalsIgnoreCase(constants.reportes())) {
 			/*UIHomeReport uiHomeReport=new UIHomeReport();*/
 			/*UIHomeSesion.animationHelper.goTo(uiHomeReport, Animations.SLIDE);*/
-			UIHomeSesion.getUihomesesion().getUiHomeReport();
+			UIHomeSesion.uiHomeSesion.getUiHomeReport();
 		}else if (item.equalsIgnoreCase(constants.salir())) {
 			SERVICE.logout(new AsyncCallback<Boolean>(){
 
@@ -65,7 +67,7 @@ public class UIMenuImpl extends UIMenu {
 				public void onSuccess(Boolean result) {
 					// TODO Auto-generated method stub
 					if(result){
-					UIHomeSesion.usuario=null;
+					UIHomeSesion.usuario=null;				
 					UIHome uiHome=new UIHome();
 					RootPanel.get().clear();
 					RootPanel.get().add(uiHome);

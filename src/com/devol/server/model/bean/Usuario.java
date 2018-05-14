@@ -15,7 +15,7 @@ import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 
 @PersistenceCapable(detachable="true")
-public class Usuario implements Serializable {
+public class Usuario implements Serializable {	
 	/**
 	 * 
 	 */
@@ -45,15 +45,44 @@ public class Usuario implements Serializable {
 	private String idSesion;
 	@NotPersistent
 	private UsuarioRPC objUsuarioRPC=new UsuarioRPC();
+	@Persistent
+	private String dni;
+	@Persistent
+	private String telefono;
+	@Persistent
+	private String direccion;
+	@Persistent
+	private Boolean isRolOwner=false;
+	@Persistent
+	private Boolean isRolAdmin=false;
+	@Persistent
+	private Boolean isRolGestorCobranza=false;
+	@Persistent
+	private Set<String> roles=new HashSet<String>();
+	@NotPersistent
+	private String idCreateUsuario;
 
 	public String getIdUsuario() {
-		return KeyFactory.keyToString(idUsuario);
+		if(idUsuario!=null){
+			return KeyFactory.keyToString(idUsuario);			
+		}else{
+			return null;
+		}
+		
+	}
+	
+	public String getIdCreateUsuario() {
+		return idCreateUsuario;
 	}
 
-	public void setIdUsuario(String correo) {
+	public void setIdCreateUsuario(String correo) {
 		Key key = KeyFactory.createKey(Usuario.class.getSimpleName(), correo);
 		this.idUsuario = key;
 	}
+	
+	public void setIdUsuario(String idUsuario) {
+		this.idUsuario=KeyFactory.stringToKey(idUsuario);
+	}	
 
 	public String getNombres() {
 		return nombres;
@@ -125,7 +154,10 @@ public class Usuario implements Serializable {
 		objUsuarioRPC.setApellidos(getApellidos());
 		objUsuarioRPC.setCorreo(getCorreo());
 		objUsuarioRPC.setVersion(getVersion());
-		objUsuarioRPC.setIdSesion(getIdSesion());	
+		objUsuarioRPC.setIdSesion(getIdSesion());
+		objUsuarioRPC.setIsRolAdmin(getIsRolAdmin()==null?false:getIsRolAdmin());
+		objUsuarioRPC.setIsRolOwner(getIsRolOwner()==null?false:getIsRolOwner());
+		objUsuarioRPC.setIsRolGestorCobranza(getIsRolGestorCobranza()==null?false:getIsRolGestorCobranza());
 	}
 
 	public UsuarioRPC getObjUsuarioRPC() {
@@ -139,6 +171,65 @@ public class Usuario implements Serializable {
 	public void setEstadoCuenta(String estadoCuenta) {
 		this.estadoCuenta = estadoCuenta;
 	}
+	
+	
+
+	public String getDni() {
+		return dni;
+	}
+
+	public void setDni(String dni) {
+		this.dni = dni;
+	}
+
+	public Set<String> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(Set<String> roles) {
+		this.roles = roles;
+	}
+
+	public String getTelefono() {
+		return telefono;
+	}
+
+	public void setTelefono(String telefono) {
+		this.telefono = telefono;
+	}
+
+	public Boolean getIsRolOwner() {
+		return isRolOwner;
+	}
+
+	public void setIsRolOwner(Boolean isRolOwner) {
+		this.isRolOwner = isRolOwner;
+	}
+
+	public Boolean getIsRolAdmin() {
+		return isRolAdmin;
+	}
+
+	public void setIsRolAdmin(Boolean isRolAdmin) {
+		this.isRolAdmin = isRolAdmin;
+	}
+
+	public Boolean getIsRolGestorCobranza() {
+		return isRolGestorCobranza;
+	}
+
+	public void setIsRolGestorCobranza(Boolean isRolGestorCobranza) {
+		this.isRolGestorCobranza = isRolGestorCobranza;
+	}
+
+	public String getDireccion() {
+		return direccion;
+	}
+
+	public void setDireccion(String direccion) {
+		this.direccion = direccion;
+	}
+
 	
 	
 

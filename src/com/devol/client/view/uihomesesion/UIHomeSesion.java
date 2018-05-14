@@ -5,34 +5,42 @@ import java.util.Date;
 import com.devol.client.model.PanelFlow;
 import com.devol.client.resource.MyResource;
 import com.devol.client.view.uihomecliente.UIHomeCliente;
+import com.devol.client.view.uihomecobrador.UIHomeCobrador;
+import com.devol.client.view.uihomecobranza.UIHomeCobranza;
 import com.devol.client.view.uihomeprestamo.UIHomePrestamo;
 import com.devol.client.view.uihomereport.UIHomeReport;
 import com.devol.client.view.uimenu.UIMenuImpl;
+import com.devol.i18n.DevolConstants;
 import com.devol.server.model.bean.UsuarioRPC;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.DateTimeFormat;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DeckPanel;
-import com.google.gwt.user.client.ui.FlowPanel;
 
 public class UIHomeSesion extends Composite implements InterUIHomeSesion{
-    private static final UIHomeSesion uiHomeSesion=new UIHomeSesion();
+	private DevolConstants constants = GWT.create(DevolConstants.class);
+    public static final UIHomeSesion uiHomeSesion=new UIHomeSesion();
 	private PanelFlow main;
 	//public static AnimationHelper animationHelper;
 	private DeckPanel container;
 	private UIMenuImpl uiMenuImpl;
 	private UIHomeCliente uiHomeCliente;
+	private UIHomeCobrador uiHomeCobrador;
+	private UIHomeCobranza uiHomeCobranza;
 	private UIHomePrestamo uiHomePrestamo;
 	private UIHomePrestamo uiHomeHistorial;
 	private UIHomeReport uiHomeReport;
-	public static UsuarioRPC usuario =null;
+	public static UsuarioRPC usuario;
 	private Presenter presenter;
 	private String uiToken;
-
-	public UIHomeSesion() {
+	
+	private UIHomeSesion() {			
 		init();
 		style();
-		//History.addValueChangeHandler(valueChangeHandler);
 	}
+
+
 	 /*ValueChangeHandler<String> valueChangeHandler=new ValueChangeHandler<String>(){
 
 		@Override
@@ -56,7 +64,7 @@ public class UIHomeSesion extends Composite implements InterUIHomeSesion{
 		 
 	 };*/
 	
-	private void init() {		
+	private void init() {			
 		// TODO Auto-generated method stub
 		main = new PanelFlow();
 		initWidget(main);
@@ -66,7 +74,7 @@ public class UIHomeSesion extends Composite implements InterUIHomeSesion{
 		main.add(container);
 		
 		uiMenuImpl=new UIMenuImpl(this);
-		container.add(uiMenuImpl);
+		container.add(uiMenuImpl);				
 		
 		/*animationHelper = new AnimationHelper();
 		animationHelper.getElement().setId("animationHelper");
@@ -77,6 +85,12 @@ public class UIHomeSesion extends Composite implements InterUIHomeSesion{
 		
 		uiHomeCliente=new UIHomeCliente();
 		container.add(uiHomeCliente);
+		
+		uiHomeCobrador=new UIHomeCobrador();
+		container.add(uiHomeCobrador);
+		
+		uiHomeCobranza=new UIHomeCobranza("COBRANZA");
+		container.add(uiHomeCobranza);
 		
 		uiHomePrestamo=new UIHomePrestamo("PRESTAMO");
 		container.add(uiHomePrestamo);
@@ -109,31 +123,48 @@ public class UIHomeSesion extends Composite implements InterUIHomeSesion{
 		/*animationHelper.addStyleName(MyResource.INSTANCE.getStlUIHome()
 				.animationHelper());*/
 	}
-
-	public static UIHomeSesion getUihomesesion() {		
-		return uiHomeSesion;
+	
+	public void getUiMenuImpl() {
+		container.showWidget(0);			
+	}
+	
+	public UIMenuImpl getUiMenu() {
+		return uiMenuImpl;
 	}
 
 	public void getUiHomeCliente() {
 		container.showWidget(1);
 		uiHomeCliente.getContainer().showWidget(0);
-		uiHomeCliente.getUIClienteImpl().cargarTabla();
+		uiHomeCliente.getUIClienteImpl().cargarTabla();		
+	}
+	
+	public void getUiHomeCobrador() {
+		container.showWidget(2);
+		uiHomeCobrador.reloadTitle();
+		uiHomeCobrador.getContainer().showWidget(0);
+		uiHomeCobrador.getUICobradorImpl().cargarTabla();		
+	}
+	
+	public void getUiHomeCobranza() {
+		container.showWidget(3);		
+		uiHomeCobranza.getContainer().showWidget(0);
+		uiHomeCobranza.getUiPrestamistaImpl().cargarTabla();		
 	}
 
 	public void getUiHomePrestamo() {
-		container.showWidget(2);
+		container.showWidget(4);
 		uiHomePrestamo.getContainer().showWidget(0);
-		uiHomePrestamo.getUIPrestamoImpl().cargarTabla();
+		uiHomePrestamo.getUIPrestamoImpl().cargarTabla();		
 	}
 
 	public void getUiHomeHistorial() {
-		container.showWidget(3);
+		container.showWidget(5);
 		uiHomeHistorial.getContainer().showWidget(0);
 		uiHomeHistorial.getUIPrestamoImpl().cargarTabla();
 	}
 
 	public void getUiHomeReport() {
-		container.showWidget(4);
+		container.showWidget(6);
 		uiHomeReport.getContainer().showWidget(0);
 		DateTimeFormat format = DateTimeFormat.getFormat("dd/MM/yyyy");
 		Date fechaIni=new Date();
@@ -142,10 +173,7 @@ public class UIHomeSesion extends Composite implements InterUIHomeSesion{
 		uiHomeReport.getUiRecaudado().cargarTabla(fechaIni);
 		
 	}
-
-	public void getUiMenuImpl() {
-		container.showWidget(0);		
-	}
+	
 	
 	@Override
 	public void setPresenter(Presenter presenter) {
@@ -161,7 +189,7 @@ public class UIHomeSesion extends Composite implements InterUIHomeSesion{
 
 	public Presenter getPresenter() {
 		return presenter;
-	}
+	}	
 	
 	
 
