@@ -20,6 +20,8 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.PushButton;
+import com.googlecode.mgwt.ui.client.MGWT;
+import com.googlecode.mgwt.ui.client.MGWTSettings;
 import com.googlecode.mgwt.ui.client.widget.input.search.MSearchBox;
 
 public class UIPrestamo extends Composite implements InterUIPrestamo,
@@ -31,6 +33,8 @@ public class UIPrestamo extends Composite implements InterUIPrestamo,
 	protected GridPrestamo grid;
 	protected FlowPanel container;
 	private PushButton btnAmortizacion;
+	protected Boolean isHomeCobranza=false;
+	protected Boolean isHomePrestamo=false;
 
 	public UIPrestamo() {
 		init();
@@ -93,10 +97,13 @@ public class UIPrestamo extends Composite implements InterUIPrestamo,
 		toolBar.getBtnEditar().addClickHandler(this);
 		toolBar.getBtnEliminar().addClickHandler(this);
 		toolBar.getBtnActualizar().addClickHandler(this);
+		toolBar.getBtnExportar().addClickHandler(this);
 		btnAmortizacion.addClickHandler(this);
 	}
 
 	private void style() {
+		Window.setMargin("0px");
+		MGWT.applySettings(MGWTSettings.getAppSetting());
 		MyResource.INSTANCE.getStlUIPrestamo().ensureInjected();
 		
 		btnAmortizacion.getElement().getStyle().setFloat(Style.Float.RIGHT);
@@ -200,7 +207,11 @@ public class UIPrestamo extends Composite implements InterUIPrestamo,
 		} else if (event.getSource().equals(toolBar.getBtnEliminar())) {
 			goToUIMantPrestamo(constants.modoEliminar());
 		} else if (event.getSource().equals(toolBar.getBtnActualizar())) {
-			cargarTabla();
+			if(this.isHomePrestamo){
+				cargarTabla();
+			}else if(this.isHomeCobranza){
+				cargarPrestamoGestorCobranza();
+			}
 		}else if (event.getSource().equals(this.btnAmortizacion)) {
 			PrestamoProxy bean = grid.getSelectionModel().getSelectedObject();
 			if (bean == null){
@@ -211,6 +222,8 @@ public class UIPrestamo extends Composite implements InterUIPrestamo,
 				return;
 			}
 			goToUIAmortizacion();
+		}else if(event.getSource().equals(toolBar.getBtnExportar())){
+			exportarData();
 		}
 	}
 
@@ -218,6 +231,18 @@ public class UIPrestamo extends Composite implements InterUIPrestamo,
 	public boolean sendPrestamoHistorial(String idPrestamo) {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	@Override
+	public void cargarPrestamoGestorCobranza() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void exportarData() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

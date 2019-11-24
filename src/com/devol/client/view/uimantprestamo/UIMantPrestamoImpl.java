@@ -88,6 +88,8 @@ public class UIMantPrestamoImpl extends UIMantPrestamo {
 		bean.setTasa(Double.parseDouble(txtTasa.getText()));
 		bean.setaDevolver(Double.parseDouble(txtADevolver.getText()));
 		bean.setDevuelto(Double.parseDouble(txtDevuelto.getText()));
+		bean.setTipoPrestamo(txtTipoPrestamo.getText());
+		bean.setGlosa(txtGlosa.getText());
 		bean.setEstado("P");
 		bean.setDni(beanCliente.getDni());
 		bean.setNombre(beanCliente.getNombre());
@@ -137,9 +139,15 @@ public class UIMantPrestamoImpl extends UIMantPrestamo {
 		bean.setFecha(txtFecha.getDate());
 		bean.setMonto(Double.parseDouble(txtMonto.getText()));
 		bean.setTasa(Double.parseDouble(txtTasa.getText()));
+		bean.setTipoPrestamo(txtTipoPrestamo.getText());
+		bean.setGlosa(txtGlosa.getText());
 		bean.setaDevolver(Double.parseDouble(txtADevolver.getText()));
-		bean.setDevuelto(Double.parseDouble(txtDevuelto.getText()));
-		bean.setEstado(beanPrestamo.getEstado());
+		bean.setDevuelto(Double.parseDouble(txtDevuelto.getText()));		
+		if(beanPrestamo.getDevuelto().compareTo(bean.getaDevolver())==-1){
+			bean.setEstado("P");
+		}else{
+			bean.setEstado(beanPrestamo.getEstado());
+		}		
 		bean.setDni(beanCliente.getDni());
 		bean.setNombre(beanCliente.getNombre());
 		bean.setApellido(beanCliente.getApellido());
@@ -188,6 +196,8 @@ public class UIMantPrestamoImpl extends UIMantPrestamo {
 		bean.setFecha(txtFecha.getDate());
 		bean.setMonto(Double.parseDouble(txtMonto.getText()));
 		bean.setTasa(Double.parseDouble(txtTasa.getText()));
+		bean.setTipoPrestamo(txtTipoPrestamo.getText());
+		bean.setGlosa(txtGlosa.getText());
 		bean.setaDevolver(Double.parseDouble(txtADevolver.getText()));
 		bean.setDevuelto(Double.parseDouble(txtDevuelto.getText()));
 		bean.setEstado(beanPrestamo.getEstado());
@@ -231,20 +241,22 @@ public class UIMantPrestamoImpl extends UIMantPrestamo {
 		txtDevuelto.setText(null);
 		txtMonto.setText(null);
 		txtTasa.setText(null);
+		txtTipoPrestamo.setText(null);
+		txtGlosa.setText(null);
 		//txtFecha.getTxtFecha().setText(null);
 		txtCliente.setText(null);
 		beanCliente=null;
 	}
 	
 	public void refreshScroll(){
-		this.scrollPanel.refresh();
+		//this.scrollPanel.refresh();
 	}
 	
 	@Override
 	public void activarModoPrestamo() {
 		// TODO Auto-generated method stub
 		if(uiHomePrestamo.getModo().equals("HISTORIAL")){
-			btnGuardar.setVisible(false);			
+			btnGuardar.setVisible(true);			
 		}else{
 			btnGuardar.setVisible(true);
 		}

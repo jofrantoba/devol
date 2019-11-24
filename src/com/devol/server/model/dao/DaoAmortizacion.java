@@ -42,7 +42,7 @@ public class DaoAmortizacion {
 	public Collection<Amortizacion> getListarBeanByPrestamo(String idPrestamo) throws UnknownException {		
 		Query query = pm.newQuery(Amortizacion.class);		
 		query.setFilter("idPrestamo == paramIdPrestamo");		
-		query.setOrdering("version desc");
+		query.setOrdering("fecha asc");
 		query.declareParameters("String paramIdPrestamo");		
 		try{
 		List<Amortizacion> lista=new ArrayList<Amortizacion>();

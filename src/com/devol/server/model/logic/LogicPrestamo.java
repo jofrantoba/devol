@@ -1,6 +1,7 @@
 package com.devol.server.model.logic;
 
 import java.util.Collection;
+import java.util.List;
 
 import javax.jdo.PersistenceManager;
 
@@ -39,6 +40,22 @@ public class LogicPrestamo {
 		DaoPrestamo dao = new DaoPrestamo(this.pm);
 		Collection<Prestamo> lista = dao.getListarBeanByUsuario(idUsuario,
 				estado);
+		return lista;
+	}
+	
+	public void asignarGestorClientePrestamo(String idGestorCliente,String idGestorCobranza,String idCliente){
+		DaoPrestamo dao = new DaoPrestamo(this.pm);
+		dao.asignarGestorClientePrestamo(idGestorCliente, idGestorCobranza, idCliente);
+	}
+	
+	public void desactivarGestorClientePrestamo(String idCliente){
+		DaoPrestamo dao = new DaoPrestamo(this.pm);
+		dao.desactivarGestorClientePrestamo(idCliente);
+	}
+	
+	public Collection<Prestamo> getListarByClientes(List<String> listaIdCliente,String estado) throws UnknownException {
+		DaoPrestamo dao = new DaoPrestamo(this.pm);
+		Collection<Prestamo> lista = dao.getListarByClientes(listaIdCliente, estado);
 		return lista;
 	}
 }

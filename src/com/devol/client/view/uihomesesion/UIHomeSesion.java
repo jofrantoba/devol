@@ -65,7 +65,7 @@ public class UIHomeSesion extends Composite implements InterUIHomeSesion{
 	 };*/
 	
 	private void init() {			
-		// TODO Auto-generated method stub
+		// TODO Auto-generated method stub		
 		main = new PanelFlow();
 		initWidget(main);
 		
@@ -126,6 +126,7 @@ public class UIHomeSesion extends Composite implements InterUIHomeSesion{
 	
 	public void getUiMenuImpl() {
 		container.showWidget(0);			
+		uiMenuImpl.privilegiosMenu();
 	}
 	
 	public UIMenuImpl getUiMenu() {
@@ -148,7 +149,8 @@ public class UIHomeSesion extends Composite implements InterUIHomeSesion{
 	public void getUiHomeCobranza() {
 		container.showWidget(3);		
 		uiHomeCobranza.getContainer().showWidget(0);
-		uiHomeCobranza.getUiPrestamistaImpl().cargarTabla();		
+		uiHomeCobranza.getUiPrestamistaImpl().cargarTabla();
+		uiHomeCobranza.reloadTitle();
 	}
 
 	public void getUiHomePrestamo() {

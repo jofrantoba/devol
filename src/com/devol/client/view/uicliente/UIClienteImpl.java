@@ -1,6 +1,7 @@
 package com.devol.client.view.uicliente;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -17,6 +18,7 @@ import com.devol.client.view.uihomecobrador.UIHomeCobrador;
 import com.devol.client.view.uihomeprestamo.UIHomePrestamo;
 import com.devol.client.view.uihomesesion.UIHomeSesion;
 import com.devol.i18n.DevolConstants;
+import com.devol.shared.TableToExcel;
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Image;
@@ -228,7 +230,7 @@ public class UIClienteImpl extends UICliente {
 		lista = new ArrayList<ClienteProxy>();
 		FACTORY.initialize(EVENTBUS);
 		ContextGestionCobranza context = FACTORY.contextGestionCobranza();
-		Request<List<ClienteProxy>> request = context.listarGestorClienteByCobrador(beanGestorCobranza.getIdUsuarioCobrador());
+		Request<List<ClienteProxy>> request = context.listarGestorClienteByGestorCobranza(beanGestorCobranza.getIdGestorCobranza());
 		request.fire(new Receiver<List<ClienteProxy>>() {
 			@Override
 			public void onSuccess(List<ClienteProxy> response) {				
@@ -321,5 +323,13 @@ public class UIClienteImpl extends UICliente {
 	
 	public void reloadTitleCobrador(){
 		uiHomeCobrador.getHeader().getLblTitulo().setText("Cobrador: "+this.beanGestorCobranza.getBeanUsuarioCobrador().getNombres()+" "+beanGestorCobranza.getBeanUsuarioCobrador().getApellidos());
+	}
+	
+	@Override
+	public void exportarData() {
+		// TODO Auto-generated method stub
+		Date date=new Date();
+		String nameFile="client-"+date.getTime()+".xls";
+		TableToExcel.save(grid,nameFile);
 	}
 }

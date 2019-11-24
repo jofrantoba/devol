@@ -43,6 +43,7 @@ public class UIRegistrarUsuarioImpl extends UIRegistrarUsuario {
 		bean.setApellidos(txtApellido.getText());
 		bean.setCorreo(txtCorreo.getText());
 		bean.setClave(txtClave.getText());
+		bean.setIsRolOwner(true);
 		Request<Boolean> request = context.insertarUsuario(bean);
 		request.fire(new Receiver<Boolean>() {
 			

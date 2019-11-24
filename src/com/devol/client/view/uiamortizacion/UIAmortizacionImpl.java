@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.devol.client.beanproxy.AmortizacionProxy;
+import com.devol.client.beanproxy.GestorCobranzaProxy;
 import com.devol.client.requestfactory.ContextGestionPrestamo;
 import com.devol.client.requestfactory.FactoryGestion;
 import com.devol.client.util.Notification;
@@ -27,6 +28,7 @@ public class UIAmortizacionImpl extends UIAmortizacion {
 	private List<AmortizacionProxy> lista;
 	private UIHomePrestamo uiHomePrestamo;
 	private UIHomeCobranza uiHomeCobranza;	
+	private GestorCobranzaProxy beanGestorCobranza;
 
 	public UIAmortizacionImpl(UIHomePrestamo uiHomePrestamo) {
 		this.uiHomePrestamo = uiHomePrestamo;
@@ -44,11 +46,20 @@ public class UIAmortizacionImpl extends UIAmortizacion {
 	public void goToUIMantAmortizacion(String modo) {		
 		// TODO Auto-generated method stub
 				if (modo.equalsIgnoreCase(constants.modoNuevo())) {
-					uiHomePrestamo.getUiMantAmortizacionImpl().setModo(modo);
-					uiHomePrestamo.getUiMantAmortizacionImpl().setBean(null,beanPrestamo,lblADevolver.getText());
-					uiHomePrestamo.getUiMantAmortizacionImpl().activarCampos();
-					uiHomePrestamo.getContainer().showWidget(4);					
-					uiHomePrestamo.getUiMantAmortizacionImpl().refreshScroll();
+					if(uiHomePrestamo!=null){
+						uiHomePrestamo.getUiMantAmortizacionImpl().setModo(modo);
+						uiHomePrestamo.getUiMantAmortizacionImpl().setBean(null,beanPrestamo,lblADevolver.getText());
+						uiHomePrestamo.getUiMantAmortizacionImpl().activarCampos();
+						uiHomePrestamo.getContainer().showWidget(4);					
+						uiHomePrestamo.getUiMantAmortizacionImpl().refreshScroll();
+					}else if(uiHomeCobranza!=null){
+						uiHomeCobranza.getUiMantAmortizacionImpl().setModo(modo);
+						uiHomeCobranza.getUiMantAmortizacionImpl().setBean(null,beanPrestamo,lblADevolver.getText());
+						uiHomeCobranza.getUiMantAmortizacionImpl().setBeanGestorCobranza(beanGestorCobranza);
+						uiHomeCobranza.getUiMantAmortizacionImpl().activarCampos();
+						uiHomeCobranza.getContainer().showWidget(3);					
+						uiHomeCobranza.getUiMantAmortizacionImpl().refreshScroll();
+					}
 				} else if (modo.equalsIgnoreCase(constants.modoEliminar())) {
 					AmortizacionProxy bean = grid.getSelectionModel().getSelectedObject();
 					//Window.alert(bean.getIdCliente());
@@ -70,11 +81,18 @@ public class UIAmortizacionImpl extends UIAmortizacion {
 	@Override
 	public void goToUIPrestamo() {
 		// TODO Auto-generated method stub
-		if(!uiHomePrestamo.getModo().equals("HISTORIAL")){
-			uiHomePrestamo.getUIPrestamoImpl().sendPrestamoHistorial(beanPrestamo.getIdPrestamo());
-		}		
-		uiHomePrestamo.getContainer().showWidget(0);
-		uiHomePrestamo.getUIPrestamoImpl().cargarTabla();			
+		if(uiHomePrestamo!=null){
+			if(!uiHomePrestamo.getModo().equals("HISTORIAL")){
+				uiHomePrestamo.getUIPrestamoImpl().sendPrestamoHistorial(beanPrestamo.getIdPrestamo());
+			}		
+			uiHomePrestamo.getContainer().showWidget(0);
+			uiHomePrestamo.getUIPrestamoImpl().cargarTabla();
+		}else if(uiHomeCobranza!=null){
+			uiHomeCobranza.getUIPrestamoImpl().sendPrestamoHistorial(beanPrestamo.getIdPrestamo());
+			uiHomeCobranza.getContainer().showWidget(1);
+			uiHomeCobranza.getUIPrestamoImpl().cargarPrestamoGestorCobranza();
+		}
+					
 	}
 	
 	@Override
@@ -110,16 +128,28 @@ public class UIAmortizacionImpl extends UIAmortizacion {
 	}
 	
 	@Override
-	public void activarModoPrestamo() {
+	public void activarModoPrestamo() {		
 		// TODO Auto-generated method stub
-		if(uiHomePrestamo.getModo().equals("HISTORIAL")){
-			btnNuevo.setVisible(false);	
+		if(uiHomePrestamo!=null){
+			if(uiHomePrestamo.getModo().equals("HISTORIAL")){
+				btnNuevo.setVisible(false);	
+				btnEliminar.setVisible(false);
+			}else{
+				btnNuevo.setVisible(true);
+				btnEliminar.setVisible(true);
+			}
+		}else if(uiHomeCobranza!=null){
 			btnEliminar.setVisible(false);
-		}else{
 			btnNuevo.setVisible(true);
-			btnEliminar.setVisible(true);
+			//pnlEstadoPrestamo.setVisible(false);
 		}
+		
 	}
+
+	public void setBeanGestorCobranza(GestorCobranzaProxy beanGestorCobranza) {
+		this.beanGestorCobranza = beanGestorCobranza;
+	}
+	
 	
 
 }

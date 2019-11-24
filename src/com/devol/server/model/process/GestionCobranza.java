@@ -1,6 +1,7 @@
 package com.devol.server.model.process;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -18,6 +19,7 @@ import com.devol.server.model.dao.PMF;
 import com.devol.server.model.logic.LogicCliente;
 import com.devol.server.model.logic.LogicGestorCliente;
 import com.devol.server.model.logic.LogicGestorCobranza;
+import com.devol.server.model.logic.LogicPrestamo;
 import com.devol.server.model.logic.LogicUsuario;
 import com.devol.shared.AESencrypt;
 import com.devol.shared.BeanParametro;
@@ -177,7 +179,7 @@ public class GestionCobranza {
 		PersistenceManager pm = null;
 		Transaction tx = null;
 		try{
-			pm = PMF.getPMF().getPersistenceManager();
+			pm = PMF.getPMF().getPersistenceManager();			
 			tx = pm.currentTransaction();
 			tx.begin();
 			Date fecha=new Date();
@@ -185,16 +187,18 @@ public class GestionCobranza {
 			GestorCobranza bean=logicGestorCobranza.getBean(idGestorCobranza);
 			if(bean.getEstado().equalsIgnoreCase("D")){
 				throw new UnknownException("Cobrador ya esta desactivado");
-			}
+			}		
 			LogicGestorCliente logicGestorCliente=new LogicGestorCliente(pm);
-			List<GestorCliente> listaGestorCliente=(List<GestorCliente>)logicGestorCliente.getListarBeanByCobrador(bean.getIdUsuarioCobrador());
+			List<GestorCliente> listaGestorCliente=(List<GestorCliente>)logicGestorCliente.getListarBeanByGestorCobranza(idGestorCobranza);			
 			Iterator<GestorCliente> iterador=listaGestorCliente.iterator();
+			//LogicPrestamo logicPrestamo=new LogicPrestamo(pm);
 			while(iterador.hasNext()){
 				GestorCliente beanGestorCliente=iterador.next();
 				beanGestorCliente.setFechaFin(fecha);
 				beanGestorCliente.setVersion(fecha.getTime());
 				beanGestorCliente.setEstado("D");
 				beanGestorCliente.getBeanCliente().setClienteAsignado(0);
+				//logicPrestamo.desactivarGestorClientePrestamo(beanGestorCliente.getIdCliente());
 			}
 			//logicGestorCliente.desactivarGestorClienteByCobrador(bean.getIdUsuarioCobrador());
 			bean.setFechaFin(fecha);
@@ -245,6 +249,7 @@ public class GestionCobranza {
 			List<Cliente> listaCliente=(List<Cliente>)pm.detachCopyAll(logicCliente.getListarBeanIn(idListCliente));
 			Iterator<Cliente> iterador=listaCliente.iterator();
 			List<BeanParametro> param=new ArrayList<BeanParametro>();
+			//LogicPrestamo logicPrestamo=new LogicPrestamo(pm);
 			while(iterador.hasNext()){
 				Cliente beanCliente=pm.detachCopy(iterador.next());
 				beanCliente.setClienteAsignado(1);
@@ -252,7 +257,7 @@ public class GestionCobranza {
 				GestorCliente gc=new GestorCliente();
 				gc.setIdGestorCliente(KeyFactory.keyToString(KeyFactory.createKey(GestorCliente.class.getSimpleName(), java.util.UUID.randomUUID().toString())));
 				gc.setBeanCliente(beanCliente);
-				gc.setIdCliente(beanCliente.getIdCliente());
+				gc.setIdCliente(beanCliente.getIdCliente());				
 				gc.setBeanGestorCobranza(beanGc);
 				gc.setIdGestorCobranza(beanGc.getIdGestorCobranza());
 				gc.setBeanUsuarioCobrador(beanUserCobrador);
@@ -267,6 +272,7 @@ public class GestionCobranza {
 				parametro.setBean(gc);
 				parametro.setTipoOperacion("I");
 				param.add(parametro);
+				//logicPrestamo.asignarGestorClientePrestamo(gc.getIdGestorCliente(), gc.getIdGestorCobranza(), beanCliente.getIdCliente());
 			}												
 			LogicGestorCliente logicGestorCliente=new LogicGestorCliente(pm);
 			Boolean resultado= logicGestorCliente.mantenimiento(param);		
@@ -392,6 +398,48 @@ public class GestionCobranza {
 			pm.setDetachAllOnCommit(true);
 			LogicGestorCliente logic = new LogicGestorCliente(pm);
 			List<GestorCliente> resultado = (List<GestorCliente>) pm.detachCopyAll(logic.getListarBeanByCobrador(idUsuarioCobrador));
+			Iterator<GestorCliente> iterador=resultado.iterator();
+			List<Cliente> listaGestorCliente=new ArrayList<Cliente>();
+			while(iterador.hasNext()){
+				GestorCliente beanGestorCliente=pm.detachCopy(iterador.next());
+				Cliente beanCliente=pm.detachCopy(beanGestorCliente.getBeanCliente());
+				beanCliente.setIdGestorCliente(beanGestorCliente.getIdGestorCliente());
+				beanCliente.setIdGestorCobranza(beanGestorCliente.getIdGestorCobranza());
+				beanCliente.setIdUsuarioCobrador(beanGestorCliente.getIdUsuarioCobrador());
+				beanCliente.setIdUsuarioOwner(beanGestorCliente.getIdUsuarioOwner());
+				listaGestorCliente.add(beanCliente);
+			}
+			tx.commit();
+			return listaGestorCliente;
+		} catch (Exception ex) {
+			LOG.warning(ex.getMessage());
+			LOG.info(ex.getLocalizedMessage());
+			throw new UnknownException(ex.getMessage());
+		} finally {
+			if (!pm.isClosed()) {
+				if (tx.isActive()) {
+					tx.rollback();
+				}
+				pm.close();
+			}
+		}
+
+	}
+	
+	public static List<Cliente> listarGestorClienteByGestorCobranza(String idGestorCobranza) throws UnknownException {
+
+		PersistenceManager pm = null;
+		Transaction tx = null;		
+		try {
+			pm = PMF.getPMF().getPersistenceManager();
+			pm.getFetchGroup(GestorCliente.class, "GestorClienteGroup").addMember("beanCliente");
+			pm.getFetchPlan().addGroup("GestorClienteGroup");
+			pm.getFetchPlan().setMaxFetchDepth(1);
+			tx = pm.currentTransaction();
+			tx.begin();
+			pm.setDetachAllOnCommit(true);
+			LogicGestorCliente logic = new LogicGestorCliente(pm);
+			List<GestorCliente> resultado = (List<GestorCliente>) pm.detachCopyAll(logic.getListarBeanByGestorCobranza(idGestorCobranza));
 			Iterator<GestorCliente> iterador=resultado.iterator();
 			List<Cliente> listaGestorCliente=new ArrayList<Cliente>();
 			while(iterador.hasNext()){

@@ -52,5 +52,29 @@ public interface AmortizacionProxy extends EntityProxy {
 	public Double getTotalAmortizado();
 
 	public void setTotalAmortizado(Double totalAmortizado);
+	
+	public String getIdUsuarioCobrador();
+
+	public void setIdUsuarioCobrador(String idUsuarioCobrador);
+
+	public String getNombresCobrador();
+
+	public void setNombresCobrador(String nombresCobrador);
+
+	public String getApellidosCobrador();
+
+	public void setApellidosCobrador(String apellidosCobrador);
+	
+	public String getIdGestorCobranza();
+
+	public void setIdGestorCobranza(String idGestorCobranza);
+
+	public String getIdGestorCliente();
+
+	public void setIdGestorCliente(String idGestorCliente);
+	
+	public String getRolCobrador();
+
+	public void setRolCobrador(String rolCobrador);
 
 }

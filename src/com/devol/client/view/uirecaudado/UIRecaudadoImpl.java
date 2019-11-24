@@ -11,6 +11,7 @@ import com.devol.client.util.Notification;
 import com.devol.client.util.PopupProgress;
 import com.devol.client.view.uihomereport.UIHomeReport;
 import com.devol.client.view.uihomesesion.UIHomeSesion;
+import com.devol.shared.TableToExcel;
 import com.google.gwt.core.shared.GWT;
 import com.google.web.bindery.event.shared.EventBus;
 import com.google.web.bindery.event.shared.SimpleEventBus;
@@ -73,5 +74,13 @@ public class UIRecaudadoImpl extends UIRecaudado {
 		});
 		}
 	}			
+	
+	@Override
+	public void exportarData() {
+		// TODO Auto-generated method stub
+		Date date=new Date();
+		String nameFile="recaudado-"+date.getTime()+".xls";
+		TableToExcel.save(grid,nameFile);
+	}
 	
 }

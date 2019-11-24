@@ -63,6 +63,9 @@ public interface MyResource extends ClientBundle {
 
 	@Source("image/pago32.png")
 	ImageResource getImgPago32();
+	
+	@Source("image/prestamo32.png")
+	ImageResource getImgPrestamo32();
 
 	@Source("image/back32.png")
 	ImageResource getImgBack32();
@@ -135,5 +138,8 @@ public interface MyResource extends ClientBundle {
 	
 	@Source("image/groupclientes32.png")
 	ImageResource getImgGroupClientes32();
+	
+	@Source("image/exportar32.png")
+	ImageResource getImgExportar32();
 
 }

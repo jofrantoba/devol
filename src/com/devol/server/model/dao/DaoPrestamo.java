@@ -1,12 +1,16 @@
 package com.devol.server.model.dao;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
 
+import com.devol.server.model.bean.Cliente;
 import com.devol.server.model.bean.Prestamo;
 import com.devol.shared.BeanParametro;
 import com.devol.shared.UnknownException;
@@ -41,7 +45,7 @@ public class DaoPrestamo {
 	public Collection<Prestamo> getListarBeanByUsuario(String idUsuario,String estado) throws UnknownException {		
 		Query query = pm.newQuery(Prestamo.class);		
 		query.setFilter("idUsuario == paramIdUsuario && estado == paramEstado");		
-		query.setOrdering("version desc");
+		query.setOrdering("fecha desc");
 		query.declareParameters("String paramIdUsuario,String paramEstado");		
 		try{
 		List<Prestamo> lista=new ArrayList<Prestamo>();
@@ -52,5 +56,43 @@ public class DaoPrestamo {
 		}finally{
 			query.closeAll();
 		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	public Collection<Prestamo> getListarByClientes(List<String> listaIdCliente,String estado) throws UnknownException {
+		Query query = pm.newQuery(Prestamo.class);
+		query.setFilter("paramIdListCliente.contains(idCliente) && estado == paramEstado");
+		query.setOrdering("fecha desc");
+		query.declareImports("import java.util.List;");
+		query.declareParameters("List paramIdListCliente,String paramEstado");
+		try{
+		List<Prestamo> lista=new ArrayList<Prestamo>();		
+		lista.addAll((List<Prestamo>)query.execute(listaIdCliente,estado));
+		return lista;
+		}catch(Exception ex){			
+			throw new UnknownException(ex.getMessage());
+		}finally{
+			query.closeAll();
+		}
+	}
+	
+	public void asignarGestorClientePrestamo(String idGestorCliente,String idGestorCobranza,String idCliente){		
+		Query query = pm.newQuery("UPDATE com.devol.server.model.bean.Prestamo SET this.idGestorCobranza==:paramIdGestorCobranza,this.idGestorCliente==:paramIdGestorCliente WHERE this.idCliente == :paramIdCliente && this.estado==:paramEstado");
+		Map params = new HashMap();
+		params.put("paramIdGestorCobranza", idGestorCobranza);
+		params.put("paramIdGestorCliente", idGestorCliente);
+		params.put("paramIdCliente", idCliente);
+		params.put("paramEstado", "P");
+		query.execute(params);		
+	}
+	
+	public void desactivarGestorClientePrestamo(String idCliente){		
+		Query query = pm.newQuery("UPDATE com.devol.server.model.bean.Prestamo SET this.idGestorCobranza==:paramIdGestorCobranza,this.idGestorCliente==:paramIdGestorCliente WHERE this.idCliente == :paramIdCliente && this.estado==:paramEstado");
+		Map params = new HashMap();
+		params.put("paramIdGestorCobranza", null);
+		params.put("paramIdGestorCliente", null);
+		params.put("paramIdCliente", idCliente);
+		params.put("paramEstado", "P");
+		query.execute(params);		
 	}
 }

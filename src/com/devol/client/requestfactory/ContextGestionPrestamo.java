@@ -19,6 +19,8 @@ public interface ContextGestionPrestamo extends RequestContext {
 	Request<Boolean> eliminarPrestamo(PrestamoProxy bean);
 
 	Request<List<PrestamoProxy>> listarPrestamo();
+	
+	Request<List<PrestamoProxy>> listarPrestamoByGestorCobranza(String idGestorCobranza);
 
 	Request<List<PrestamoProxy>> listarPrestamoByUsuario(String idUsuario,
 			String estado);
@@ -32,4 +34,5 @@ public interface ContextGestionPrestamo extends RequestContext {
 	Request<Boolean> eliminarAmortizacion(AmortizacionProxy bean);
 	
 	Request<Boolean> sendPrestamoHistorial(String idPrestamo);
+		
 }

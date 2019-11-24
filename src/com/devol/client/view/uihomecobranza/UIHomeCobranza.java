@@ -11,6 +11,8 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DeckPanel;
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.googlecode.mgwt.ui.client.MGWT;
+import com.googlecode.mgwt.ui.client.MGWTSettings;
 
 public class UIHomeCobranza extends Composite {
 	private DevolConstants constants = GWT.create(DevolConstants.class);
@@ -18,9 +20,9 @@ public class UIHomeCobranza extends Composite {
 	private UIHomeHeader header;
 	private DeckPanel container;
 	private UIPrestamistaImpl uiPrestamista;
-	//private UIPrestamoImpl uiPrestamo;		
-	//private UIAmortizacionImpl uiAmortizacion;
-	//private UIMantAmortizacionImpl uiMantAmortizacion;
+	private UIPrestamoImpl uiPrestamo;		
+	private UIAmortizacionImpl uiAmortizacion;
+	private UIMantAmortizacionImpl uiMantAmortizacion;
 	private String modo;
 
 	public UIHomeCobranza(String modo) {
@@ -46,14 +48,14 @@ public class UIHomeCobranza extends Composite {
 		uiPrestamista = new UIPrestamistaImpl(this);		
 		container.add(uiPrestamista);
 
-		/*uiPrestamo = new UIPrestamoImpl(this);
+		uiPrestamo = new UIPrestamoImpl(this);
 		container.add(uiPrestamo);		
 		
 		uiAmortizacion = new UIAmortizacionImpl(this);
 		container.add(uiAmortizacion);
 		
 		uiMantAmortizacion=new UIMantAmortizacionImpl(this);
-		container.add(uiMantAmortizacion);*/
+		container.add(uiMantAmortizacion);
 		
 		container.showWidget(0);		
 	}
@@ -61,6 +63,7 @@ public class UIHomeCobranza extends Composite {
 	private void style() {
 		// TODO Auto-generated method stub
 		Window.setMargin("0px");
+		MGWT.applySettings(MGWTSettings.getAppSetting());
 		/*
 		 * int height = Window.getClientHeight(); container.setHeight((height -
 		 * 42) + "px");
@@ -79,7 +82,7 @@ public class UIHomeCobranza extends Composite {
 	}
 
 
-	/*public UIPrestamoImpl getUIPrestamoImpl() {
+	public UIPrestamoImpl getUIPrestamoImpl() {
 		return uiPrestamo;
 	}
 		
@@ -90,7 +93,7 @@ public class UIHomeCobranza extends Composite {
 
 	public UIMantAmortizacionImpl getUiMantAmortizacionImpl() {
 		return uiMantAmortizacion;
-	}*/
+	}
 
 	public UIHomeHeader getHeader() {
 		return header;
@@ -98,6 +101,10 @@ public class UIHomeCobranza extends Composite {
 	
 	public void reloadTitle(){
 		header.getLblTitulo().setText("Prestamistas");
+	}
+	
+	public void setTitle(String textTitle){
+		header.getLblTitulo().setText(textTitle);
 	}
 
 	public String getModo() {

@@ -4,4 +4,5 @@ import java.util.Date;
 
 public interface InterUIRecaudado {
 	void cargarTabla(Date fechaIni);
+	void exportarData();
 }

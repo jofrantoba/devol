@@ -52,7 +52,9 @@ public class GridPrestamista extends DataGrid<GestorCobranzaProxy> {
         this.setSelectionModel(selectionModel);
     }   
 
-    private void initColumns() {    	
+    private void initColumns() {
+    	correo.setSortable(true);
+    	prestamista.setSortable(true);
         this.addColumn(correo, constants.correo());
         this.addColumn(prestamista, constants.prestamista());               
     }       

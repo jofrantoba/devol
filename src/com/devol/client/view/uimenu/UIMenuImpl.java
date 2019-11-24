@@ -17,7 +17,39 @@ public class UIMenuImpl extends UIMenu {
 	private UIHomeSesion uiHomeSesion;
 
 	public UIMenuImpl(UIHomeSesion uiHomeSesion) {
-		this.uiHomeSesion=uiHomeSesion;					
+		this.uiHomeSesion=uiHomeSesion;		
+	}
+	
+	@Override
+	public void privilegiosMenu() {		
+		// TODO Auto-generated method stub
+		if(UIHomeSesion.usuario.getIsRolOwner() || UIHomeSesion.usuario.getIsRolAdmin()){
+			cellList.setVisible(cellList.getRowElement(0), true);
+			cellList.setVisible(cellList.getRowElement(1), true);
+			cellList.setVisible(cellList.getRowElement(2), true);
+			cellList.setVisible(cellList.getRowElement(3), true);
+			cellList.setVisible(cellList.getRowElement(4), true);
+			cellList.setVisible(cellList.getRowElement(5), true);
+			cellList.setVisible(cellList.getRowElement(6), true);	
+			return;
+		}else if(UIHomeSesion.usuario.getIsRolGestorCobranza()){
+			cellList.setVisible(cellList.getRowElement(0), false);
+			cellList.setVisible(cellList.getRowElement(1), false);
+			cellList.setVisible(cellList.getRowElement(2), true);
+			cellList.setVisible(cellList.getRowElement(3), false);
+			cellList.setVisible(cellList.getRowElement(4), false);
+			cellList.setVisible(cellList.getRowElement(5), false);
+			cellList.setVisible(cellList.getRowElement(6), true);
+			return;
+		}else{
+			cellList.setVisible(cellList.getRowElement(0), true);
+			cellList.setVisible(cellList.getRowElement(1), true);
+			cellList.setVisible(cellList.getRowElement(2), true);
+			cellList.setVisible(cellList.getRowElement(3), true);
+			cellList.setVisible(cellList.getRowElement(4), true);
+			cellList.setVisible(cellList.getRowElement(5), true);
+			cellList.setVisible(cellList.getRowElement(6), true);
+		}
 	}
 
 	@Override
@@ -43,7 +75,7 @@ public class UIMenuImpl extends UIMenu {
 		}else if (item.equalsIgnoreCase(constants.cobranza())) {
 			/*UIHomePrestamo uiHomePrestamo=new UIHomePrestamo("PRESTAMO");*/
 			/*UIHomeSesion.animationHelper.goTo(uiHomePrestamo, Animations.SLIDE);*/
-			UIHomeSesion.uiHomeSesion.getUiHomeCobranza();
+			UIHomeSesion.uiHomeSesion.getUiHomeCobranza();			
 		}else if (item.equalsIgnoreCase(constants.historial())) {
 			/*UIHomePrestamo uiHomePrestamo=new UIHomePrestamo("HISTORIAL");*/
 			/*UIHomeSesion.animationHelper.goTo(uiHomePrestamo, Animations.SLIDE);*/

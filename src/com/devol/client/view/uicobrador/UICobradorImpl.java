@@ -1,6 +1,7 @@
 package com.devol.client.view.uicobrador;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import com.devol.client.beanproxy.GestorCobranzaProxy;
@@ -11,6 +12,7 @@ import com.devol.client.util.PopupProgress;
 import com.devol.client.view.uihomecobrador.UIHomeCobrador;
 import com.devol.client.view.uihomesesion.UIHomeSesion;
 import com.devol.i18n.DevolConstants;
+import com.devol.shared.TableToExcel;
 import com.google.gwt.core.shared.GWT;
 import com.google.web.bindery.event.shared.EventBus;
 import com.google.web.bindery.event.shared.SimpleEventBus;
@@ -103,6 +105,14 @@ public class UICobradorImpl extends UICobrador {
 		uiHomeCobrador.getUiClienteImpl().setBeanGestorCobranza(bean);
 		uiHomeCobrador.getUiClienteImpl().cargarClientesAsignados();
 		uiHomeCobrador.getContainer().showWidget(2);
+	}
+	
+	@Override
+	public void exportarData() {
+		// TODO Auto-generated method stub
+		Date date=new Date();
+		String nameFile="cobradores-"+date.getTime()+".xls";
+		TableToExcel.save(grid,nameFile);
 	}
 	
 }

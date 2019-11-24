@@ -81,4 +81,12 @@ public interface PrestamoProxy extends EntityProxy {
 	public String getApellido();
 
 	public void setApellido(String apellido);
+	
+	public String getTipoPrestamo();
+
+	public void setTipoPrestamo(String tipoPrestamo);
+
+	public String getGlosa();
+
+	public void setGlosa(String glosa);
 }

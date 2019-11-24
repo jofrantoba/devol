@@ -11,5 +11,7 @@ public interface InterUICobrador {
 	void selecciona();
 	
 	void goToUiCliente();
+	
+	void exportarData();
 
 }

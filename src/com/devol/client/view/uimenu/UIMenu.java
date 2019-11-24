@@ -117,7 +117,7 @@ public class UIMenu extends Composite implements InterUIMenu,ResizeHandler {
 				lista.add(constants.historial());
 				lista.add(constants.reportes());		
 				lista.add(constants.salir());						
-				cellList.setRowData(lista);		
+				cellList.setRowData(lista);			
 	}
 		
 
@@ -148,6 +148,12 @@ public class UIMenu extends Composite implements InterUIMenu,ResizeHandler {
 
 	public List<String> getLista() {
 		return lista;
+	}
+
+	@Override
+	public void privilegiosMenu() {
+		// TODO Auto-generated method stub
+		
 	}
 	
 	

@@ -11,7 +11,6 @@ import javax.jdo.annotations.PrimaryKey;
 import com.devol.shared.StringHex;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
-import com.google.appengine.datanucleus.annotations.Unowned;
 
 @PersistenceCapable(detachable="true")
 public class Amortizacion implements Serializable {
@@ -40,12 +39,11 @@ public class Amortizacion implements Serializable {
 	@NotPersistent
 	private String codAmortizacion;
 	@NotPersistent
-	private Double totalAmortizado;
-	@Persistent
-	@Unowned
-	private GestorCliente beanGestorCliente;
+	private Double totalAmortizado;	
 	@Persistent
 	private String idGestorCliente;
+	@Persistent
+	private String idGestorCobranza;
 	@Persistent
 	private String rolCobrador;
 	@Persistent
@@ -176,14 +174,14 @@ public class Amortizacion implements Serializable {
 
 	public void setTotalAmortizado(Double totalAmortizado) {
 		this.totalAmortizado = totalAmortizado;
+	}	
+
+	public String getIdGestorCobranza() {
+		return idGestorCobranza;
 	}
 
-	public GestorCliente getBeanGestorCliente() {
-		return beanGestorCliente;
-	}
-
-	public void setBeanGestorCliente(GestorCliente beanGestorCliente) {
-		this.beanGestorCliente = beanGestorCliente;
+	public void setIdGestorCobranza(String idGestorCobranza) {
+		this.idGestorCobranza = idGestorCobranza;
 	}
 
 	public String getIdGestorCliente() {

@@ -61,6 +61,10 @@ public class Prestamo implements Serializable {
 	private String valueGeneratorId;
 	@NotPersistent
 	private String idCreatePrestamo;
+	@Persistent
+	private String tipoPrestamo;
+	@Persistent
+	private String glosa;
 	
 
 	public String getIdPrestamo() {
@@ -238,7 +242,23 @@ public class Prestamo implements Serializable {
 
 	public void setApellido(String apellido) {
 		this.apellido = apellido;
-	}		
+	}
+
+	public String getTipoPrestamo() {
+		return tipoPrestamo;
+	}
+
+	public void setTipoPrestamo(String tipoPrestamo) {
+		this.tipoPrestamo = tipoPrestamo;
+	}
+
+	public String getGlosa() {
+		return glosa;
+	}
+
+	public void setGlosa(String glosa) {
+		this.glosa = glosa;
+	}	
 	
 	
 

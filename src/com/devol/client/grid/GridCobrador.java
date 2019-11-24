@@ -53,6 +53,9 @@ public class GridCobrador extends DataGrid<GestorCobranzaProxy> {
     }   
 
     private void initColumns() {
+    	dni.setSortable(true);
+    	correo.setSortable(true);
+    	cobrador.setSortable(true);
     	this.addColumn(dni, constants.dni());
         this.addColumn(correo, constants.correo());
         this.addColumn(cobrador, constants.cobrador());               

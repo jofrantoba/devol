@@ -1,6 +1,7 @@
 package com.devol.server.model.process;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -17,8 +18,10 @@ import com.devol.server.model.bean.Prestamo;
 import com.devol.server.model.dao.PMF;
 import com.devol.server.model.logic.LogicAmortizacion;
 import com.devol.server.model.logic.LogicCliente;
+import com.devol.server.model.logic.LogicGestorCliente;
 import com.devol.server.model.logic.LogicPrestamo;
 import com.devol.shared.BeanParametro;
+import com.devol.shared.SharedUtil;
 import com.devol.shared.UnknownException;
 
 public class GestionPrestamo {
@@ -96,7 +99,10 @@ public class GestionPrestamo {
 				beanAux.setFecha(bean.getFecha());				
 				beanAux.setMonto(bean.getMonto());
 				beanAux.setTasa(bean.getTasa());
-				beanAux.setaDevolver(bean.getaDevolver());				
+				beanAux.setaDevolver(bean.getaDevolver());
+				beanAux.setTipoPrestamo(bean.getTipoPrestamo());
+				beanAux.setGlosa(bean.getGlosa());
+				beanAux.setEstado(bean.getEstado());
 				//parametro.setBean(beanAux);
 				//parametro.setTipoOperacion("A");
 				//resultado= logic.mantenimiento(parametro);
@@ -135,6 +141,8 @@ public class GestionPrestamo {
 					beanPrestamo.setFecha(bean.getFecha());
 					beanPrestamo.setMonto(bean.getMonto());
 					beanPrestamo.setTasa(bean.getTasa());
+					beanPrestamo.setTipoPrestamo(bean.getTipoPrestamo());
+					beanPrestamo.setGlosa(bean.getGlosa());
 					beanPrestamo.setaDevolver(bean.getaDevolver());
 					beanPrestamo.setDevuelto(bean.getDevuelto());
 					beanPrestamo.setEstado(bean.getEstado());
@@ -248,6 +256,92 @@ public class GestionPrestamo {
 			throw new UnknownException(ex.getMessage());
 		} finally {
 			if (!pm.isClosed()) {
+				pm.close();
+			}
+		}
+
+	}
+	
+	public static List<Prestamo> listarPrestamoByCobrador(String idUsuarioCobrador) throws UnknownException {
+
+		PersistenceManager pm = null;
+		Transaction tx = null;
+		try {
+			pm = PMF.getPMF().getPersistenceManager();
+			PMF.getPMF().getFetchGroup(Prestamo.class, "PrestamoGroup").addMembers("beanCliente");
+			pm.getFetchPlan().addGroup("PrestamoGroup");
+			pm.getFetchPlan().setMaxFetchDepth(1);
+			tx = pm.currentTransaction();
+			tx.begin();
+			pm.setDetachAllOnCommit(true);
+			LogicGestorCliente logicGestorCliente=new LogicGestorCliente(pm);
+			List<String> idClientes=(List<String>)logicGestorCliente.getIdClienteByCobrador(idUsuarioCobrador);
+			HashSet<String> hashCliente=new HashSet<String>();
+			hashCliente.addAll(idClientes);
+			ArrayList<ArrayList<String>> repositorio=SharedUtil.repositorio15(hashCliente);
+			Iterator<ArrayList<String>> iterRepo=repositorio.iterator();
+			LogicPrestamo logic = new LogicPrestamo(pm);
+			ArrayList<Prestamo> resultado=new ArrayList<Prestamo>(); 
+			while(iterRepo.hasNext()){
+				ArrayList<String> lista=iterRepo.next();
+				List<Prestamo> resultadoParte = (List<Prestamo>) pm.detachCopyAll(logic
+						.getListarByClientes(lista, "P"));
+				resultado.addAll(resultadoParte);
+			}						
+			  tx.commit();
+			return resultado;
+		} catch (Exception ex) {
+			LOG.warning(ex.getMessage());
+			LOG.info(ex.getLocalizedMessage());
+			throw new UnknownException(ex.getMessage());
+		} finally {
+			if (!pm.isClosed()) {
+				if (tx.isActive()) {
+					tx.rollback();
+				}
+				pm.close();
+			}
+		}
+
+	}
+	
+	public static List<Prestamo> listarPrestamoByGestorCobranza(String idGestorCobranza) throws UnknownException {
+
+		PersistenceManager pm = null;
+		Transaction tx = null;
+		try {
+			pm = PMF.getPMF().getPersistenceManager();
+			PMF.getPMF().getFetchGroup(Prestamo.class, "PrestamoGroup").addMembers("beanCliente");
+			pm.getFetchPlan().addGroup("PrestamoGroup");
+			pm.getFetchPlan().setMaxFetchDepth(1);
+			tx = pm.currentTransaction();
+			tx.begin();
+			pm.setDetachAllOnCommit(true);
+			LogicGestorCliente logicGestorCliente=new LogicGestorCliente(pm);
+			List<String> idClientes=(List<String>)logicGestorCliente.getIdClienteByGestorCobranza(idGestorCobranza);
+			HashSet<String> hashCliente=new HashSet<String>();
+			hashCliente.addAll(idClientes);
+			ArrayList<ArrayList<String>> repositorio=SharedUtil.repositorio15(hashCliente);
+			Iterator<ArrayList<String>> iterRepo=repositorio.iterator();
+			LogicPrestamo logic = new LogicPrestamo(pm);
+			ArrayList<Prestamo> resultado=new ArrayList<Prestamo>(); 
+			while(iterRepo.hasNext()){
+				ArrayList<String> lista=iterRepo.next();
+				List<Prestamo> resultadoParte = (List<Prestamo>) pm.detachCopyAll(logic
+						.getListarByClientes(lista, "P"));
+				resultado.addAll(resultadoParte);
+			}						
+			  tx.commit();
+			return resultado;
+		} catch (Exception ex) {
+			LOG.warning(ex.getMessage());
+			LOG.info(ex.getLocalizedMessage());
+			throw new UnknownException(ex.getMessage());
+		} finally {
+			if (!pm.isClosed()) {
+				if (tx.isActive()) {
+					tx.rollback();
+				}
 				pm.close();
 			}
 		}

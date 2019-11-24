@@ -60,6 +60,59 @@ public class DaoGestorCliente {
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
+	public Collection<GestorCliente> getListarBeanByGestorCobranza(String idGestorCobranza) throws UnknownException {
+		Query query = pm.newQuery(GestorCliente.class);
+		query.setFilter("idGestorCobranza == paramIdGestorCobranza && estado==paramEstado");
+		query.setOrdering("version desc");
+		query.declareParameters("String paramIdGestorCobranza,String paramEstado");
+		try{
+		List<GestorCliente> lista=new ArrayList<GestorCliente>();
+		lista.addAll((List<GestorCliente>)query.execute(idGestorCobranza,"A"));
+		return lista;
+		}catch(Exception ex){			
+			throw new UnknownException(ex.getMessage());
+		}finally{
+			query.closeAll();
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	public Collection<String> getIdClienteByCobrador(String idUsuarioCobrador) throws UnknownException {
+		Query query = pm.newQuery(GestorCliente.class);
+		query.setFilter("idUsuarioCobrador == paramIdUsuarioCobrador && estado==paramEstado");
+		query.setOrdering("version desc");
+		query.declareParameters("String paramIdUsuarioCobrador,String paramEstado");
+		query.setResult("idCliente");
+		try{
+		List lista=new ArrayList();
+		lista.addAll((List<GestorCliente>)query.execute(idUsuarioCobrador,"A"));		
+		return lista;
+		}catch(Exception ex){			
+			throw new UnknownException(ex.getMessage());
+		}finally{
+			query.closeAll();
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	public Collection<String> getIdClienteByGestorCobranza(String idGestorCobranza) throws UnknownException {
+		Query query = pm.newQuery(GestorCliente.class);
+		query.setFilter("idGestorCobranza == paramIdGestorCobranza && estado==paramEstado");
+		query.setOrdering("version desc");
+		query.declareParameters("String paramIdGestorCobranza,String paramEstado");
+		query.setResult("idCliente");
+		try{
+		List lista=new ArrayList();
+		lista.addAll((List<GestorCliente>)query.execute(idGestorCobranza,"A"));		
+		return lista;
+		}catch(Exception ex){			
+			throw new UnknownException(ex.getMessage());
+		}finally{
+			query.closeAll();
+		}
+	}
+	
 	public Long desactivarGestorClienteByCobrador(String idUsuarioCobrador){		
 		Query query = pm.newQuery("UPDATE com.devol.server.model.bean.GestorCliente SET this.fechaFin==:paramFechaFin,this.estado==:paramEstado WHERE this.idGestorCobranza == :paramIdGestorCobranza");
 		Long number = (Long)query.execute(new java.util.Date(),"D",idUsuarioCobrador);

@@ -111,7 +111,8 @@ public class UIRecaudado extends Composite implements InterUIRecaudado,ValueChan
 	private void initWidgetListener() {
 		txtBuscar.addValueChangeHandler(this);					
 		btnFiltro.addClickHandler(this);
-		txtFecha.getCalendar().getBtnAceptar().addTouchEndHandler(this);
+		txtFecha.getCalendar().getBtnAceptar().addClickHandler(this);
+		toolBar.getBtnExportar().addClickHandler(this);
 	}
 
 	private void style() {
@@ -205,7 +206,17 @@ public class UIRecaudado extends Composite implements InterUIRecaudado,ValueChan
 		if (event.getSource().equals(btnFiltro)) {
 			// Window.alert("ok");
 			txtFecha.showCalendar();
+		}else if(event.getSource().equals(txtFecha.getCalendar().getBtnAceptar())){
+			cargarTabla(txtFecha.getDate());
+		}else if(event.getSource().equals(toolBar.getBtnExportar())){
+			exportarData();
 		}
+	}
+
+	@Override
+	public void exportarData() {
+		// TODO Auto-generated method stub
+		
 	}
 
 

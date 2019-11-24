@@ -50,7 +50,7 @@ public class UIIniciarSesionImpl extends UIIniciarSesion {
 						if(result != null){							
 							UIHomeSesion.usuario=result;
 							//Dialogs.alert("Login",constants.bienvenido()+" "+UIHomeSesion.usuario.getNombres(), null);
-							//Window.alert(constants.bienvenido()+" "+UIHomeSesion.usuario.getNombres());							
+							//Window.alert(constants.bienvenido()+" "+UIHomeSesion.usuario.getNombres());														
 							irCuenta();
 							Notification not=new Notification(Notification.INFORMATION,constants.bienvenido()+" "+result.getNombres());
 							not.showPopup();

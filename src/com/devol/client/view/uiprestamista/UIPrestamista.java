@@ -39,7 +39,7 @@ public class UIPrestamista extends Composite implements InterUIPrestamista, Valu
 	private void init() {		
 		main = new FlowPanel();				
 		toolBar = new ToolBar();			
-		btnVerPrestamos=new PushButton(new Image(MyResource.INSTANCE.getImgGroupClientes32()));
+		btnVerPrestamos=new PushButton(new Image(MyResource.INSTANCE.getImgPrestamo32()));
 		btnVerPrestamos.setTitle("Ver Prestamos");
 		toolBar.getToolbar().add(btnVerPrestamos);
 		main.add(toolBar);
@@ -74,7 +74,8 @@ public class UIPrestamista extends Composite implements InterUIPrestamista, Valu
 		toolBar.getBtnNuevo().setVisible(false);
 		toolBar.getBtnEditar().setVisible(false);		
 		toolBar.getBtnEliminar().setVisible(false);
-		toolBar.getBtnActualizar().addClickHandler(this);		
+		toolBar.getBtnActualizar().addClickHandler(this);	
+		toolBar.getBtnExportar().addClickHandler(this);
 		btnVerPrestamos.addClickHandler(this);
 	}
 
@@ -123,11 +124,27 @@ public class UIPrestamista extends Composite implements InterUIPrestamista, Valu
 	public void onClick(ClickEvent event) {	
 		if (event.getSource().equals(toolBar.getBtnActualizar())) {
 			cargarTabla();
+		}else if(event.getSource().equals(btnVerPrestamos)){
+			goToUiPrestamo();
+		}else if(event.getSource().equals(toolBar.getBtnExportar())){
+			exportarData();
 		}
 	}
 
 	@Override
 	public void cargarTabla() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void goToUiPrestamo() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
+	public void exportarData() {
 		// TODO Auto-generated method stub
 		
 	}

@@ -34,15 +34,19 @@ import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.FlexTable.FlexCellFormatter;
+import com.googlecode.mgwt.ui.client.MGWT;
+import com.googlecode.mgwt.ui.client.MGWTSettings;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.PushButton;
+import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.TextBox;
-import com.googlecode.mgwt.ui.client.widget.panel.scroll.ScrollPanel;
+import com.google.gwt.user.client.ui.VerticalPanel;
+//import com.googlecode.mgwt.ui.client.widget.panel.scroll.ScrollPanel;
 
 public class UIMantPrestamo extends Composite implements InterUIMantPrestamo,
 		 TouchEndHandler,KeyUpHandler,BlurHandler,ClickHandler {
 	private DevolConstants constants = GWT.create(DevolConstants.class);
-	private FlowPanel main;
+	private VerticalPanel main;
 	private HeaderPanelM header;
 	private Label lblCenter;
 	private PushButton btnBack;
@@ -58,6 +62,8 @@ public class UIMantPrestamo extends Composite implements InterUIMantPrestamo,
 	protected TextBox txtADevolver; 
 	protected TextBox txtDevuelto;
 	protected TextBox txtCliente;
+	protected TextBox txtTipoPrestamo;
+	protected TextBox txtGlosa;
 	protected Button btnGuardar;
 	private FlowPanel pnlTxtCliente;
 	//private FlowPanel pnlTxtCalendar;
@@ -80,7 +86,7 @@ public class UIMantPrestamo extends Composite implements InterUIMantPrestamo,
 
 	private void init() {
 		beanCliente=null;
-		main = new FlowPanel();
+		main = new VerticalPanel();
 		initWidget(main);
 		//Window.addResizeHandler(this);
 
@@ -96,9 +102,9 @@ public class UIMantPrestamo extends Composite implements InterUIMantPrestamo,
 		//main.add(container);
 
 		scrollPanel = new ScrollPanel();
-		scrollPanel.setScrollingEnabledY(true);
+		/*scrollPanel.setScrollingEnabledY(true);
 		scrollPanel.setScrollingEnabledX(false);
-		scrollPanel.setAutoHandleResize(true);		
+		scrollPanel.setAutoHandleResize(true);*/		
 		/*scrollPanel.setScrollingEnabledX(false);
 		scrollPanel.setScrollingEnabledY(true);
 		scrollPanel.setAutoHandleResize(true);*/
@@ -143,6 +149,12 @@ public class UIMantPrestamo extends Composite implements InterUIMantPrestamo,
 		pnlTxtCliente = new FlowPanel();
 		
 		contentForm.addWidget("* "+constants.clientes(), pnlTxtCliente);
+		
+		txtTipoPrestamo=new TextBox();
+		contentForm.addWidget("Tipo Prestamo", txtTipoPrestamo);
+		
+		txtGlosa=new TextBox();
+		contentForm.addWidget("Glosa", txtGlosa);
 
 		flexTable = new FlexTable();		
 		pnlTxtCliente.add(flexTable);
@@ -202,6 +214,8 @@ public class UIMantPrestamo extends Composite implements InterUIMantPrestamo,
 		txtFecha.getTxtFecha().setText(fecha);
 		txtCliente.setText(beanPrestamo.getBeanCliente().getNombre()+" "+beanPrestamo.getBeanCliente().getApellido());
 		beanCliente=beanPrestamo.getBeanCliente();
+		txtTipoPrestamo.setText(beanPrestamo.getTipoPrestamo());
+		txtGlosa.setText(beanPrestamo.getGlosa());
 	}
 	
 	public void activarCampos() {
@@ -210,7 +224,9 @@ public class UIMantPrestamo extends Composite implements InterUIMantPrestamo,
 			txtADevolver.setReadOnly(true);
 			txtDevuelto.setReadOnly(true);
 			txtMonto.setReadOnly(true);
-			txtTasa.setReadOnly(true);		
+			txtTasa.setReadOnly(true);	
+			txtTipoPrestamo.setReadOnly(true);
+			txtGlosa.setReadOnly(true);
 			btnGuardar.setVisible(true);			
 		}else if(modo.equalsIgnoreCase(constants.modoEditar())){
 			txtCodigo.setReadOnly(true);
@@ -218,8 +234,10 @@ public class UIMantPrestamo extends Composite implements InterUIMantPrestamo,
 			txtDevuelto.setReadOnly(true);
 			txtMonto.setReadOnly(false);
 			txtTasa.setReadOnly(false);
+			txtTipoPrestamo.setReadOnly(false);
+			txtGlosa.setReadOnly(false);
 			if(modoPrestamo.equals("HISTORIAL")){
-				btnGuardar.setVisible(false);			
+				btnGuardar.setVisible(true);			
 			}else{
 				btnGuardar.setVisible(true);
 			}
@@ -229,6 +247,8 @@ public class UIMantPrestamo extends Composite implements InterUIMantPrestamo,
 			txtDevuelto.setReadOnly(true);
 			txtMonto.setReadOnly(false);
 			txtTasa.setReadOnly(false);
+			txtTipoPrestamo.setReadOnly(false);
+			txtGlosa.setReadOnly(false);
 			if(modoPrestamo.equals("HISTORIAL")){
 				btnGuardar.setVisible(false);			
 			}else{
@@ -252,10 +272,12 @@ public class UIMantPrestamo extends Composite implements InterUIMantPrestamo,
 	protected void setHeightContainer(int heightHeader) {
 		int height = Window.getClientHeight();
 		scrollPanel.setHeight((height - heightHeader) + "px");
-		this.scrollPanel.refresh();
+		//this.scrollPanel.refresh();
 	}
 
 	private void style() {
+		Window.setMargin("0px");
+		MGWT.applySettings(MGWTSettings.getAppSetting());
 		btnGuardar.setWidth("97%");
 		btnGuardar.getElement().getStyle().setMarginBottom(50, Unit.PX);
 		btnGuardar.getElement().getStyle().setFontSize(2, Style.Unit.EM);
@@ -388,7 +410,8 @@ public class UIMantPrestamo extends Composite implements InterUIMantPrestamo,
 			vDevuelto=BigDecimal.ZERO;
 			txtDevuelto.setText(vDevuelto.toString());			
 		}					
-			vAdevolver=vMonto.add(vTasa.divide(BigDecimal.valueOf(100)).multiply(vMonto)).subtract(vDevuelto);
+			//vAdevolver=vMonto.add(vTasa.divide(BigDecimal.valueOf(100)).multiply(vMonto)).subtract(vDevuelto);
+			vAdevolver=vMonto.add(vTasa.divide(BigDecimal.valueOf(100)).multiply(vMonto));
 			txtADevolver.setText(vAdevolver.toString());
 			txtDevuelto.setText(vDevuelto.toString());		
 	}

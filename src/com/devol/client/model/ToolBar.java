@@ -12,6 +12,7 @@ public class ToolBar extends HeaderMenu {
 	private PushButton btnEditar;
 	private PushButton btnEliminar;
 	private PushButton btnActualizar;
+	private PushButton btnExportar;
 
 	public ToolBar() {
 		init();
@@ -42,7 +43,14 @@ public class ToolBar extends HeaderMenu {
 				new Image(MyResource.INSTANCE.getImgRefresh32()));
 		btnActualizar.setTitle("Actualizar");
 		toolbar.add(btnActualizar);
+		
+		btnExportar = new PushButton(
+				new Image(MyResource.INSTANCE.getImgExportar32()));
+		btnExportar.setTitle("Exportar");
+		toolbar.add(btnExportar);		
 		setLeftWidget(toolbar);
+		
+		
 	}
 
 	private void style() {
@@ -60,6 +68,7 @@ public class ToolBar extends HeaderMenu {
 		btnEditar.addStyleName(MyResource.INSTANCE.getStlUIHome().pushButton());
 		btnEliminar.addStyleName(MyResource.INSTANCE.getStlUIHome().pushButton());
 		btnActualizar.addStyleName(MyResource.INSTANCE.getStlUIHome().pushButton());
+		btnExportar.addStyleName(MyResource.INSTANCE.getStlUIHome().pushButton());
 		btnAtras.addStyleName(MyResource.INSTANCE.getStlUIHome().pushButton());
 	}
 
@@ -85,6 +94,10 @@ public class ToolBar extends HeaderMenu {
 
 	public PushButton getBtnAtras() {
 		return btnAtras;
+	}
+
+	public PushButton getBtnExportar() {
+		return btnExportar;
 	}
 	
 	

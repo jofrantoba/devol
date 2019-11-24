@@ -1,6 +1,7 @@
 package com.devol.client.view.uiprestamista;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import com.devol.client.beanproxy.GestorCobranzaProxy;
@@ -11,6 +12,7 @@ import com.devol.client.util.PopupProgress;
 import com.devol.client.view.uihomecobranza.UIHomeCobranza;
 import com.devol.client.view.uihomesesion.UIHomeSesion;
 import com.devol.i18n.DevolConstants;
+import com.devol.shared.TableToExcel;
 import com.google.gwt.core.shared.GWT;
 import com.google.web.bindery.event.shared.EventBus;
 import com.google.web.bindery.event.shared.SimpleEventBus;
@@ -59,6 +61,31 @@ public class UIPrestamistaImpl extends UIPrestamista {
 		}
 	}
 	
+	@Override
+	public void goToUiPrestamo() {
+		// TODO Auto-generated method stub
+		GestorCobranzaProxy bean = grid.getSelectionModel().getSelectedObject();
+		//Window.alert(bean.getIdCliente());
+		if (bean == null){
+			//Dialogs.alert(constants.alerta(), constants.seleccioneCliente(), null);
+			//Window.alert(constants.seleccioneCliente());
+			Notification not=new Notification(Notification.ALERT,constants.seleccionePrestamista());
+			not.showPopup();
+			return;
+		}
+		uiHomeCobranza.getContainer().showWidget(1);
+		uiHomeCobranza.getUIPrestamoImpl().setBeanGestorCobranza(bean);
+		uiHomeCobranza.getUIPrestamoImpl().cargarPrestamoGestorCobranza();
+		uiHomeCobranza.setTitle("Prestamos");
+	}
+	
+	@Override
+	public void exportarData() {
+		// TODO Auto-generated method stub
+		Date date=new Date();
+		String nameFile="prestamistas-"+date.getTime()+".xls";
+		TableToExcel.save(grid,nameFile);
+	}
 	
 	
 }

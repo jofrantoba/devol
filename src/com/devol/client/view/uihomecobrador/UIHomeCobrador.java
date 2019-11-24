@@ -11,6 +11,8 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DeckPanel;
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.googlecode.mgwt.ui.client.MGWT;
+import com.googlecode.mgwt.ui.client.MGWTSettings;
 
 public class UIHomeCobrador extends Composite {
 	private DevolConstants constants = GWT.create(DevolConstants.class);
@@ -65,6 +67,7 @@ public class UIHomeCobrador extends Composite {
 	private void style() {
 		// TODO Auto-generated method stub
 		Window.setMargin("0px");
+		MGWT.applySettings(MGWTSettings.getAppSetting());
 		/*int height = Window.getClientHeight();
 		container.setHeight((height - 42) + "px");*/
 		// main.getElement().getStyle().setBackgroundColor("#d3d6db");

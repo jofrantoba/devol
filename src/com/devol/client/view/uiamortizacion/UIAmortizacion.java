@@ -31,7 +31,7 @@ public class UIAmortizacion extends Composite implements InterUIAmortizacion,
 	protected PushButton btnNuevo;
 	protected PushButton btnEliminar;
 	private FlowPanel contenido;
-	private HorizontalPanel pnlEstadoPrestamo;
+	protected HorizontalPanel pnlEstadoPrestamo;
 	protected Label lblADevolver;
 	protected Label lblADevuelto;
 	protected GridAmortizacion grid;

@@ -20,6 +20,8 @@ public interface InterUICliente {
 	void selecciona();	
 	
 	void asignarClienteAcobrador();
+	
+	void exportarData();
 		
 	
 }

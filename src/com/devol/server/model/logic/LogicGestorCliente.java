@@ -50,6 +50,24 @@ public class LogicGestorCliente {
 		return lista;
 	}
 	
+	public Collection<GestorCliente> getListarBeanByGestorCobranza(String idGestorCobranza) throws UnknownException {
+		DaoGestorCliente dao = new DaoGestorCliente(this.pm);
+		Collection<GestorCliente> lista = dao.getListarBeanByGestorCobranza(idGestorCobranza);
+		return lista;
+	}
+	
+	public Collection<String> getIdClienteByCobrador(String idUsuarioCobrador) throws UnknownException {
+		DaoGestorCliente dao = new DaoGestorCliente(this.pm);
+		Collection<String> lista = dao.getIdClienteByCobrador(idUsuarioCobrador);
+		return lista;
+	}
+	
+	public Collection<String> getIdClienteByGestorCobranza(String idGestorCobranza) throws UnknownException {
+		DaoGestorCliente dao = new DaoGestorCliente(this.pm);
+		Collection<String> lista = dao.getIdClienteByGestorCobranza(idGestorCobranza);
+		return lista;
+	}
+	
 	public GestorCliente getGestorClienteActivo(String idUsuarioOwner,String idUsuarioCobrador) throws UnknownException {
 		DaoGestorCliente dao = new DaoGestorCliente(this.pm);
 		GestorCliente bean = dao.getGestorClienteActivo(idUsuarioOwner,idUsuarioCobrador);

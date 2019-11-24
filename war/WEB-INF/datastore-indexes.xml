@@ -3,11 +3,16 @@
     <datastore-index kind="Prestamo" ancestor="false" source="auto">
         <property name="estado" direction="asc"/>
         <property name="idUsuario" direction="asc"/>
-        <property name="version" direction="desc"/>
+        <property name="fecha" direction="desc"/>
+    </datastore-index>
+    <datastore-index kind="Prestamo" ancestor="false" source="auto">
+        <property name="estado" direction="asc"/>
+        <property name="idCliente" direction="asc"/>
+        <property name="fecha" direction="desc"/>
     </datastore-index>
     <datastore-index kind="Amortizacion" ancestor="false" source="auto">
         <property name="idPrestamo" direction="asc"/>
-        <property name="version" direction="desc"/>
+        <property name="fecha" direction="asc"/>
     </datastore-index>
     
     <datastore-index kind="Cliente" ancestor="false" source="auto">
@@ -18,6 +23,18 @@
     <datastore-index kind="GestorCobranza" ancestor="false" source="auto">
         <property name="estado" direction="asc"/>
         <property name="idUsuarioOwner" direction="asc"/>
+        <property name="version" direction="desc"/>
+    </datastore-index>
+
+   <datastore-index kind="GestorCobranza" ancestor="false" source="auto">
+        <property name="estado" direction="asc"/>
+        <property name="idUsuarioCobrador" direction="asc"/>
+        <property name="version" direction="desc"/>
+    </datastore-index>
+
+    <datastore-index kind="GestorCliente" ancestor="false" source="auto">
+        <property name="estado" direction="asc"/>
+        <property name="idGestorCobranza" direction="asc"/>
         <property name="version" direction="desc"/>
     </datastore-index>
     

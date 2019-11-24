@@ -96,6 +96,7 @@ public class UICobrador extends Composite implements InterUICobrador, ValueChang
 		toolBar.getBtnEditar().addClickHandler(this);		
 		toolBar.getBtnEliminar().setVisible(false);
 		toolBar.getBtnActualizar().addClickHandler(this);
+		toolBar.getBtnExportar().addClickHandler(this);
 		btnSelect.addClickHandler(this);
 		btnBack.addClickHandler(this);
 		btnAsignarClientes.addClickHandler(this);
@@ -185,11 +186,19 @@ public class UICobrador extends Composite implements InterUICobrador, ValueChang
 			selecciona();
 		}else if (event.getSource().equals(btnAsignarClientes)) {
 			goToUiCliente();
+		}else if(event.getSource().equals(toolBar.getBtnExportar())){
+			exportarData();
 		}
 	}
 
 	@Override
 	public void goToUiCliente() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void exportarData() {
 		// TODO Auto-generated method stub
 		
 	}

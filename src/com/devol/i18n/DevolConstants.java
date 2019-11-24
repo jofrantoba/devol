@@ -9,6 +9,9 @@ public interface DevolConstants extends Constants {
 	
 	  @DefaultStringValue("Correo")
 	  String correo();
+	  
+	  @DefaultStringValue("TP")
+	  String tp();
 
 	  @DefaultStringValue("Clave")
 	  String clave();
@@ -147,6 +150,9 @@ public interface DevolConstants extends Constants {
 	  
 	  @DefaultStringValue("Seleccione cobrador!")
 	  String seleccioneCobrador();
+	  
+	  @DefaultStringValue("Seleccione prestamista!")
+	  String seleccionePrestamista();
 	  
 	  @DefaultStringValue("DNI no es valida")
 	  String dniInvalida();

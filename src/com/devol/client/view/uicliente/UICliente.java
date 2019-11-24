@@ -7,6 +7,7 @@ import com.devol.client.model.ToolBar;
 import com.devol.client.resource.MyResource;
 import com.devol.i18n.DevolConstants;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.ResizeEvent;
@@ -16,6 +17,7 @@ import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PushButton;
@@ -69,7 +71,12 @@ public class UICliente extends Composite implements InterUICliente,
 
 		container = new FlowPanel();		
 		grid = new GridCliente();			
-		container.add(grid);				
+		container.add(grid);
+		HorizontalPanel pnlPag=new HorizontalPanel();
+		pnlPag.add(grid.getPager());
+		pnlPag.getElement().getStyle().setBackgroundColor("#1e558b");
+		pnlPag.getElement().getStyle().setWidth(100, Unit.PCT);
+		container.add(pnlPag);
 		main.add(container);				
 		Window.addResizeHandler(new ResizeHandler(){
 
@@ -93,6 +100,7 @@ public class UICliente extends Composite implements InterUICliente,
 		toolBar.getBtnEditar().addClickHandler(this);
 		toolBar.getBtnEliminar().addClickHandler(this);
 		toolBar.getBtnActualizar().addClickHandler(this);
+		toolBar.getBtnExportar().addClickHandler(this);
 		toolBar.getBtnAtras().addClickHandler(this);
 		btnSelect.addClickHandler(this);
 		btnBack.addClickHandler(this);
@@ -104,15 +112,14 @@ public class UICliente extends Composite implements InterUICliente,
 		btnBack.addStyleName(MyResource.INSTANCE.getStlUICliente().pushButton());
 		txtBuscar.addStyleName(MyResource.INSTANCE.getStlUICliente()
 				.txtBuscarUICliente());
-		grid.addStyleName(MyResource.INSTANCE.getStlUICliente().gridUICliente());		
-
+		grid.addStyleName(MyResource.INSTANCE.getStlUICliente().gridUICliente());				
 	}
 	
 	
 
 	protected void setHeightContainer(int heightHeader) {
 		int height = Window.getClientHeight();		
-		grid.setHeight((height - heightHeader) + "px");
+		grid.setHeight((height - heightHeader-15) + "px");
 		container.setHeight((height - heightHeader) + "px");
 		grid.redraw();
 	}
@@ -204,6 +211,8 @@ public class UICliente extends Composite implements InterUICliente,
 			if(isHomeCobranza){
 				goToUiCobrador();
 			}			
+		}else if(event.getSource().equals(toolBar.getBtnExportar())){
+			exportarData();
 		}
 	}
 
@@ -241,6 +250,12 @@ public class UICliente extends Composite implements InterUICliente,
 
 	@Override
 	public void cargarClienteSinCobrador() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void exportarData() {
 		// TODO Auto-generated method stub
 		
 	}

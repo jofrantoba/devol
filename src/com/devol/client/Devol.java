@@ -18,7 +18,7 @@ public class Devol implements EntryPoint {
 	@Override
 	public void onModuleLoad() {
 		Window.setMargin("0px");        
-		MGWT.applySettings(MGWTSettings.getAppSetting());	
+		MGWT.applySettings(MGWTSettings.getAppSetting());			
 		/*GWT.setUncaughtExceptionHandler(new   
 			      GWT.UncaughtExceptionHandler() {  
 			      @SuppressWarnings("unused")
