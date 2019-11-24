@@ -29,6 +29,13 @@ withOperation(new OperationKey("NiJ8CN4PtvDUtPhUFzv9GDV$Foc="),
   .withMethodName("listarPrestamoByUsuario")
   .withRequestContext("com.devol.client.requestfactory.ContextGestionPrestamo")
   .build());
+withOperation(new OperationKey("0nSao6ip2KiC2Dv4r2f9jryvNZk="),
+  new OperationData.Builder()
+  .withClientMethodDescriptor("(Ljava/lang/String;)Lcom/google/web/bindery/requestfactory/shared/Request;")
+  .withDomainMethodDescriptor("(Ljava/lang/String;)Ljava/util/List;")
+  .withMethodName("listarPrestamoByGestorCobranza")
+  .withRequestContext("com.devol.client.requestfactory.ContextGestionPrestamo")
+  .build());
 withOperation(new OperationKey("WM2qS2JQhRfnOqbmaIzxx46FLiI="),
   new OperationData.Builder()
   .withClientMethodDescriptor("(Lcom/devol/client/beanproxy/PrestamoProxy;)Lcom/google/web/bindery/requestfactory/shared/Request;")
@@ -141,20 +148,6 @@ withOperation(new OperationKey("r8Uj55IuIFx7mMrn_9wGioTF7Qg="),
   .withMethodName("listarPrestamistaByCobrador")
   .withRequestContext("com.devol.client.requestfactory.ContextGestionCobranza")
   .build());
-withOperation(new OperationKey("Wg$ejygmqYiEvx2TFDEZ71BUmDo="),
-  new OperationData.Builder()
-  .withClientMethodDescriptor("(Ljava/lang/String;)Lcom/google/web/bindery/requestfactory/shared/Request;")
-  .withDomainMethodDescriptor("(Ljava/lang/String;)Ljava/lang/Boolean;")
-  .withMethodName("desactivarGestorCliente")
-  .withRequestContext("com.devol.client.requestfactory.ContextGestionCobranza")
-  .build());
-withOperation(new OperationKey("xL5RouHjCDQNm_fpnqrDneZUsWY="),
-  new OperationData.Builder()
-  .withClientMethodDescriptor("(Lcom/devol/client/beanproxy/GestorCobranzaProxy;)Lcom/google/web/bindery/requestfactory/shared/Request;")
-  .withDomainMethodDescriptor("(Lcom/devol/server/model/bean/GestorCobranza;)Ljava/lang/Boolean;")
-  .withMethodName("insertarCobrador")
-  .withRequestContext("com.devol.client.requestfactory.ContextGestionCobranza")
-  .build());
 withOperation(new OperationKey("UjpyLTaQTqzEjyu6j_VjU2BzIAU="),
   new OperationData.Builder()
   .withClientMethodDescriptor("(Ljava/lang/String;)Lcom/google/web/bindery/requestfactory/shared/Request;")
@@ -169,18 +162,39 @@ withOperation(new OperationKey("ytEtDcCcejOyE9P_DT$t5gBPhWc="),
   .withMethodName("desactivarGestorCobranza")
   .withRequestContext("com.devol.client.requestfactory.ContextGestionCobranza")
   .build());
-withOperation(new OperationKey("02QfR7SualkmDszycodcdnxt1y0="),
-  new OperationData.Builder()
-  .withClientMethodDescriptor("(Ljava/lang/String;)Lcom/google/web/bindery/requestfactory/shared/Request;")
-  .withDomainMethodDescriptor("(Ljava/lang/String;)Ljava/util/List;")
-  .withMethodName("listarGestorClienteByCobrador")
-  .withRequestContext("com.devol.client.requestfactory.ContextGestionCobranza")
-  .build());
 withOperation(new OperationKey("NB6eIwhctKlB6ng7GolGZiCwnC0="),
   new OperationData.Builder()
   .withClientMethodDescriptor("(Ljava/util/Set;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lcom/google/web/bindery/requestfactory/shared/Request;")
   .withDomainMethodDescriptor("(Ljava/util/Set;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/Boolean;")
   .withMethodName("asignarClientesAlCobrador")
+  .withRequestContext("com.devol.client.requestfactory.ContextGestionCobranza")
+  .build());
+withOperation(new OperationKey("nyyyrIqHHiFlu0e$UHKqPX3Xi48="),
+  new OperationData.Builder()
+  .withClientMethodDescriptor("(Ljava/lang/String;)Lcom/google/web/bindery/requestfactory/shared/Request;")
+  .withDomainMethodDescriptor("(Ljava/lang/String;)Ljava/util/List;")
+  .withMethodName("listarGestorClienteByGestorCobranza")
+  .withRequestContext("com.devol.client.requestfactory.ContextGestionCobranza")
+  .build());
+withOperation(new OperationKey("Wg$ejygmqYiEvx2TFDEZ71BUmDo="),
+  new OperationData.Builder()
+  .withClientMethodDescriptor("(Ljava/lang/String;)Lcom/google/web/bindery/requestfactory/shared/Request;")
+  .withDomainMethodDescriptor("(Ljava/lang/String;)Ljava/lang/Boolean;")
+  .withMethodName("desactivarGestorCliente")
+  .withRequestContext("com.devol.client.requestfactory.ContextGestionCobranza")
+  .build());
+withOperation(new OperationKey("xL5RouHjCDQNm_fpnqrDneZUsWY="),
+  new OperationData.Builder()
+  .withClientMethodDescriptor("(Lcom/devol/client/beanproxy/GestorCobranzaProxy;)Lcom/google/web/bindery/requestfactory/shared/Request;")
+  .withDomainMethodDescriptor("(Lcom/devol/server/model/bean/GestorCobranza;)Ljava/lang/Boolean;")
+  .withMethodName("insertarCobrador")
+  .withRequestContext("com.devol.client.requestfactory.ContextGestionCobranza")
+  .build());
+withOperation(new OperationKey("02QfR7SualkmDszycodcdnxt1y0="),
+  new OperationData.Builder()
+  .withClientMethodDescriptor("(Ljava/lang/String;)Lcom/google/web/bindery/requestfactory/shared/Request;")
+  .withDomainMethodDescriptor("(Ljava/lang/String;)Ljava/util/List;")
+  .withMethodName("listarGestorClienteByCobrador")
   .withRequestContext("com.devol.client.requestfactory.ContextGestionCobranza")
   .build());
 withOperation(new OperationKey("MTr3zy$$3KTDaVL2SgaXEpjHabs="),
